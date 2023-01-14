@@ -57,6 +57,9 @@ enum Images {
     static let FACE_ID = Image("faceID")
     static let CHANGE_PIN = Image("changePin")
     static let SET_PIN = Image("setPin")
+    static let CHECK_CIRCLE = Image("Checkcircle")
+    
+    static let FLAG = Image("flag")
    }
 
 // A place to test your images

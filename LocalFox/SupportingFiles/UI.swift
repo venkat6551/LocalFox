@@ -102,6 +102,7 @@ extension View {
     // Sets custom top-navigation bar title
     func setNavTitle(
         _ title: String,
+        subtitle: String? = nil,
         showBackButton: Bool = false,
         onClickBack: (() -> Void)? = nil,
         trailingView: AnyView? = nil
@@ -109,7 +110,7 @@ extension View {
         return VStack (spacing: 0) {
             ZStack {
                 
-                VStack {
+                VStack (alignment: .leading){
                     HStack {
                         if showBackButton {
                             HStack {
@@ -124,18 +125,23 @@ extension View {
                             }
                         }
                     }
-                    HStack (spacing: 0) {
+                    HStack {
                         Text(title).applyFontHeader()
                         Spacer()
                     }
+                    if let subtitle = subtitle {
+                        HStack {
+                            Text(subtitle).applyFontRegular(color: .TEXT_LEVEL_2,size: 14)
+                                .multilineTextAlignment(.leading)
+                                .padding(.top,1)
+                                .lineSpacing(5)
+                        }
+                    }
                     Spacer()
                 }
-                
-                
-                
             }
             .padding(.horizontal, Dimens.SCREEN_HORIZONTAL_PADDING)
-            .frame(maxHeight: Dimens.TOP_BAR_HEIGHT)
+            .frame(maxHeight:(subtitle == nil) ? Dimens.TOP_BAR_HEIGHT : 150)
             ZStack {
                 Color.SCREEN_BG
                 self
@@ -294,6 +300,7 @@ struct MyInputTextBox: View {
     var disableAutocorrection: Bool = true
     var isInputError: Bool = false
     var isFirstResponder: Bool = false
+    var leadingImage:Image?
     
     @Environment(\.isEnabled) private var isEnabled
     @State private var isSecured: Bool = true
@@ -311,6 +318,9 @@ struct MyInputTextBox: View {
             HStack(spacing: 0) {
                 if !isPassword {
                     HStack(spacing: Dimens.SPACING_LOW) {
+                        if let leadingImage = leadingImage {
+                            leadingImage
+                        }
                         TextField(hintText, text: $text, onEditingChanged: { (editingChanged) in
                             DispatchQueue.main.async {
                                 isFocused = editingChanged
@@ -329,21 +339,33 @@ struct MyInputTextBox: View {
                     }
                 } else {
                     if isSecured {
-                        SecureField(hintText, text: $text)
-                            .applyFontSubheading()
-                            .autocapitalization(UITextAutocapitalizationType.none)
-                            .frame(height: Dimens.INPUT_FIELD_HEIGHT)
-                            .textFieldStyle(PlainTextFieldStyle())
-                            .padding([.leading, .trailing], 4)
-                            .disableAutocorrection(true)
+                        HStack(spacing: Dimens.SPACING_LOW) {
+                            if let leadingImage = leadingImage {
+                                leadingImage
+                            }
+                            SecureField(hintText, text: $text)
+                                .applyFontSubheading()
+                                .autocapitalization(UITextAutocapitalizationType.none)
+                                .frame(height: Dimens.INPUT_FIELD_HEIGHT)
+                                .textFieldStyle(PlainTextFieldStyle())
+                                .padding([.leading, .trailing], 4)
+                                .disableAutocorrection(true)
+                        }
+                        
                     } else {
-                        TextField(hintText, text: $text)
-                            .applyFontSubheading()
-                            .autocapitalization(UITextAutocapitalizationType.none)
-                            .disableAutocorrection(true)
-                            .frame(height: Dimens.INPUT_FIELD_HEIGHT)
-                            .textFieldStyle(PlainTextFieldStyle())
-                            .padding([.leading, .trailing], 4)
+                        HStack {
+                            if let leadingImage = leadingImage {
+                                leadingImage
+                            }
+                            TextField(hintText, text: $text)
+                                .applyFontSubheading()
+                                .autocapitalization(UITextAutocapitalizationType.none)
+                                .disableAutocorrection(true)
+                                .frame(height: Dimens.INPUT_FIELD_HEIGHT)
+                                .textFieldStyle(PlainTextFieldStyle())
+                                .padding([.leading, .trailing], 4)
+                        }
+                        
                     }
                     Button(
                         action: { isSecured.toggle() },
@@ -584,7 +606,7 @@ struct MySearchBox: View {
                     .placeholder(when: text.isEmpty) {
                         Text(hintText).foregroundColor(.gray)
                             .padding(.leading,5)
-                }
+                    }
             }
             .padding(Dimens.SEARCH_BAR_PADDING)
         }
@@ -634,7 +656,7 @@ struct BackButton: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: Dimens.BACK_ICON_SIZE, height: Dimens.BACK_ICON_SIZE)
-                
+            
         }
     }
     
@@ -682,37 +704,14 @@ struct UI_Previews: PreviewProvider {
                             print("Clicked on button")
                         }
                     )
-                   // MyButton(
-//                        text: "MyButton.outlinedStyle",
-//                        onClickButton: {
-//                            print("Clicked on button")
-//                        },
-//                        outlinedStyle: true
-//                    )
-//
-//                    MyButton(
-//                        text: "MyButton.disabled(true)",
-//                        onClickButton: {
-//                            print("Clicked on button")
-//                        }
-//                    ).disabled(true)
-//                    MyButton(
-//                        text: "MyButton.showLoading=true",
-//                        onClickButton: {
-//                            print("Clicked on button")
-//                        },
-//                        showLoading: true
-//                    )
                     MyInputTextBox(
                         hintText: "Enter any text here",
                         text: $sampleInputText
                     )
-                    
                     MySearchBox(
                         hintText: "Search",
                         text: $sampleInputText
                     )
-//                    BackButton()
                 }
                 Spacer()
             }
@@ -743,8 +742,6 @@ struct UI_Previews: PreviewProvider {
                 onSnackbarDismissed: { print("Snackbar dismissed") },
                 isAlignToBottom: true
             )
-            
-            .setNavTitle("UI")
         }
         .previewDevice("iPhone Xs")
     }

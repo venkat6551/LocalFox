@@ -47,5 +47,26 @@ struct Strings {
     static let CHANGE_PIN_TEXT = "Change PIN"
     static let FACE_ID_TEXT = "Enable Face ID"
     static let SECURITY = "Security"
-
+    static let NEXT = "Next"
+    static let EMAIL_ADDRESS_SUBTITLE = "Please enter your email address. This will be used as your username to login to app."
+    static let EMAIL_CODE = "Email code"
+    static let EMAIL_CODE_SUBTITLE = "We’ve sent a verification code to your email. Please enter now."
+    static let VERIFICATION_CODE = "Verification code"
+    static let RESET_PASSWORD = "Reset password"
+    static let SET_PASSWORD = "Set password"
+    static let SET_PASSWORD_MESSAGE = "Choose a password and create an account."
+    static let RESET_PASSWORD_SUCCESS = "Your password has been set to new one. Please proceed to login."
+    
+    static let PROCEED_TO_LOGIN = "Proceed to login"
+    static let ACCOUNT_CREATED = "Account created."
+    static let ACCOUNT_CREATED_MESSAGE = "Your account has been created successfully.\nProceed to login."
+    
+    static let YOUR_NAME = "Your name"
+    static let YOUR_NAME_MESSAGE = "Please enter your first and last name"
+    static let FIRST_NAME = "First name"
+    static let LAST_NAME = "Last name"
+    static let MOBILE_NUMBER_MESSAGE = "Please enter your Australian mobile number"
+    static let MOBILE = "Mobile"
+    static let MOBILE_VERIFICATION_MESSSAGE = "We’ve sent a verification code to your mobile. Please enter now."
+    
 }

@@ -10,6 +10,8 @@ import SwiftUI
 struct LoginView: View {
     @StateObject private var loginVM: LoginViewModel = LoginViewModel()
     @State private var showLeads = false
+    @State private var resetPassword = false
+    @State private var signUp = false
     var body: some View {
         NavigationStack {
             VStack {
@@ -59,13 +61,21 @@ struct LoginView: View {
                         Spacer().frame(maxHeight: 35.0)
                         HStack {
                             Spacer()
-                            Text(Strings.FORGOT_PASSWORD)
-                                .applyFontRegular(color: Color.PRIMARY,size: 14)
+                            Button(
+                                action: {
+                                    resetPassword = true
+                                },
+                                label: {
+                                    Text(Strings.FORGOT_PASSWORD)
+                                        .applyFontRegular(color: Color.PRIMARY,size: 14)
+                                   
+                                }
+                            )
                         }
                         Spacer()
                         MyButton(
                             text: Strings.SIGN_UP,
-                            onClickButton: { }
+                            onClickButton: { signUp = true }
                         )
                         Spacer()
                             .frame(maxHeight: 44.0)
@@ -75,11 +85,15 @@ struct LoginView: View {
                     .navigationDestination(isPresented: $showLeads) {
                         LandingView()
                     }
+                    .navigationDestination(isPresented: $resetPassword) {
+                        EmailAddressView()
+                    }
+                    .navigationDestination(isPresented: $signUp) {
+                        NameView()
+                    }
             }
-            
             .background(Color.SCREEN_BG.ignoresSafeArea())
         }.navigationBarHidden(true)
-        
     }
 }
 
