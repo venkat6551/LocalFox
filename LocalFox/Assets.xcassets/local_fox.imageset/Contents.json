@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "local_fox.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
