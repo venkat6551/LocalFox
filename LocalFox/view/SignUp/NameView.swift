@@ -17,17 +17,16 @@ struct NameView: View {
         
         
         VStack{
-            VStack(alignment: .leading) {
-                Text(Strings.FIRST_NAME)
-                    .applyFontRegular(color: .TEXT_LEVEL_2,size: 13).padding(.top,15)
+            VStack(alignment: .leading,spacing: 25) {
+               
                 MyInputTextBox(
+                    hintText: Strings.FIRST_NAME,
                     text: $firstName,
                     keyboardType: UIKeyboardType.default
                 )
-                
-                Text(Strings.LAST_NAME)
-                    .applyFontRegular(color: .TEXT_LEVEL_2,size: 13).padding(.top,25)
+
                 MyInputTextBox(
+                    hintText: Strings.LAST_NAME,
                     text: $lastName,
                     keyboardType: UIKeyboardType.default
                 )

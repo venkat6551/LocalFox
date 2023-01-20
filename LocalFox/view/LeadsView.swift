@@ -23,23 +23,7 @@ struct LeadsView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 34,height: 34)
-                        .padding(.trailing, 5)
-                    
-                    Button(
-                        action: {
-                            showBottomSheet = true
-                        },
-                        label: {
-                            VStack {
-                                Images.FILTER
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 34,height: 34)
-                            }
-                           
-                        }
-                    )
-                   
+                        .padding(.trailing, 5)                
                 }
                 
                 InvitationsWaitingView(onCardClick: {

@@ -19,29 +19,20 @@ struct LoginView: View {
                     Spacer().frame(maxHeight: 80)
                     Images.LOCAL_FOX
                     Spacer().frame(maxHeight: 100)
-                    HStack{
-                        Text(Strings.EMAIL_ADDRESS)
-                            .applyFontRegular(color: Color.GRAY_TEXT,size: 14)
-                        Spacer()
-                    }
+                   
                     MyInputTextBox(
-                        hintText: "",
+                        hintText: Strings.EMAIL_ADDRESS,
                         text: $loginVM.credentials.activationCode,
                         isInputError: false
                     )
-                    HStack{
-                        Text(Strings.PASSWORD)
-                            .applyFontRegular(color: Color.GRAY_TEXT,size: 14)
-                        Spacer()
-                    }
-                    
-                    .padding(.top,9)
+                   
                     MyInputTextBox(
-                        hintText: "",
+                        hintText: Strings.PASSWORD,
                         text: $loginVM.credentials.activationCode,
                         isPassword: true,
                         isInputError: false
-                    )
+                    ).padding(.top,9)
+                    
                     HStack(spacing: 0) {
                         Text(Strings.TC_PART1)
                             .applyFontRegular(color: Color.DEFAULT_TEXT,size: 14)

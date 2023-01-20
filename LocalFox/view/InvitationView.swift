@@ -45,27 +45,30 @@ struct InvitationView: View {
                     
                     LeadImagesView().cardify()
                 }
-                HStack {
-                    MyButton(
-                        leadingImage: Images.ERROR, 
-                        text: Strings.DECLINE,
-                        onClickButton: {
-                            acceptJob(accepted:false)
-                            onCardActionClick(false)
-                        },
-                        bgColor: Color.PRIMARY
-                    )
-                    MyButton(
-                        leadingImage: Images.WHITE_TICK,
-                        text: Strings.ACCEPT,
-                        onClickButton: {
-                            acceptJob(accepted:true)
-                            onCardActionClick(true)
-                        },
-                        bgColor: Color.BUTTON_GREEN
-                    )
-                }
+               
             }.padding(.horizontal,20)
+            HStack {
+                MyButton(
+                    leadingImage: Images.ERROR,
+                    text: Strings.DECLINE,
+                    onClickButton: {
+                        acceptJob(accepted:false)
+                        onCardActionClick(false)
+                    },
+                    bgColor: Color.PRIMARY
+                ).padding(.leading,20)
+                MyButton(
+                    leadingImage: Images.WHITE_TICK,
+                    text: Strings.ACCEPT,
+                    onClickButton: {
+                        acceptJob(accepted:true)
+                        onCardActionClick(true)
+                    },
+                    bgColor: Color.BUTTON_GREEN
+                ).padding(.trailing,20)
+            }
+            .padding(.top,20)
+            .background(Color.white.ignoresSafeArea())
             Spacer()
         }
         .navigationBarHidden(true)

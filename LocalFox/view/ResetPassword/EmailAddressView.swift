@@ -12,13 +12,11 @@ struct EmailAddressView: View {
     @State private var showEmailCodeView:Bool = false
     var body: some View {
         VStack{
-            VStack(alignment: .leading) {
-                Text(Strings.EMAIL_ADDRESS)
-                    .applyFontRegular(color: .TEXT_LEVEL_2,size: 13).padding(.top,25)
-                MyInputTextBox(
+            VStack(alignment: .leading) {                MyInputTextBox(
+                    hintText: Strings.EMAIL_ADDRESS,
                     text: $emailId,
                     keyboardType: UIKeyboardType.emailAddress
-                )
+                ).padding(.top,25)
                 
                 MyButton(
                     text: Strings.NEXT,

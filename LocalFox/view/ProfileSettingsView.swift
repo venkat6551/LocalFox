@@ -80,15 +80,10 @@ struct ProfileSettingsView: View {
         }
         .padding(.horizontal,20)
         .setNavTitle(Strings.PROFILE_SETTINGS, showBackButton: true)
-        
-        .bottomSheet(
-            show: $showSettingsUpdateSheet,
-            title: ""
-        ) {
+        .sheet(isPresented: $showSettingsUpdateSheet){
             SettingsUpdateSheet(onClickClose: {
             }, settingsType: settingsType,text: $changeText)
         }
-
     }
 }
 

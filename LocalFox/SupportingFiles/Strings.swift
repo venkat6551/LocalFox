@@ -31,6 +31,7 @@ struct Strings {
     static let QUOTED = "Quoted"
     static let COMPLETED = "Completed"
     static let SSCHEDULED = "Scheduled"
+    static let NEW = "New"
     static let MOBILE_NUMBER = "Mobile number"
     static let MOBILE_NUMBER_UPDATE = "Please enter your Australian mobile number"
     static let MOBILE_NUMBER_HINT = "Mobile"

@@ -13,18 +13,17 @@ struct SetPasswordView: View {
     @State private var showSetPSWView:Bool = false
     var body: some View {
         VStack{
-            VStack(alignment: .leading) {
-                Text(Strings.PASSWORD)
-                    .applyFontRegular(color: .TEXT_LEVEL_2,size: 13).padding(.top,25)
+            VStack(alignment: .leading,spacing: 25) {
+
                 MyInputTextBox(
+                    hintText: Strings.PASSWORD,
                     text: $password,
                     keyboardType: UIKeyboardType.default,
                     isPassword: true
                 )
-                
-                Text(Strings.PASSWORD)
-                    .applyFontRegular(color: .TEXT_LEVEL_2,size: 13).padding(.top,25)
+
                 MyInputTextBox(
+                    hintText: Strings.PASSWORD,
                     text: $verifyPassword,
                     keyboardType: UIKeyboardType.default,
                     isPassword: true

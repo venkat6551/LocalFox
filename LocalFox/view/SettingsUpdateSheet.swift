@@ -40,40 +40,62 @@ struct SettingsUpdateSheet: View {
     var onClickClose: () -> Void
     var settingsType: SettingsType
     @Binding var text: String
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(settingsType.text)
-                .applyFontHeader()
-            Text(settingsType.subText)
-                .applyFontRegular(color: .TEXT_LEVEL_2,size: 14)
-            Text(settingsType.hintText)
-                .applyFontRegular(color: .TEXT_LEVEL_3,size: 13).padding(.top,25)
-            if(settingsType == .mobileNumber) {
-                MyInputTextBox(
-                    text: $text,
-                    keyboardType: UIKeyboardType.numberPad
+        ZStack {
+            VStack(alignment: .leading, spacing: 10) {
+                
+                HStack {
+                    Spacer()
+                    Button(
+                        action: {
+                            self.presentationMode.wrappedValue.dismiss()
+                        },
+                        label: {
+                            VStack {
+                                Images.CLOSE
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 12,height: 12)
+                            } .frame(width: 34,height: 34)
+                                .cardify(cardCornerRadius: 15)
+                        }
+                    )
+                }
+                Text(settingsType.text)
+                    .applyFontHeader()
+                Text(settingsType.subText)
+                    .applyFontRegular(color: .TEXT_LEVEL_2,size: 14)
+                Text(settingsType.hintText)
+                    .applyFontRegular(color: .TEXT_LEVEL_3,size: 13).padding(.top,25)
+                if(settingsType == .mobileNumber) {
+                    MyInputTextBox(
+                        text: $text,
+                        keyboardType: UIKeyboardType.numberPad
+                    )
+                  
+                } else if(settingsType == .address) {
+                    MyInputTextBox(
+                        text: $text,
+                        keyboardType: UIKeyboardType.default
+                    )
+                } else if(settingsType == .pin) {
+                    MyInputTextBox(
+                        text: $text,
+                        keyboardType: UIKeyboardType.numberPad,
+                        isPassword: true
+                    )
+                }
+                MyButton(
+                    text: Strings.UPDATE,
+                    onClickButton: {},
+                    bgColor: Color.PRIMARY
                 )
-              
-            } else if(settingsType == .address) {
-                MyInputTextBox(
-                    text: $text,
-                    keyboardType: UIKeyboardType.default
-                )
-            } else if(settingsType == .pin) {
-                MyInputTextBox(
-                    text: $text,
-                    keyboardType: UIKeyboardType.numberPad,
-                    isPassword: true
-                )
-            }
-            MyButton(
-                text: Strings.UPDATE,
-                onClickButton: {},
-                bgColor: Color.PRIMARY
-            )
-            .padding(.top, 5)
-            Spacer().frame(maxHeight: 350)
-        }
+                .padding(.top, 5)
+                
+                Spacer()
+            }.padding(25)
+        }.background(Color.SCREEN_BG.ignoresSafeArea())
     }
 }
 

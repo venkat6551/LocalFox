@@ -33,4 +33,10 @@ extension Color {
     static let TEXT_LEVEL_2 = Color("TextLevel2")
     static let TEXT_LEVEL_3 = Color("TextLevel3")
     static let LIGHT_GRAY = Color("LightGray")
+    
+    static let LIGHT_PURPLE = Color("LightPurple")
+    static let LIGHT_RED = Color("LightRed")
+    static let LIGHT_GREEN = Color("LightGreen")
+    static let LIGHT_BLUE = Color("LightBlue")
+    static let DARK_PURPLE = Color("DarkPurple")
 }

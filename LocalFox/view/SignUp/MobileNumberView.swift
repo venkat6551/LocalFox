@@ -13,13 +13,12 @@ struct MobileNumberView: View {
     var body: some View {
         VStack{
             VStack(alignment: .leading) {
-                Text(Strings.MOBILE)
-                    .applyFontRegular(color: .TEXT_LEVEL_2,size: 13).padding(.top,25)
                 MyInputTextBox(
+                    hintText: Strings.MOBILE,
                     text: $mobileNumber,
                     keyboardType: UIKeyboardType.numberPad,
                     leadingImage: Images.FLAG
-                )
+                ).padding(.top,25)
                 MyButton(
                     text: Strings.NEXT,
                     onClickButton: {showSetPSWView = true},

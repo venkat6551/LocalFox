@@ -33,13 +33,14 @@ struct SearchView: View {
                     hintText: Strings.SEARCH,
                     text: $searchText
                 ).padding(.bottom, 15)
-                ScrollView {
-                    LeadCardView(status: LeadStatus.expired,onCardClick:{}).cardify()
-                    LeadCardView(status: LeadStatus.expired,onCardClick:{}).cardify()
-                    LeadCardView(status: LeadStatus.expired,onCardClick:{}).cardify()
-                    LeadCardView(status: LeadStatus.expired,onCardClick:{}).cardify()
-                    LeadCardView(status: LeadStatus.expired,onCardClick:{}).cardify()
-                    LeadCardView(status: LeadStatus.expired,onCardClick:{}).cardify()
+                ScrollView (showsIndicators: false){
+                    
+                    LeadCardView(isForSearch: true, status: LeadStatus.active,onCardClick:{}).cardify()
+                    LeadCardView(isForSearch: true,status: LeadStatus.invite,onCardClick:{}).cardify()
+                    LeadCardView(isForSearch: true,status: LeadStatus.quoted,onCardClick:{}).cardify()
+                    LeadCardView(isForSearch: true,status: LeadStatus.scheduled,onCardClick:{}).cardify()
+                    LeadCardView(isForSearch: true,status: LeadStatus.new,onCardClick:{}).cardify()
+                    LeadCardView(isForSearch: true,status: LeadStatus.complete,onCardClick:{}).cardify()
                 }
             }
             Spacer()

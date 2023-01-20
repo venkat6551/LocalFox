@@ -109,12 +109,11 @@ extension View {
     ) -> some View {
         return VStack (spacing: 0) {
             ZStack {
-                
-                VStack (alignment: .leading){
+                VStack (alignment: .leading,spacing: 5){
                     HStack {
                         if showBackButton {
                             HStack {
-                                BackButton(onClickBack: onClickBack)
+                                BackButton(onClickBack: onClickBack).padding(.bottom, 10)
                                 Spacer()
                             }
                         }
@@ -133,8 +132,7 @@ extension View {
                         HStack {
                             Text(subtitle).applyFontRegular(color: .TEXT_LEVEL_2,size: 14)
                                 .multilineTextAlignment(.leading)
-                                .padding(.top,1)
-                                .lineSpacing(5)
+                                .lineSpacing(2)
                         }
                     }
                     Spacer()
@@ -292,7 +290,7 @@ class TextLimiter: ObservableObject {
 
 struct MyInputTextBox: View {
     
-    var hintText: String = "Input Text"
+    var hintText: String = ""
     @Binding var text: String
     var keyboardType = UIKeyboardType.default
     var isPassword: Bool = false
@@ -315,75 +313,85 @@ struct MyInputTextBox: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Dimens.SPACING_LOW) {
             
-            HStack(spacing: 0) {
-                if !isPassword {
-                    HStack(spacing: Dimens.SPACING_LOW) {
-                        if let leadingImage = leadingImage {
-                            leadingImage
-                        }
-                        TextField(hintText, text: $text, onEditingChanged: { (editingChanged) in
-                            DispatchQueue.main.async {
-                                isFocused = editingChanged
-                            }
-                        })
-                        .applyFontSubheading(color: Color.DEFAULT_TEXT)
-                        .keyboardType(keyboardType)
-                        .autocapitalization(autocapitalizationType)
-                        .frame(height: Dimens.INPUT_FIELD_HEIGHT)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding([.leading, .trailing], 4)
-                        if isInputError {
-                            Images.WARNING_ROUNDED
-                                .applyFontRegular(color: Color.ERROR,size: 16)
-                        }
-                    }
-                } else {
-                    if isSecured {
+            
+            VStack(alignment: .leading, spacing: Dimens.SPACING_MEDIAM) {
+                
+                if(!hintText.isEmpty) {
+                    Text(hintText).applyFontRegular(color: .TEXT_LEVEL_3,size: 13)
+                }
+                HStack(spacing: 0) {
+                    if !isPassword {
                         HStack(spacing: Dimens.SPACING_LOW) {
                             if let leadingImage = leadingImage {
                                 leadingImage
                             }
-                            SecureField(hintText, text: $text)
-                                .applyFontSubheading()
-                                .autocapitalization(UITextAutocapitalizationType.none)
-                                .frame(height: Dimens.INPUT_FIELD_HEIGHT)
-                                .textFieldStyle(PlainTextFieldStyle())
-                                .padding([.leading, .trailing], 4)
-                                .disableAutocorrection(true)
-                        }
-                        
-                    } else {
-                        HStack {
-                            if let leadingImage = leadingImage {
-                                leadingImage
+                            TextField("", text: $text, onEditingChanged: { (editingChanged) in
+                                DispatchQueue.main.async {
+                                    isFocused = editingChanged
+                                }
+                            })
+                            .applyFontSubheading(color: Color.DEFAULT_TEXT)
+                            .keyboardType(keyboardType)
+                            .autocapitalization(autocapitalizationType)
+                            .frame(height: Dimens.INPUT_FIELD_HEIGHT)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .padding([.leading, .trailing], 4)
+                            if isInputError {
+                                Images.WARNING_ROUNDED
+                                    .applyFontRegular(color: Color.ERROR,size: 16)
                             }
-                            TextField(hintText, text: $text)
-                                .applyFontSubheading()
-                                .autocapitalization(UITextAutocapitalizationType.none)
-                                .disableAutocorrection(true)
-                                .frame(height: Dimens.INPUT_FIELD_HEIGHT)
-                                .textFieldStyle(PlainTextFieldStyle())
-                                .padding([.leading, .trailing], 4)
                         }
-                        
+                    } else {
+                        if isSecured {
+                            HStack(spacing: Dimens.SPACING_LOW) {
+                                if let leadingImage = leadingImage {
+                                    leadingImage
+                                }
+                                SecureField("", text: $text)
+                                    .applyFontSubheading()
+                                    .autocapitalization(UITextAutocapitalizationType.none)
+                                    .frame(height: Dimens.INPUT_FIELD_HEIGHT)
+                                    .textFieldStyle(PlainTextFieldStyle())
+                                    .padding([.leading, .trailing], 4)
+                                    .disableAutocorrection(true)
+                            }
+                            
+                        } else {
+                            HStack {
+                                if let leadingImage = leadingImage {
+                                    leadingImage
+                                }
+                                TextField("", text: $text)
+                                    .applyFontSubheading()
+                                    .autocapitalization(UITextAutocapitalizationType.none)
+                                    .disableAutocorrection(true)
+                                    .frame(height: Dimens.INPUT_FIELD_HEIGHT)
+                                    .textFieldStyle(PlainTextFieldStyle())
+                                    .padding([.leading, .trailing], 4)
+                            }
+                            
+                        }
+                        Button(
+                            action: { isSecured.toggle() },
+                            label: {
+                                (!self.isSecured ? Images.EYE_SLASH : Images.EYE)
+                                    .accentColor(.gray)
+                            }
+                        )
                     }
-                    Button(
-                        action: { isSecured.toggle() },
-                        label: {
-                            (!self.isSecured ? Images.EYE_SLASH : Images.EYE)
-                                .accentColor(.gray)
-                        }
-                    )
                 }
+                .padding(.horizontal,Dimens.INPUT_FIELD_BOX_CONTENT_PADDING)
+                .clipShape(RoundedRectangle(cornerRadius: Dimens.CARD_CORNER_RADIUS_DEFAULT))
+                .overlay(
+                    RoundedRectangle(cornerRadius: Dimens.CARD_CORNER_RADIUS_DEFAULT)
+                        .stroke(inputBoxColor, lineWidth: Dimens.INPUT_FIELD_BOX_OUTLINE_WIDTH)
+                )
+                .cardify()
             }
+            
+          
         }
-        .padding(Dimens.INPUT_FIELD_BOX_CONTENT_PADDING)
-        .clipShape(RoundedRectangle(cornerRadius: Dimens.CARD_CORNER_RADIUS_DEFAULT))
-        .overlay(
-            RoundedRectangle(cornerRadius: Dimens.CARD_CORNER_RADIUS_DEFAULT)
-                .stroke(inputBoxColor, lineWidth: Dimens.INPUT_FIELD_BOX_OUTLINE_WIDTH)
-        )
-        .cardify()
+        
     }
 }
 
@@ -600,7 +608,7 @@ struct MySearchBox: View {
                     .applyFontRegular(size: 16)
                     .keyboardType(keyboardType)
                     .disableAutocorrection(true)
-                    .frame(height: 45)
+                    .frame(height: Dimens.INPUT_FIELD_HEIGHT)
                     .textFieldStyle(PlainTextFieldStyle())
                     .padding([.leading, .trailing], 4)
                     .placeholder(when: text.isEmpty) {

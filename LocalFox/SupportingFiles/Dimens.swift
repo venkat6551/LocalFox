@@ -12,16 +12,17 @@ import SwiftUI
 
 enum Dimens {
     
-    static let BUTTON_HEIGHT: CGFloat = 30.0
-    static let INPUT_FIELD_HEIGHT: CGFloat = 45.0
+    static let BUTTON_HEIGHT: CGFloat = 35.0
+    static let INPUT_FIELD_HEIGHT: CGFloat = 48.0
     static let CARD_CORNER_RADIUS_DEFAULT: CGFloat = 5.0
     static let CARD_SHADOW: CGFloat = 2.0
-    static let SCREEN_HORIZONTAL_PADDING: CGFloat = 16.0
+    static let SCREEN_HORIZONTAL_PADDING: CGFloat = 25.0
     static let SPACING_DEFAULT: CGFloat = 10.0
     static let SPACING_LOW: CGFloat = 5.0
+    static let SPACING_MEDIAM: CGFloat = 15.0
     static let SPACING_HIGH: CGFloat = 20.0
     static let BUTTON_MIN_WIDTH: CGFloat = 319.0
-    static let BUTTON_PADDING: CGFloat = 12.0
+    static let BUTTON_PADDING: CGFloat = 7.5
     static let INPUT_FIELD_BOX_CONTENT_PADDING: CGFloat = 10.0
     static let INPUT_FIELD_BOX_OUTLINE_WIDTH: CGFloat = 0.3
     static let SNACKBAR_PADDING_INSIDE: CGFloat = 15.0
