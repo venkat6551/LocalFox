@@ -41,13 +41,13 @@ struct InvitationView: View {
                     
                     RowView(title: "How soon",image: Images.TIME_ICON, description: "In next couple of weeks")
                     
-                    RowView(title: "Job description",image: Images.DESCRIPTION_ICON, description: "We need a flooring to be done by end of this month at Marsden Park.\n\n There are some broken tiles in couple of bedrooms. Those need to be replaced with new and also install the new tiles in master bedroom. 16sqm.")
+                    RowView(title: "Job description",image: Images.DESCRIPTION_ICON, description: "We need a flooring to be done by end of this month at Marsden Park.\nThere are some broken tiles in couple of bedrooms. Those need to be replaced with new and also install the new tiles in master bedroom. 16sqm.")
                     
-                    LeadImagesView().cardify()
+                    LeadImagesView()
                 }
                
-            }.padding(.horizontal,20)
-            HStack {
+            }.padding(.horizontal,20).background(Color.SCREEN_BG)
+            HStack (spacing: 15){
                 MyButton(
                     leadingImage: Images.ERROR,
                     text: Strings.DECLINE,
@@ -56,7 +56,7 @@ struct InvitationView: View {
                         onCardActionClick(false)
                     },
                     bgColor: Color.PRIMARY
-                ).padding(.leading,20)
+                ).padding(.leading,50)
                 MyButton(
                     leadingImage: Images.WHITE_TICK,
                     text: Strings.ACCEPT,
@@ -65,14 +65,14 @@ struct InvitationView: View {
                         onCardActionClick(true)
                     },
                     bgColor: Color.BUTTON_GREEN
-                ).padding(.trailing,20)
+                ).padding(.trailing,50)
             }
             .padding(.top,20)
-            .background(Color.white.ignoresSafeArea())
+            .background(Color.white)
             Spacer()
         }
         .navigationBarHidden(true)
-        .background(Color.SCREEN_BG.ignoresSafeArea())
+        .background(Color.white.ignoresSafeArea())
         .offset(x: offset.width * 1, y: offset.height * 0.4)
         .rotationEffect(.degrees(Double(offset.width / 40)))
 
@@ -81,11 +81,11 @@ struct InvitationView: View {
     func acceptJob(accepted: Bool) {
         if (accepted) {
             withAnimation {
-                offset = CGSize(width: -500, height: 0)
+                offset = CGSize(width: 500, height: 0)
             }
         } else {
             withAnimation {
-                offset = CGSize(width: 500, height: 0)
+                offset = CGSize(width: -500, height: 0)
             }
         }
     }

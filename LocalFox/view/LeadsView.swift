@@ -167,12 +167,12 @@ struct LeadsView: View {
                 VStack(alignment: .leading) {
                     HStack {
                         VStack(alignment: .leading) { Text("3")
-                                .applyFontBold(size: 16)
+                                .applyFontBold(size: 18)
                         }
                         .frame(width: 30, height: 30)
                         .cardify(cardBgColor: Color.NOTIFICATION_BG)
                         Text("Invitations waiting for your action")
-                            .applyFontRegular(size: 13)
+                            .applyFontMedium(size: 15)
                         Spacer()
                         Images.DISCLOSURE
                             .padding(.trailing, 10)

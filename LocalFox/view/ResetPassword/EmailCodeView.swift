@@ -26,7 +26,8 @@ struct EmailCodeView: View {
                 )
                 .padding(.top, 35)
                 Spacer()
-            }.padding(25)
+            }.padding(.vertical,25)
+                .padding(.horizontal,40)
         }
         .setNavTitle(isMobileVerificationCode ? Strings.VERIFICATION_CODE :Strings.EMAIL_CODE,subtitle: isMobileVerificationCode ? Strings.MOBILE_VERIFICATION_MESSSAGE :Strings.EMAIL_CODE_SUBTITLE, showBackButton: true)
         .navigationDestination(isPresented: $showSetPSWView) {

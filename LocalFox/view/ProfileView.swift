@@ -160,7 +160,9 @@ struct ProfileRowView: View {
                     trailingimage
                     
                 }
-            } .padding(15).cardify()
+            } .padding(.horizontal,15)
+                .padding(.vertical,18)
+                .cardify()
         }
         .contentShape(Rectangle())
             .frame(maxWidth: .infinity)
@@ -185,7 +187,7 @@ struct ColoredToggleStyle: ToggleStyle {
             {
                 RoundedRectangle(cornerRadius: 16, style: .circular)
                     .fill(configuration.isOn ? onColor : offColor)
-                    .frame(width: 50, height: 29)
+                    .frame(width: 45, height: 25)
                     .overlay(
                         Circle()
                             .fill(thumbColor)

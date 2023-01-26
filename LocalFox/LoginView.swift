@@ -71,7 +71,7 @@ struct LoginView: View {
                         Spacer()
                             .frame(maxHeight: 44.0)
                     }
-                }.padding(.horizontal, 25)
+                }.padding(.horizontal, 40)
                 Spacer()
                     .navigationDestination(isPresented: $showLeads) {
                         LandingView()

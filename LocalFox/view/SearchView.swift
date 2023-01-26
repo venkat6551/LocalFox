@@ -10,6 +10,7 @@ import SwiftUI
 struct SearchView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     @State private var searchText: String = ""
+    @FocusState private var keyboardFocused: Bool
     var body: some View {
         VStack {
             VStack {
@@ -29,10 +30,17 @@ struct SearchView: View {
                         }
                     )
                 }
+                
                 MySearchBox(
                     hintText: Strings.SEARCH,
-                    text: $searchText
+                    text: $searchText,
+                    isFocused:_keyboardFocused
                 ).padding(.bottom, 15)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            keyboardFocused = true
+                        }
+                    }
                 ScrollView (showsIndicators: false){
                     
                     LeadCardView(isForSearch: true, status: LeadStatus.active,onCardClick:{}).cardify()

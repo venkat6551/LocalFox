@@ -24,7 +24,7 @@ struct NotificationSettingsView: View {
 
         }
         .padding(.horizontal,20)
-        .setNavTitle("Notifications", showBackButton: true)
+        .setNavTitle("Notifications", showBackButton: true,leadingSpace: 20)
     }   
 }
 struct ToggleView: View {
@@ -40,7 +40,8 @@ struct ToggleView: View {
                                     ColoredToggleStyle(label: title,
                                                        onColor: .PRIMARY,
                                                        thumbColor: .white))
-                                .padding(10)
+                                .padding(.vertical,15)
+                                .padding(.horizontal,5)
         }.cardify()
     }
 }

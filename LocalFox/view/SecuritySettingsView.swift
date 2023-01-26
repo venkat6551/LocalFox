@@ -22,14 +22,11 @@ struct SecuritySettingsView: View {
                 }
                 ToggleView(settingsType: $enableFaceeIdOn, title: Strings.FACE_ID_TEXT, leadingImage: Images.FACE_ID)
                 Spacer()
-            }.padding(.horizontal,25)
+            }.padding(20)
         }
         .background(Color.SCREEN_BG.ignoresSafeArea())
-        .setNavTitle(Strings.SECURITY, showBackButton: true)
-        .bottomSheet(
-            show: $showSettingsUpdateSheet,
-            title: ""
-        ) {
+        .setNavTitle(Strings.SECURITY, showBackButton: true,leadingSpace: 20)
+        .sheet(isPresented: $showSettingsUpdateSheet){
             SettingsUpdateSheet(onClickClose: {
             }, settingsType: SettingsType.pin,text: $pin)
         }

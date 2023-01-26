@@ -105,7 +105,8 @@ extension View {
         subtitle: String? = nil,
         showBackButton: Bool = false,
         onClickBack: (() -> Void)? = nil,
-        trailingView: AnyView? = nil
+        trailingView: AnyView? = nil,
+        leadingSpace: CGFloat = 40
     ) -> some View {
         return VStack (spacing: 0) {
             ZStack {
@@ -113,7 +114,8 @@ extension View {
                     HStack {
                         if showBackButton {
                             HStack {
-                                BackButton(onClickBack: onClickBack).padding(.bottom, 10)
+                                BackButton(onClickBack: onClickBack)
+                                    .padding(.top, 5)
                                 Spacer()
                             }
                         }
@@ -127,19 +129,19 @@ extension View {
                     HStack {
                         Text(title).applyFontHeader()
                         Spacer()
-                    }
+                    }.padding(.top, 8)
                     if let subtitle = subtitle {
                         HStack {
-                            Text(subtitle).applyFontRegular(color: .TEXT_LEVEL_2,size: 14)
+                            Text(subtitle).applyFontRegular(color: .TEXT_LEVEL_2,size: 16)
                                 .multilineTextAlignment(.leading)
-                                .lineSpacing(2)
+                                .lineSpacing(5)
                         }
                     }
                     Spacer()
                 }
             }
-            .padding(.horizontal, Dimens.SCREEN_HORIZONTAL_PADDING)
-            .frame(maxHeight:(subtitle == nil) ? Dimens.TOP_BAR_HEIGHT : 150)
+            .padding(.leading,leadingSpace)
+            .frame(maxHeight:(subtitle == nil) ? Dimens.TOP_BAR_HEIGHT : 200)
             ZStack {
                 Color.SCREEN_BG
                 self
@@ -300,6 +302,8 @@ struct MyInputTextBox: View {
     var isFirstResponder: Bool = false
     var leadingImage:Image?
     
+    var leadingText:String?
+    
     @Environment(\.isEnabled) private var isEnabled
     @State private var isSecured: Bool = true
     @State private var isFocused: Bool = false
@@ -311,11 +315,8 @@ struct MyInputTextBox: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: Dimens.SPACING_LOW) {
-            
-            
-            VStack(alignment: .leading, spacing: Dimens.SPACING_MEDIAM) {
-                
+        VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 5) {
                 if(!hintText.isEmpty) {
                     Text(hintText).applyFontRegular(color: .TEXT_LEVEL_3,size: 13)
                 }
@@ -324,6 +325,9 @@ struct MyInputTextBox: View {
                         HStack(spacing: Dimens.SPACING_LOW) {
                             if let leadingImage = leadingImage {
                                 leadingImage
+                            }
+                            if let leadingText = leadingText {
+                                Text(leadingText).applyFontRegular(size: 14).padding(.horizontal,10)
                             }
                             TextField("", text: $text, onEditingChanged: { (editingChanged) in
                                 DispatchQueue.main.async {
@@ -347,6 +351,9 @@ struct MyInputTextBox: View {
                                 if let leadingImage = leadingImage {
                                     leadingImage
                                 }
+                                if let leadingText = leadingText {
+                                    Text(leadingText).applyFontRegular(size: 14).padding(.horizontal,10)
+                                }
                                 SecureField("", text: $text)
                                     .applyFontSubheading()
                                     .autocapitalization(UITextAutocapitalizationType.none)
@@ -361,6 +368,9 @@ struct MyInputTextBox: View {
                                 if let leadingImage = leadingImage {
                                     leadingImage
                                 }
+                                if let leadingText = leadingText {
+                                    Text(leadingText).applyFontRegular(size: 14).padding(.horizontal,10)
+                                }
                                 TextField("", text: $text)
                                     .applyFontSubheading()
                                     .autocapitalization(UITextAutocapitalizationType.none)
@@ -369,12 +379,11 @@ struct MyInputTextBox: View {
                                     .textFieldStyle(PlainTextFieldStyle())
                                     .padding([.leading, .trailing], 4)
                             }
-                            
                         }
                         Button(
                             action: { isSecured.toggle() },
                             label: {
-                                (!self.isSecured ? Images.EYE_SLASH : Images.EYE)
+                                (!self.isSecured ? Images.EYE : Images.EYE_SLASH)
                                     .accentColor(.gray)
                             }
                         )
@@ -388,10 +397,7 @@ struct MyInputTextBox: View {
                 )
                 .cardify()
             }
-            
-          
         }
-        
     }
 }
 
@@ -597,6 +603,7 @@ fileprivate struct BottomSheetView<Content: View>: View {
 struct MySearchBox: View {
     var hintText: String = Strings.SEARCH
     @Binding var text: String
+    @FocusState var isFocused: Bool
     var keyboardType = UIKeyboardType.default
     @Environment(\.isEnabled) private var isEnabled
     
@@ -605,6 +612,7 @@ struct MySearchBox: View {
             HStack(spacing: Dimens.SPACING_LOW) {
                 Images.SEARCH
                 TextField("", text: $text)
+                    .focused($isFocused)
                     .applyFontRegular(size: 16)
                     .keyboardType(keyboardType)
                     .disableAutocorrection(true)

@@ -83,13 +83,15 @@ struct LeadCardView: View {
                                 HStack(alignment: .top){
                                     VStack{
                                         Images.LOCATION_PIN
-                                            .frame(width: 15)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 15,height: 15)
                                     }
                                     VStack (alignment: .leading, spacing: 5){
                                         Text("Marsden Park, NSW 2765")
-                                            .applyFontRegular(color: Color.TEXT_LEVEL_2,size: 12)
+                                            .applyFontRegular(color: Color.TEXT_LEVEL_2,size: 13)
                                         Text("Posted on 21 Jan 2022 11:45 PM")
-                                            .applyFontRegular(color: Color.TEXT_LEVEL_3,size: 11)
+                                            .applyFontRegular(color: Color.TEXT_LEVEL_3,size: 12)
                                     }
                                     Spacer()
                                 }
@@ -100,7 +102,7 @@ struct LeadCardView: View {
                             HStack (alignment: .center,spacing: 20){
                                 Text(status.text).applyFontRegular(color: status.textColor, size: 12)
                                     .padding(2)
-                                    .padding(.horizontal,10).cardify(cardBgColor: status.bgColor)
+                                    .padding(.horizontal,10).cardify(cardBgColor: status.bgColor).hidden()
                                 Spacer()
                                 Button(
                                     action: {
@@ -129,7 +131,7 @@ struct LeadCardView: View {
                     }
                 }
             }.padding(.horizontal,20)
-                .padding(.vertical,10)
+                .padding(.vertical,20)
         }.contentShape(Rectangle())
             .frame(maxWidth: .infinity)
             .onTapGesture {

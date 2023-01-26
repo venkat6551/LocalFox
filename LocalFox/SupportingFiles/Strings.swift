@@ -15,6 +15,8 @@ struct Strings {
     static let EMAIL_ADDRESS = "Email address"
     static let LOGIN = "Login"
     static let PASSWORD = "Password"
+    static let NEW_PASSWORD = "New Password"
+    static let CONFIRM_PASSWORD = "Confirm Password"
     static let TC_PART1 = "By logging in, you agree to our "
     static let TC_PART2 = "Terms and"
     static let TC_PART3 = "Conditions of use"
@@ -60,7 +62,7 @@ struct Strings {
     
     static let PROCEED_TO_LOGIN = "Proceed to login"
     static let ACCOUNT_CREATED = "Account created."
-    static let ACCOUNT_CREATED_MESSAGE = "Your account has been created successfully.\nProceed to login."
+    static let ACCOUNT_CREATED_MESSAGE = "Your account has been created successfully. Proceed to login."
     
     static let YOUR_NAME = "Your name"
     static let YOUR_NAME_MESSAGE = "Please enter your first and last name"

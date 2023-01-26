@@ -9,6 +9,8 @@ import SwiftUI
 
 struct LeadDetailScreen: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
+    private let data: [Int] = Array(1...19)
+
     var body: some View {
         VStack {
             VStack {
@@ -40,8 +42,7 @@ struct LeadDetailScreen: View {
                     RowView(title: "How soon",image: Images.TIME_ICON, description: "In next couple of weeks")
                     
                     RowView(title: "Job description",image: Images.DESCRIPTION_ICON, description: "We need a flooring to be done by end of this month at Marsden Park.\n\n There are some broken tiles in couple of bedrooms. Those need to be replaced with new and also install the new tiles in master bedroom. 16sqm.")
-                    
-                    LeadImagesView().cardify()
+                    LeadImagesView()
                 }
             }.padding(.horizontal,20)
             Spacer()
@@ -49,29 +50,28 @@ struct LeadDetailScreen: View {
         .navigationBarHidden(true)
         .background(Color.SCREEN_BG.ignoresSafeArea())
     }
-   
-   
 }
 struct RowView: View {
     var title: String
     var image: Image?
     var description: String?
     var body: some View {
-            HStack(alignment: .top) {
+            HStack(alignment: .top,spacing: 0) {
                 if let image = image {
                     image
-                    .padding(10)
+                        .padding(.horizontal,15)
+                        .padding(.vertical,18)
                 }
                 
-            VStack(alignment: .leading,spacing: 10){
+            VStack(alignment: .leading,spacing: 5){
                 Text(title)
                     .applyFontBold(size: 15)
                 if let description = description {
                     Text(description)
-                        .applyFontRegular(size: 14)
+                        .applyFontRegular(color:.TEXT_LEVEL_2, size: 14)
+                        .lineSpacing(5)
                 }
-               
-            } .padding(.vertical,10)
+            } .padding(.vertical,18)
             Spacer()
         }.cardify()
             .padding(.top,5)

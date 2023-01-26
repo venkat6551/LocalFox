@@ -25,7 +25,8 @@ struct EmailAddressView: View {
                 )
                 .padding(.top, 35)
                 Spacer()
-            }.padding(25)
+            }.padding(.vertical,25)
+                .padding(.horizontal,40)
             
         }.setNavTitle(Strings.EMAIL_ADDRESS,subtitle: Strings.EMAIL_ADDRESS_SUBTITLE, showBackButton: true)
             .navigationDestination(isPresented: $showEmailCodeView) {

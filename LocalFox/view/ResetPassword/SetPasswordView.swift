@@ -16,14 +16,14 @@ struct SetPasswordView: View {
             VStack(alignment: .leading,spacing: 25) {
 
                 MyInputTextBox(
-                    hintText: Strings.PASSWORD,
+                    hintText: Strings.NEW_PASSWORD,
                     text: $password,
                     keyboardType: UIKeyboardType.default,
                     isPassword: true
                 )
 
                 MyInputTextBox(
-                    hintText: Strings.PASSWORD,
+                    hintText: Strings.CONFIRM_PASSWORD,
                     text: $verifyPassword,
                     keyboardType: UIKeyboardType.default,
                     isPassword: true
@@ -36,7 +36,8 @@ struct SetPasswordView: View {
                 )
                 .padding(.top, 35)
                 Spacer()
-            }.padding(25)
+            }.padding(.vertical,25)
+                .padding(.horizontal,40)
             
         }
         .setNavTitle(Strings.SET_PASSWORD,subtitle: Strings.SET_PASSWORD_MESSAGE, showBackButton: true)

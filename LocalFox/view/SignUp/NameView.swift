@@ -17,19 +17,21 @@ struct NameView: View {
         
         
         VStack{
-            VStack(alignment: .leading,spacing: 25) {
-               
-                MyInputTextBox(
-                    hintText: Strings.FIRST_NAME,
-                    text: $firstName,
-                    keyboardType: UIKeyboardType.default
-                )
+            VStack(alignment: .leading) {
+                VStack(alignment: .leading,spacing: 25) {
+                    MyInputTextBox(
+                        hintText: Strings.FIRST_NAME,
+                        text: $firstName,
+                        keyboardType: UIKeyboardType.default
+                    )
 
-                MyInputTextBox(
-                    hintText: Strings.LAST_NAME,
-                    text: $lastName,
-                    keyboardType: UIKeyboardType.default
-                )
+                    MyInputTextBox(
+                        hintText: Strings.LAST_NAME,
+                        text: $lastName,
+                        keyboardType: UIKeyboardType.default
+                    )
+                }
+                
                 
                 VStack(alignment: .center){
                     HStack(spacing: 0) {
@@ -39,20 +41,19 @@ struct NameView: View {
                         Text(Strings.TC_PART2)
                             .applyFontRegular(color: Color.PRIMARY,size: 14)
                         Spacer()
-                    }.padding(.top, 35)
+                    }.padding(.top, 0)
                     Text(Strings.TC_PART3)
                         .applyFontRegular(color: Color.PRIMARY,size: 14)
                 }
-                
                 
                 MyButton(
                     text: Strings.NEXT,
                     onClickButton: {showSetPSWView = true},
                     bgColor: Color.PRIMARY
-                )
-                .padding(.top, 10)
+                ).padding(.top,5)
                 Spacer()
-            }.padding(25)
+            }.padding(.vertical,25)
+              .padding(.horizontal,40)
             
         }
         .setNavTitle(Strings.YOUR_NAME,subtitle: Strings.YOUR_NAME_MESSAGE, showBackButton: true)

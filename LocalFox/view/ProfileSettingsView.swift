@@ -29,7 +29,7 @@ struct ProfileSettingsView: View {
                     Spacer()
                 }
                 .padding(.bottom,20).padding(.leading,20)
-            }.cardify()
+            }.cardify().padding(.top,20)
             VStack(alignment: .leading) {
                 HStack {
                     Text(Strings.MOBILE_NUMBER).applyFontRegular(color: .TEXT_LEVEL_3,size: 13)
@@ -79,7 +79,7 @@ struct ProfileSettingsView: View {
             Spacer()
         }
         .padding(.horizontal,20)
-        .setNavTitle(Strings.PROFILE_SETTINGS, showBackButton: true)
+        .setNavTitle(Strings.PROFILE_SETTINGS, showBackButton: true,leadingSpace: 20)
         .sheet(isPresented: $showSettingsUpdateSheet){
             SettingsUpdateSheet(onClickClose: {
             }, settingsType: settingsType,text: $changeText)

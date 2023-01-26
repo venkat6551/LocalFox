@@ -65,13 +65,15 @@ struct SettingsUpdateSheet: View {
                 Text(settingsType.text)
                     .applyFontHeader()
                 Text(settingsType.subText)
-                    .applyFontRegular(color: .TEXT_LEVEL_2,size: 14)
+                    .applyFontRegular(color: .TEXT_LEVEL_2,size: 16)
                 Text(settingsType.hintText)
                     .applyFontRegular(color: .TEXT_LEVEL_3,size: 13).padding(.top,25)
                 if(settingsType == .mobileNumber) {
                     MyInputTextBox(
                         text: $text,
-                        keyboardType: UIKeyboardType.numberPad
+                        keyboardType: UIKeyboardType.numberPad,
+                        leadingImage: Images.FLAG,
+                        leadingText: "+61"
                     )
                   
                 } else if(settingsType == .address) {
@@ -90,11 +92,9 @@ struct SettingsUpdateSheet: View {
                     text: Strings.UPDATE,
                     onClickButton: {},
                     bgColor: Color.PRIMARY
-                )
-                .padding(.top, 5)
-                
+                ).padding(.top, 35)
                 Spacer()
-            }.padding(25)
+            }.padding(40)
         }.background(Color.SCREEN_BG.ignoresSafeArea())
     }
 }

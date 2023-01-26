@@ -32,7 +32,9 @@ struct AccountCreatedView: View {
                 VStack (alignment: .leading) {
                     Images.CHECK_CIRCLE
                     Text(isResetPassword ? "Success" : Strings.ACCOUNT_CREATED).applyFontHeader()
-                    Text(isResetPassword ? Strings.RESET_PASSWORD_SUCCESS : Strings.ACCOUNT_CREATED_MESSAGE).applyFontRegular(color: .TEXT_LEVEL_2,size: 14 )
+                        
+                    Text(isResetPassword ? Strings.RESET_PASSWORD_SUCCESS : Strings.ACCOUNT_CREATED_MESSAGE).applyFontRegular(color: .TEXT_LEVEL_2,size: 16 ).padding(.top,5)
+                        .lineSpacing(5)
                 }.padding(.top,30)
                 
                 Spacer()
@@ -44,7 +46,8 @@ struct AccountCreatedView: View {
                     bgColor: Color.PRIMARY
                 )
                 
-            }.padding(25)
+            }.padding(.vertical,25)
+                .padding(.horizontal,40)
         }.background(Color.SCREEN_BG.ignoresSafeArea())
             .navigationBarHidden(true)
     }

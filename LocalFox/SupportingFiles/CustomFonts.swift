@@ -65,6 +65,10 @@ extension View {
             .foregroundColor(color)
     }
     
+    func applyFontMedium(color: Color = Color.DEFAULT_TEXT, size: CGFloat) -> some View {
+        return self.font(Font.custom("Inter-Medium", size: size))
+            .foregroundColor(color)
+    }
     
     
     func applyFontBodyMedium(color: Color = Color.DEFAULT_TEXT) -> some View {

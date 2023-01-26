@@ -17,7 +17,8 @@ struct MobileNumberView: View {
                     hintText: Strings.MOBILE,
                     text: $mobileNumber,
                     keyboardType: UIKeyboardType.numberPad,
-                    leadingImage: Images.FLAG
+                    leadingImage: Images.FLAG,
+                    leadingText: "+61"
                 ).padding(.top,25)
                 MyButton(
                     text: Strings.NEXT,
@@ -26,7 +27,8 @@ struct MobileNumberView: View {
                 )
                 .padding(.top, 35)
                 Spacer()
-            }.padding(25)
+            }.padding(.vertical,25)
+                .padding(.horizontal,40)
             
         }
         .setNavTitle(Strings.MOBILE,subtitle: Strings.MOBILE_NUMBER_MESSAGE, showBackButton: true)
