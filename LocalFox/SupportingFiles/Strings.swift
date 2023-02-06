@@ -72,4 +72,14 @@ struct Strings {
     static let MOBILE = "Mobile"
     static let MOBILE_VERIFICATION_MESSSAGE = "We’ve sent a verification code to your mobile. Please enter now."
     
+    static let ERROR_INVALID_EMAIL_TITLE = "Incorrect Email"
+    static let ERROR_INVALID_PASSWORD_TITLE = "Incorrect Password"
+    static let ERROR_INVALID_LOGIN_TITLE = "Incorrect Login"
+    static let ERROR_AUTH_FAILED_TITLE = "Authentication failed"
+
+    static let ERROR_INVALID_EMAIL = "Incorrect email, please try again!"
+    static let ERROR_INVALID_PASSWORD = "Incorrect Password, please try again!"
+    static let ERROR_INVALID_LOGIN = "Incorrect email or activation code, please try again!"
+    static let ERROR_AUTH_FAILED = "Unable to authorize the user, please try again!"
+
 }

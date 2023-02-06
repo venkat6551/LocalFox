@@ -18,33 +18,38 @@ struct ProfileView: View {
 
                 }
                 ProfileCardView().cardify()
-                HStack {
-                    Text("Settings").applyFontBold(size: 20)
-                    Spacer()
-                }
-                .padding(.top,10)
-                .padding(.bottom,10)
-                SettingsView().cardify()
-                HStack {
-                    Text("Legal").applyFontBold(size: 20)
-                    Spacer()
-                }
-                .padding(.top,10)
-                .padding(.bottom,10)
-                ContactDetailsView().cardify()
-                Text("App version. 1.20.42325").applyFontRegular(color: Color.TEXT_LEVEL_3,size: 12).padding(.top,25)
-
-                Button(
-                    action: {
-                        self.presentationMode.wrappedValue.dismiss() // Go back
-                    },
-                    label: {
-                        Text("Logout").applyFontRegular(size: 12)
-                            .padding(5)
-                            .padding(.horizontal,10)
+                
+                
+                ScrollView {
+                    HStack {
+                        Text("Settings").applyFontBold(size: 20)
+                        Spacer()
                     }
-                ).cardify(cardBgColor: Color.LIGHT_GRAY)
+                    .padding(.top,10)
+                    .padding(.bottom,10)
+                    SettingsView().cardify()
+                    HStack {
+                        Text("Legal").applyFontBold(size: 20)
+                        Spacer()
+                    }
+                    .padding(.top,10)
+                    .padding(.bottom,10)
+                    ContactDetailsView().cardify()
+                    Text("App version. 1.20.42325").applyFontRegular(color: Color.TEXT_LEVEL_3,size: 12).padding(.top,25)
 
+                    Button(
+                        action: {
+                            self.presentationMode.wrappedValue.dismiss() // Go back
+                        },
+                        label: {
+                            Text("Logout").applyFontRegular(size: 12)
+                                .padding(5)
+                                .padding(.horizontal,10)
+                        }
+                    ).cardify(cardBgColor: Color.LIGHT_GRAY)
+
+                }
+                
             }
             Spacer()
         }

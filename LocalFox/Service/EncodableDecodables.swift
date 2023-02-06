@@ -1,0 +1,89 @@
+//
+//  Decodables.swift
+//  Hapag-Lloyd
+//
+//  Encodable/Decodables for request/response data and convert API JSON response from/into swift structs directly.
+//
+//  Created by Meet Vora on 2022-08-16.
+//
+
+import Foundation
+
+struct LoginResponseDecodable: Decodable {
+   
+    let success: Bool?
+    let token: String?
+    let expiry: String?
+    let isMobileVerified: Bool?
+    
+}
+
+
+struct AuthenticateResponseDecodable: Decodable {
+    
+    let id: Int?
+    let parentUserId: Int?
+    let createdByUserId: Int?
+    let userStatus: String?
+    let token: String?
+    
+}
+
+struct GetUsersResponseDecodable: Decodable {
+    
+    let userId: Int?
+    let parentUserId: Int?
+    let createdByUserId: Int?
+    let mailAddress: String?
+    let status: String?
+    
+}
+
+struct CreateInstallerResponseDecodable: Decodable {
+    
+    struct Permission: Decodable {
+        let isAdministrator: Bool
+        let allowedNewBuilds: Bool
+    }
+    
+    let userId: Int?
+    let parentUserId: Int?
+    let createdByUserId: Int?
+    let status: String?
+    let pushToken: String?
+    let permissions: Permission?
+    
+}
+
+struct DeleteUserResponseDecodable: Decodable {
+    
+    struct Permission: Decodable {
+        let isAdministrator: Bool
+        let allowedNewBuilds: Bool
+    }
+    
+    let userId: Int?
+    let parentUserId: Int?
+    let createdByUserId: Int?
+    let status: String?
+    let pushToken: String?
+    let permissions: Permission?
+    
+}
+
+
+
+struct CreatePairResponseDecodable: Decodable {
+    
+    let longitude: Double?
+    let latitude: Double?
+    let newBuild: Bool?
+    let tries: Int?
+    let status: String?
+    let pairingId: Int?
+    let pairingStatus: String?
+    let deviceId: String?
+    let containerId: String?
+    let requestedBy: Int?
+    
+}

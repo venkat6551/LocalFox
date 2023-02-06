@@ -224,23 +224,22 @@ struct MyButton: View {
                     .resizable()
                     .colorMultiply(isEnabled ? (outlinedStyle ? Color.PRIMARY : Color.white) : Color.DISABLED_BG)
                     .scaledToFit()
-                    .frame(maxHeight: buttonleadingIconSize)
+                    .frame(height: buttonleadingIconSize)
                     .foregroundColor(isEnabled ? (outlinedStyle ? Color.PRIMARY : Color.white) : Color.DISABLED_TEXT)
             }
             Text(text)
                 .applyFontBold(color: (isEnabled ? (outlinedStyle ? Color.PRIMARY : Color.white) : Color.DISABLED_TEXT), size: 14)
-                .frame( maxHeight: Dimens.BUTTON_HEIGHT)
+                .frame(height: Dimens.BUTTON_HEIGHT)
             if let trailingImage = trailingImage {
                 trailingImage
                     .resizable()
                     .colorMultiply(isEnabled ? Color.white : Color.DISABLED_BG)
                     .scaledToFit()
-                    .frame(maxHeight: buttonleadingIconSize)
+                    .frame(height: buttonleadingIconSize)
                     .foregroundColor(isEnabled ? (outlinedStyle ? Color.PRIMARY : Color.white) : Color.DISABLED_TEXT)
             }
         }
-        
-        .frame( maxWidth: .infinity,maxHeight: Dimens.BUTTON_HEIGHT, alignment: .center)
+        .frame( maxWidth: .infinity, idealHeight: Dimens.BUTTON_HEIGHT, alignment: .center)
         .padding(Dimens.BUTTON_PADDING)
         .background(isEnabled ? (outlinedStyle ? Color.white : bgColor) : (outlinedStyle ? Color.white : Color.DISABLED_BG))
         .overlay(
@@ -336,6 +335,7 @@ struct MyInputTextBox: View {
                             })
                             .applyFontSubheading(color: Color.DEFAULT_TEXT)
                             .keyboardType(keyboardType)
+                            .autocorrectionDisabled(true)
                             .autocapitalization(autocapitalizationType)
                             .frame(height: Dimens.INPUT_FIELD_HEIGHT)
                             .textFieldStyle(PlainTextFieldStyle())

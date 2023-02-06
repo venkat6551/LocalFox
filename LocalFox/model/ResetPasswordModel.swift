@@ -1,13 +1,13 @@
 //
-//  LoginCredentialsModel.swift
-//  Hapag-Lloyd
+//  ResetPasswordModel.swift
+//  LocalFox
 //
-//  Created by Meet Vora on 2022-07-18.
+//  Created by venkatesh karra on 06/02/23.
 //
 
 import Foundation
 
-struct LoginCredentialsModel: Codable {
+struct ResetPasswordModel: Codable {
     
     var email: String = ""
     var password: String = ""
@@ -17,3 +17,4 @@ struct LoginCredentialsModel: Codable {
     }
     
 }
+

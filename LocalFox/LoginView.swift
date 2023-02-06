@@ -12,6 +12,10 @@ struct LoginView: View {
     @State private var showLeads = false
     @State private var resetPassword = false
     @State private var signUp = false
+    @State private var isEmailError: Bool = false
+    @State private var isPasswordError: Bool = false
+    @State private var showErrorSnackbar: Bool = false
+    @EnvironmentObject var authenticationStatus: AuthenticationStatus
     var body: some View {
         NavigationStack {
             VStack {
@@ -19,18 +23,19 @@ struct LoginView: View {
                     Spacer().frame(maxHeight: 80)
                     Images.LOCAL_FOX
                     Spacer().frame(maxHeight: 100)
-                   
+                    
                     MyInputTextBox(
                         hintText: Strings.EMAIL_ADDRESS,
-                        text: $loginVM.credentials.activationCode,
-                        isInputError: false
+                        text: $loginVM.credentials.email,
+                        keyboardType: UIKeyboardType.emailAddress,
+                        isInputError: isEmailError
                     )
-                   
+                    
                     MyInputTextBox(
                         hintText: Strings.PASSWORD,
-                        text: $loginVM.credentials.activationCode,
+                        text: $loginVM.credentials.password,
                         isPassword: true,
-                        isInputError: false
+                        isInputError: isPasswordError
                     ).padding(.top,9)
                     
                     HStack(spacing: 0) {
@@ -42,10 +47,16 @@ struct LoginView: View {
                     VStack{
                         Text(Strings.TC_PART3)
                             .applyFontRegular(color: Color.PRIMARY,size: 14)
-                        
                         MyButton(
                             text: Strings.LOGIN,
-                            onClickButton: { showLeads = true},
+                            onClickButton: {
+                                if(!loginVM.isLoading && !showErrorSnackbar) {
+                                    loginVM.login { success  in
+                                        authenticationStatus.setAuthenticated(authenticated: success)
+                                    }
+                                }
+                            },
+                            showLoading: loginVM.isLoading,
                             bgColor: Color.PRIMARY
                         )
                         .padding(.top, 5)
@@ -54,19 +65,25 @@ struct LoginView: View {
                             Spacer()
                             Button(
                                 action: {
-                                    resetPassword = true
+                                    if(!loginVM.isLoading && !showErrorSnackbar) {
+                                        resetPassword = true
+                                    }
                                 },
                                 label: {
                                     Text(Strings.FORGOT_PASSWORD)
                                         .applyFontRegular(color: Color.PRIMARY,size: 14)
-                                   
+                                    
                                 }
                             )
                         }
                         Spacer()
                         MyButton(
                             text: Strings.SIGN_UP,
-                            onClickButton: { signUp = true }
+                            onClickButton: {
+                                if(!loginVM.isLoading && !showErrorSnackbar) {
+                                    signUp = true
+                                }
+                            }
                         )
                         Spacer()
                             .frame(maxHeight: 44.0)
@@ -84,7 +101,40 @@ struct LoginView: View {
                     }
             }
             .background(Color.SCREEN_BG.ignoresSafeArea())
+            //  .disabled(loginVM.isLoading)
         }.navigationBarHidden(true)
+            .snackbar(
+                show: $showErrorSnackbar,
+                snackbarType: SnackBarType.error,
+                title: loginVM.error?.title,
+                message: loginVM.error?.description,
+                secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+                onSnackbarDismissed: {showErrorSnackbar = false },
+                isAlignToBottom: true
+            )
+            .onChange(of: loginVM.isLoading) { isloading in
+                if loginVM.authenticationSuccess == true {
+                    showLeads = true
+                    showErrorSnackbar = false
+                    isEmailError = false
+                    isPasswordError = false
+                } else if(loginVM.authenticationFailed == true && loginVM.error?.title != nil) {
+                    showErrorSnackbar = true
+                }
+                switch loginVM.error {
+                case .invalidEmail:
+                    isEmailError = true
+                case .invalidPassword:
+                    isPasswordError = true
+                case .invalidCredentials:
+                    isEmailError = true
+                    isPasswordError = true
+                case .authenticationFail:
+                    // TODO: Auth failed UI
+                    break
+                case .none: break
+                }
+            }
     }
 }
 

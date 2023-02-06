@@ -17,7 +17,7 @@ struct LandingView: View {
         var icon: Image {
             switch self {
             case .leads: return Images.LEADS_TAB
-            case .search: return Images.SEARCH
+            case .search: return Images.SEARCH_TAB
             case .profile: return Images.PROFILE_TAB
             }
         }
@@ -68,10 +68,10 @@ struct LandingView: View {
                                 tabItem.icon
                                     .resizable()
                                     .renderingMode(.template)
-                                    .foregroundColor(selectedTabItem == tabItem ? Color.BLUE : Color.DISABLED_TEXT)
+                                    .foregroundColor(selectedTabItem == tabItem ? Color.PRIMARY : Color.DISABLED_TEXT)
                                     .frame(width: Dimens.TAB_ITEM_ICON_SIZE, height: Dimens.TAB_ITEM_ICON_SIZE)
                                 Text(tabItem.title)
-                                    .applyFontRegular(color:selectedTabItem == tabItem ? Color.BLUE : Color.DISABLED_TEXT,size: 11)
+                                    .applyFontRegular(color:selectedTabItem == tabItem ? Color.PRIMARY : Color.DISABLED_TEXT,size: 11)
                             }
                             
                         })

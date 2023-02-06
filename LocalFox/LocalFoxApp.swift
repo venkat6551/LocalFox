@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct LocalFoxApp: App {
+    @StateObject var authenticationStatus = AuthenticationStatus()
     var body: some Scene {
         WindowGroup {
-            LoginView()
+//            if authenticationStatus.isAuthenticated {
+//                LandingView()
+//            } else {
+                LoginView()
+                    .environmentObject(authenticationStatus) // Pass this state-object so that we can update it in nested view
+//            }
         }
     }
 }
