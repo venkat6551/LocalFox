@@ -9,6 +9,11 @@
 
 import Foundation
 
+struct ErrorResponseDecodable: Decodable {
+    let success: Bool
+    let error: String
+}
+
 struct LoginResponseDecodable: Decodable {
    
     let success: Bool?

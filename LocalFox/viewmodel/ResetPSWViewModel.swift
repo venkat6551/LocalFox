@@ -1,37 +1,33 @@
 //
-//  LoginViewModel.swift
-//  Hapag-Lloyd
+//  ResetPSWViewModel.swift
+//  LocalFox
 //
-//  Created by Meet Vora on 2022-07-15.
+//  Created by venkatesh karra on 06/02/23.
 //
 
 import Foundation
-
-class LoginViewModel: ObservableObject {
+class ResetPSWViewModel: ObservableObject {
     
     @Published var credentials = LoginCredentialsModel()
     @Published private(set) var isLoading: Bool = false
     @Published var errorString: String?
-    @Published var authenticationSuccess: Bool = false
+    @Published var resetPasswordSuccess: Bool = false
     private let apiService: APIServiceProtocol
     
     init(apiService: APIServiceProtocol = MockAPIService()) {
         self.apiService = apiService
     }
     
-    func login(completion: @escaping (Bool) -> Void) {
-        guard credentials.isValid else {
+    func resetPassword(emailID:String, completion: @escaping (Bool) -> Void) {
+        guard emailID.isValidEmail else {
             self.errorString = "Please enter valid details"
             return completion(false)
         }
-        authenticationSuccess = false
+        resetPasswordSuccess = false
         errorString = nil
         isLoading = true
-        apiService.login(credentials: credentials) { [weak self] success, errorString in
-            if success {
-                MyUserDefaults.userEmail = self?.credentials.email
-            }
-            self?.authenticationSuccess = success
+        apiService.resetPassword(email: emailID) { [weak self] success, errorString in
+            self?.resetPasswordSuccess = success
             self?.errorString = errorString
             completion(success)
             self?.isLoading = false

@@ -10,11 +10,10 @@ import Foundation
 struct ResetPasswordModel: Codable {
     
     var email: String = ""
-    var password: String = ""
+    var verificationCode: String = ""
     
-    var isValid: Bool {
-        !email.isEmpty && !password.trimmingCharacters(in: .whitespaces).isEmpty && email.trimmingCharacters(in: .whitespaces).isValidEmail
+    var isValidEmail: Bool {
+        !email.isEmpty  && email.trimmingCharacters(in: .whitespaces).isValidEmail
     }
-    
 }
 

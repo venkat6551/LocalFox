@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CCE597F9299161AE0055AC9B /* ResetPasswordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */; };
+		CCE597FC29916A3E0055AC9B /* ResetPSWViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */; };
 		CCF81AB7298D682200A6E2A5 /* APIEndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF81AB6298D682200A6E2A5 /* APIEndPoints.swift */; };
 		CCF81ABA298D6D5700A6E2A5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = CCF81AB9298D6D5700A6E2A5 /* Alamofire */; };
 		CCF81ABC298D6DAB00A6E2A5 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF81ABB298D6DAB00A6E2A5 /* APIService.swift */; };
@@ -69,6 +70,7 @@
 
 /* Begin PBXFileReference section */
 		CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordModel.swift; sourceTree = "<group>"; };
+		CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPSWViewModel.swift; sourceTree = "<group>"; };
 		CCF81AB6298D682200A6E2A5 /* APIEndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndPoints.swift; sourceTree = "<group>"; };
 		CCF81ABB298D6DAB00A6E2A5 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		CCF81ABD298FEB6100A6E2A5 /* AuthenticationStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationStatus.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 			children = (
 				CD1D0BBD2941EA43000CB2D1 /* LoginViewModel.swift */,
 				CD006F8329438DBA004BBF4A /* LeadViewModel.swift */,
+				CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */,
 			);
 			path = viewmodel;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				CD051AEE29434BCE009C054F /* LeadsView.swift in Sources */,
 				CCF81ABE298FEB6100A6E2A5 /* AuthenticationStatus.swift in Sources */,
 				CD07688B2972907B00CB7075 /* NotificationSettingsView.swift in Sources */,
+				CCE597FC29916A3E0055AC9B /* ResetPSWViewModel.swift in Sources */,
 				CDF2B04B2941DC4100CF2B28 /* CustomFonts.swift in Sources */,
 				CCF81ABC298D6DAB00A6E2A5 /* APIService.swift in Sources */,
 				CD5066212971C2AD00FC4804 /* FiltersSheet.swift in Sources */,

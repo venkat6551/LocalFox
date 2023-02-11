@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "E73C0BC5-C1FC-40B0-A997-D1A73AFAD720"
-            shouldBeEnabled = "No"
+            uuid = "EAE5AA8A-A1EF-49A2-9D34-A7BC824F1774"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LocalFox/viewmodel/LoginViewModel.swift"
+            filePath = "LocalFox/Service/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "login(completion:)"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "login(credentials:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

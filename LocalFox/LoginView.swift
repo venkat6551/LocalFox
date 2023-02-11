@@ -101,13 +101,12 @@ struct LoginView: View {
                     }
             }
             .background(Color.SCREEN_BG.ignoresSafeArea())
-            //  .disabled(loginVM.isLoading)
         }.navigationBarHidden(true)
             .snackbar(
                 show: $showErrorSnackbar,
                 snackbarType: SnackBarType.error,
-                title: loginVM.error?.title,
-                message: loginVM.error?.description,
+                title: "Error",
+                message: loginVM.errorString,
                 secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
                 onSnackbarDismissed: {showErrorSnackbar = false },
                 isAlignToBottom: true
@@ -118,21 +117,8 @@ struct LoginView: View {
                     showErrorSnackbar = false
                     isEmailError = false
                     isPasswordError = false
-                } else if(loginVM.authenticationFailed == true && loginVM.error?.title != nil) {
+                } else if(loginVM.authenticationSuccess == false && loginVM.errorString != nil) {
                     showErrorSnackbar = true
-                }
-                switch loginVM.error {
-                case .invalidEmail:
-                    isEmailError = true
-                case .invalidPassword:
-                    isPasswordError = true
-                case .invalidCredentials:
-                    isEmailError = true
-                    isPasswordError = true
-                case .authenticationFail:
-                    // TODO: Auth failed UI
-                    break
-                case .none: break
                 }
             }
     }
