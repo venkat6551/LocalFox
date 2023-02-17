@@ -8,30 +8,28 @@
 import SwiftUI
 
 struct NameView: View {
-    @State private var firstName:String = ""
-    @State private var lastName:String = ""
-    @State private var showSetPSWView:Bool = false
-
+    @StateObject private var signupVM: SignupViewModel = SignupViewModel()
+    @State private var firstNameError: Bool = false
+    @State private var lastNameError: Bool = false
+    @State private var showMobileNumberView:Bool = false
+    
     var body: some View {
-        
-        
-        
         VStack{
             VStack(alignment: .leading) {
                 VStack(alignment: .leading,spacing: 25) {
                     MyInputTextBox(
                         hintText: Strings.FIRST_NAME,
-                        text: $firstName,
-                        keyboardType: UIKeyboardType.default
+                        text: $signupVM.signupModel.firstName,
+                        keyboardType: UIKeyboardType.default,
+                        isInputError: firstNameError
                     )
-
                     MyInputTextBox(
                         hintText: Strings.LAST_NAME,
-                        text: $lastName,
-                        keyboardType: UIKeyboardType.default
+                        text: $signupVM.signupModel.lastName,
+                        keyboardType: UIKeyboardType.default,
+                        isInputError: lastNameError
                     )
                 }
-                
                 
                 VStack(alignment: .center){
                     HStack(spacing: 0) {
@@ -48,18 +46,23 @@ struct NameView: View {
                 
                 MyButton(
                     text: Strings.NEXT,
-                    onClickButton: {showSetPSWView = true},
+                    onClickButton: {
+                        self.firstNameError = !signupVM.signupModel.isValidFirstName
+                        self.lastNameError = !signupVM.signupModel.isValidLastName
+                        if(signupVM.signupModel.isValidFirstName && signupVM.signupModel.isValidLastName){
+                            showMobileNumberView = true
+                        }
+                    },
                     bgColor: Color.PRIMARY
                 ).padding(.top,5)
                 Spacer()
             }.padding(.vertical,25)
-              .padding(.horizontal,40)
-            
+                .padding(.horizontal,40)
         }
         .setNavTitle(Strings.YOUR_NAME,subtitle: Strings.YOUR_NAME_MESSAGE, showBackButton: true)
-            .navigationDestination(isPresented: $showSetPSWView) {
-                MobileNumberView()
-            }
+        .navigationDestination(isPresented: $showMobileNumberView) {
+            MobileNumberView(signupVM: signupVM)
+        }
     }
 }
 

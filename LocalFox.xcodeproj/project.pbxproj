@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		CCE597F9299161AE0055AC9B /* ResetPasswordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */; };
 		CCE597FC29916A3E0055AC9B /* ResetPSWViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */; };
+		CCE597FE299774A70055AC9B /* SignupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FD299774A70055AC9B /* SignupModel.swift */; };
+		CCE59800299779300055AC9B /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FF299779300055AC9B /* SignupViewModel.swift */; };
+		CCE59802299DEC230055AC9B /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE59801299DEC230055AC9B /* ProfileModel.swift */; };
+		CCE59804299E01D00055AC9B /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE59803299E01D00055AC9B /* ProfileViewModel.swift */; };
 		CCF81AB7298D682200A6E2A5 /* APIEndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF81AB6298D682200A6E2A5 /* APIEndPoints.swift */; };
 		CCF81ABA298D6D5700A6E2A5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = CCF81AB9298D6D5700A6E2A5 /* Alamofire */; };
 		CCF81ABC298D6DAB00A6E2A5 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF81ABB298D6DAB00A6E2A5 /* APIService.swift */; };
@@ -71,6 +75,10 @@
 /* Begin PBXFileReference section */
 		CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordModel.swift; sourceTree = "<group>"; };
 		CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPSWViewModel.swift; sourceTree = "<group>"; };
+		CCE597FD299774A70055AC9B /* SignupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupModel.swift; sourceTree = "<group>"; };
+		CCE597FF299779300055AC9B /* SignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
+		CCE59801299DEC230055AC9B /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
+		CCE59803299E01D00055AC9B /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CCF81AB6298D682200A6E2A5 /* APIEndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndPoints.swift; sourceTree = "<group>"; };
 		CCF81ABB298D6DAB00A6E2A5 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		CCF81ABD298FEB6100A6E2A5 /* AuthenticationStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationStatus.swift; sourceTree = "<group>"; };
@@ -267,6 +275,8 @@
 				CD051AFF29435CF8009C054F /* LeadModel.swift */,
 				CD1D0BBF2941EA54000CB2D1 /* LoginCredentialsModel.swift */,
 				CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */,
+				CCE597FD299774A70055AC9B /* SignupModel.swift */,
+				CCE59801299DEC230055AC9B /* ProfileModel.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -277,6 +287,8 @@
 				CD1D0BBD2941EA43000CB2D1 /* LoginViewModel.swift */,
 				CD006F8329438DBA004BBF4A /* LeadViewModel.swift */,
 				CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */,
+				CCE597FF299779300055AC9B /* SignupViewModel.swift */,
+				CCE59803299E01D00055AC9B /* ProfileViewModel.swift */,
 			);
 			path = viewmodel;
 			sourceTree = "<group>";
@@ -387,6 +399,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCE59802299DEC230055AC9B /* ProfileModel.swift in Sources */,
 				CD006F8429438DBA004BBF4A /* LeadViewModel.swift in Sources */,
 				CDDDD1DD295DF78600E92D33 /* LeadImagesView.swift in Sources */,
 				CD0768992972B74600CB7075 /* AccountCreatedView.swift in Sources */,
@@ -424,7 +437,10 @@
 				CD0768952972B3A600CB7075 /* EmailCodeView.swift in Sources */,
 				CD1D0BC22941EAD0000CB2D1 /* Utils.swift in Sources */,
 				CCE597F9299161AE0055AC9B /* ResetPasswordModel.swift in Sources */,
+				CCE59804299E01D00055AC9B /* ProfileViewModel.swift in Sources */,
 				CDF2B02D2941D8AF00CF2B28 /* LocalFoxApp.swift in Sources */,
+				CCE59800299779300055AC9B /* SignupViewModel.swift in Sources */,
+				CCE597FE299774A70055AC9B /* SignupModel.swift in Sources */,
 				CDE587412943A5DD008A8022 /* ProfileView.swift in Sources */,
 				CD1D0BBA2941E9DB000CB2D1 /* Strings.swift in Sources */,
 				CD1D0BBE2941EA43000CB2D1 /* LoginViewModel.swift in Sources */,

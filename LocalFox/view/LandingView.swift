@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LandingView: View {
-    
+    @StateObject var profileVM: ProfileViewModel
     private enum TabItem: Int {
         case leads
         case search

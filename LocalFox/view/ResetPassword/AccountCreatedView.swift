@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AccountCreatedView: View {
-    
     var isResetPassword:Bool = false
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var body: some View {

@@ -16,7 +16,7 @@ enum APIEndpoints {
     
     //REGISTRATION
     static var SEND_MOBILE_CODE = BASE_URL + "/api/v1/partner/verification/sendMobileCode"
-    static var VALIDATEMOBILE_CODE = BASE_URL + "/api/v1/partner/verification/validateEmailCode"
+    static var VALIDATEMOBILE_CODE = BASE_URL + "/api/v1/partner/verification/validateMobileCode"
     static var SEND_EMAIL_CODE = BASE_URL + "/api/v1/partner/verification/sendEmailCode"
     static var VALIDATE_EMAIL_CODE = BASE_URL + "/api/v1/partner/verification/validateEmailCode"
     static var REGISTRATION_PARTNER = BASE_URL + "/api/v1/partner/registerPartner"

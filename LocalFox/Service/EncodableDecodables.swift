@@ -14,13 +14,33 @@ struct ErrorResponseDecodable: Decodable {
     let error: String
 }
 
+struct SuccessResponseDecodable: Decodable {
+    let success: Bool
+    let data: String
+}
+struct validateMobileCodeDecodable: Decodable {
+    let success: Bool
+    let mobileVerificationReference: String
+    let data: String
+}
+
+struct validateEmailCodeDecodable: Decodable {
+    let success: Bool
+    let emailVerificationReference: String
+    let data: String
+}
+
+struct RegisterResponseDecodable: Decodable {
+    let success: Bool?
+    let token: String?
+    let expiry: String?
+}
+
 struct LoginResponseDecodable: Decodable {
-   
     let success: Bool?
     let token: String?
     let expiry: String?
     let isMobileVerified: Bool?
-    
 }
 
 

@@ -8,20 +8,24 @@
 import SwiftUI
 
 struct SetPasswordView: View {
+    @StateObject var signupVM: SignupViewModel
     @State private var password:String = ""
     @State private var verifyPassword:String = ""
-    @State private var showSetPSWView:Bool = false
+    @State private var showSuccessView:Bool = false
+    var isforSignUpFlow:Bool = false
+    @State private var showErrorSnackbar: Bool = false
+    //    @State private var showSuccessSnackbar: Bool = false
     var body: some View {
         VStack{
             VStack(alignment: .leading,spacing: 25) {
-
+                
                 MyInputTextBox(
                     hintText: Strings.NEW_PASSWORD,
                     text: $password,
                     keyboardType: UIKeyboardType.default,
                     isPassword: true
                 )
-
+                
                 MyInputTextBox(
                     hintText: Strings.CONFIRM_PASSWORD,
                     text: $verifyPassword,
@@ -31,7 +35,22 @@ struct SetPasswordView: View {
                 
                 MyButton(
                     text: Strings.RESET_PASSWORD,
-                    onClickButton: {showSetPSWView = true},
+                    onClickButton: {
+                        if isforSignUpFlow {
+                            if(!signupVM.isLoading && !showErrorSnackbar) {
+                                signupVM.registerPArtner(password: password, confirmPassword: verifyPassword) { _ in
+                                }
+                            }
+                        } else {
+                            if(!signupVM.isLoading && !showErrorSnackbar) {
+                                showSuccessView = true
+                                //                                signupVM.validateEmailCode(verificationCode: code) { _ in
+                                //                                }
+                            }
+                        }
+                        
+                    },
+                    showLoading: signupVM.isLoading,
                     bgColor: Color.PRIMARY
                 )
                 .padding(.top, 35)
@@ -41,15 +60,30 @@ struct SetPasswordView: View {
             
         }
         .setNavTitle(Strings.SET_PASSWORD,subtitle: Strings.SET_PASSWORD_MESSAGE, showBackButton: true)
-    
-            .navigationDestination(isPresented: $showSetPSWView) {
-                AccountCreatedView(isResetPassword: true)
+        .navigationDestination(isPresented: $showSuccessView) {
+            AccountCreatedView(isResetPassword: true)
+        }
+        .onChange(of: signupVM.isLoading) { isloading in
+            if signupVM.registerPartnerSuccess == true {
+                showSuccessView = true
+            } else if(signupVM.registerPartnerSuccess == false && signupVM.errorString != nil) {
+                showErrorSnackbar = true
             }
+        }
+        .snackbar(
+            show: $showErrorSnackbar,
+            snackbarType: SnackBarType.error,
+            title: "Error",
+            message: signupVM.errorString,
+            secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+            onSnackbarDismissed: {showErrorSnackbar = false },
+            isAlignToBottom: true
+        )
     }
 }
 
 struct SetPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        SetPasswordView()
+        SetPasswordView(signupVM: SignupViewModel(),isforSignUpFlow: true)
     }
 }
