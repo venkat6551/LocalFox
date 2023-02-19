@@ -49,13 +49,11 @@ struct LandingView: View {
                         case .search:
                             SearchView()
                         case .profile:
-                            ProfileView()
+                            ProfileView(profileVM: profileVM)
                         }
                     }
                 .frame(maxHeight: .infinity)
                     .padding(.bottom, -1 * Dimens.TAB_BAR_CORNER_RADIUS)
-                
-                
                 HStack(spacing: 40) {
                     Spacer()
                     ForEach(tabs, id: \.self) { tabItem in

@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct ProfileSettingsView: View {
+    @StateObject var profileVM: ProfileViewModel
     @State private var pushNotificationOn = true
     @State private var marketingNotificationOn = true
     @State private var showSettingsUpdateSheet = false
-    @State private var mobileNumText: String = "+61 484 484 484"
-    @State private var emailText: String = "Rajesh.Mekala@localfox.au"
-    @State private var addressText: String = "31 Barrallier Drive\nMarsden Park NSW 2765"
+    @State private var mobileNumText: String = ""
+    @State private var emailText: String = ""
+    @State private var addressText: String = ""
     @State private var settingsType: SettingsType = SettingsType.mobileNumber
     
     @State private var changeText: String = ""
@@ -24,8 +25,9 @@ struct ProfileSettingsView: View {
                 Text(Strings.EMAIL_ADDRESS).applyFontRegular(color: .TEXT_LEVEL_3,size: 13).padding(.top,20).padding(.leading,20)
                 HStack {
                     Text($emailText.wrappedValue).applyFontRegular(color: .DEFAULT_TEXT,size: 14)
-                    
-                    Images.GREEN_CHECK
+                    if  profileVM.profileModel?.data?.isEmailVerified == true {
+                        Images.GREEN_CHECK
+                    }
                     Spacer()
                 }
                 .padding(.bottom,20).padding(.leading,20)
@@ -48,8 +50,9 @@ struct ProfileSettingsView: View {
                 
                 HStack {
                     Text($mobileNumText.wrappedValue).applyFontRegular(color: .DEFAULT_TEXT,size: 14)
-                    
-                    Images.GREEN_CHECK
+                    if  profileVM.profileModel?.data?.isMobileVerified == true {
+                        Images.GREEN_CHECK
+                    }
                     Spacer()
                 }
                 .padding(.bottom,20).padding(.leading,20)
@@ -78,6 +81,12 @@ struct ProfileSettingsView: View {
             }.cardify()
             Spacer()
         }
+        .onAppear{
+            mobileNumText = (self.profileVM.profileModel?.data?.mobileNumber ?? "")
+            emailText = (self.profileVM.profileModel?.data?.emailAddress ?? "")
+            addressText = (self.profileVM.profileModel?.data?.location?.formattedAddress ?? "")
+
+        }
         .padding(.horizontal,20)
         .setNavTitle(Strings.PROFILE_SETTINGS, showBackButton: true,leadingSpace: 20)
         .sheet(isPresented: $showSettingsUpdateSheet){
@@ -89,6 +98,6 @@ struct ProfileSettingsView: View {
 
 struct ProfileSettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileSettingsView()
+        ProfileSettingsView(profileVM: ProfileViewModel())
     }
 }

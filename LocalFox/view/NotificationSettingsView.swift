@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct NotificationSettingsView: View {
+    @StateObject var profileVM: ProfileViewModel
     @State private var pushNotificationOn = true
     @State private var smsNotificationOn = true
     @State private var emailiNotificationOn = true
@@ -15,17 +16,30 @@ struct NotificationSettingsView: View {
     @State private var eventsNotificationOn = true
     var body: some View {
         VStack {            
-            ToggleView(settingsType: $pushNotificationOn, title: "Push Notifocations", leadingImage: Images.PUSH_NOTIFCATION_ICON).padding(.top, 20)
-            ToggleView(settingsType: $smsNotificationOn, title: "SMS Notifications", leadingImage: Images.SMS_NOTIFCATION_ICON)
-            ToggleView(settingsType: $emailiNotificationOn, title: "Email Notifications", leadingImage: Images.EMAIL_NOTIFCATION_ICON)
-            ToggleView(settingsType: $announcementsNotificationOn, title: "Announcements", leadingImage: Images.ANNOUNCEMENTS_ICON)
-            ToggleView(settingsType: $eventsNotificationOn, title: "Events", leadingImage: Images.EVENTS_NOTIFCATION_ICON)
+            ToggleView(settingsType: $pushNotificationOn, title: Strings.PUSH_NOTIFICATIONS, leadingImage: Images.PUSH_NOTIFCATION_ICON).padding(.top, 20)
+            ToggleView(settingsType: $smsNotificationOn, title: Strings.SMS_NOTIFICATIONS, leadingImage: Images.SMS_NOTIFCATION_ICON)
+            ToggleView(settingsType: $emailiNotificationOn, title: Strings.EMAIL_NOTIFICATIONS, leadingImage: Images.EMAIL_NOTIFCATION_ICON)
+            ToggleView(settingsType: $announcementsNotificationOn, title: Strings.ANNOUNCEMENTS, leadingImage: Images.ANNOUNCEMENTS_ICON)
+            ToggleView(settingsType: $eventsNotificationOn, title: Strings.EVENTS, leadingImage: Images.EVENTS_NOTIFCATION_ICON)
             Spacer()
 
         }
+        .onAppear{
+            if let pushNotification =  profileVM.profileModel?.data?.NotificationSettings.pushNotifications,
+                let smsNotification =  profileVM.profileModel?.data?.NotificationSettings.smsNotifications,
+                let emailiNotification =  profileVM.profileModel?.data?.NotificationSettings.emailNotifications,
+                let announcementsNotification =  profileVM.profileModel?.data?.NotificationSettings.announcements,
+                let eventsNotification =  profileVM.profileModel?.data?.NotificationSettings.events {
+                pushNotificationOn = pushNotification
+                smsNotificationOn = smsNotification
+                emailiNotificationOn = emailiNotification
+                announcementsNotificationOn = announcementsNotification
+                eventsNotificationOn = eventsNotification
+            }
+        }
         .padding(.horizontal,20)
-        .setNavTitle("Notifications", showBackButton: true,leadingSpace: 20)
-    }   
+        .setNavTitle(Strings.NOTIFICATIONS, showBackButton: true,leadingSpace: 20)
+    }
 }
 struct ToggleView: View {
     @Binding var settingsType: Bool
@@ -47,6 +61,6 @@ struct ToggleView: View {
 }
 struct NotificationSettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        NotificationSettingsView()
+        NotificationSettingsView(profileVM: ProfileViewModel())
     }
 }

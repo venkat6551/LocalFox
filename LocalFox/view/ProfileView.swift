@@ -8,33 +8,33 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @StateObject var profileVM: ProfileViewModel
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var body: some View {
         VStack {
             VStack {
                 HStack {
-                    Text("Profile").applyFontHeader()
+                    Text(Strings.PROFILE).applyFontHeader()
                     Spacer()
 
                 }
-                ProfileCardView().cardify()
-                
+                ProfileCardView(profileVM: profileVM).cardify()
                 
                 ScrollView {
                     HStack {
-                        Text("Settings").applyFontBold(size: 20)
+                        Text(Strings.SETTINGS).applyFontBold(size: 20)
                         Spacer()
                     }
                     .padding(.top,10)
                     .padding(.bottom,10)
-                    SettingsView().cardify()
+                    SettingsView(profileVM: profileVM).cardify()
                     HStack {
-                        Text("Legal").applyFontBold(size: 20)
+                        Text(Strings.LEGAL).applyFontBold(size: 20)
                         Spacer()
                     }
                     .padding(.top,10)
                     .padding(.bottom,10)
-                    ContactDetailsView().cardify()
+                    LegalsView().cardify()
                     Text("App version. 1.20.42325").applyFontRegular(color: Color.TEXT_LEVEL_3,size: 12).padding(.top,25)
 
                     Button(
@@ -42,7 +42,7 @@ struct ProfileView: View {
                             self.presentationMode.wrappedValue.dismiss() // Go back
                         },
                         label: {
-                            Text("Logout").applyFontRegular(size: 12)
+                            Text(Strings.LOGOUT).applyFontRegular(size: 12)
                                 .padding(5)
                                 .padding(.horizontal,10)
                         }
@@ -60,6 +60,7 @@ struct ProfileView: View {
     }
     
     struct ProfileCardView: View {
+        @StateObject var profileVM: ProfileViewModel
         var body: some View {
             ZStack {
                 VStack(alignment: .leading) {
@@ -70,22 +71,32 @@ struct ProfileView: View {
                         }.cardify()
                         VStack {
                             HStack(spacing: 0) {
-                                Text("Alex Eadie")
-                                    .applyFontBold(size: 16)
-                                Images.GREEN_CHECK.padding(.leading,5)
+                                if let fName = profileVM.profileModel?.data?.firstName , let lName = profileVM.profileModel?.data?.lastName {
+                                    let fullName  = "\(String(describing: fName)) \(String(describing: lName))"
+                                    Text(fullName)
+                                        .applyFontBold(size: 16)
+                                }
+                                if  profileVM.profileModel?.data?.isApproved == true {
+                                    Images.GREEN_CHECK.padding(.leading,5)
+                                }
                                 Spacer()
                             }.padding(.top, 5)
                             
                             HStack {
-                                Text("PLUMBER")
-                                    .applyFontBold(color:Color.TEXT_GREEN, size: 14)
+                                if let role = profileVM.profileModel?.data?.role {
+                                    Text(role)
+                                        .applyFontBold(color:Color.TEXT_GREEN, size: 14)
+                                }
                                 Spacer()
                             }
                             HStack{
                                 Images.LOCATION_PIN
                                     .frame(width: 15)
-                                Text("Marsden Park, NSW 2765")
-                                    .applyFontRegular(size: 13)
+                                if let address = profileVM.profileModel?.data?.location?.formattedAddress {
+                                    Text(address)
+                                        .applyFontRegular(size: 13)
+                                }
+                                
                                 Spacer()
                             }
                         }
@@ -96,47 +107,47 @@ struct ProfileView: View {
     }
     
     struct SettingsView: View {
-        
+        @StateObject var profileVM: ProfileViewModel
         @State private var showProfileSettings = false
         @State private var showNotificationSettings = false
         @State private var showSecuritySettings = false
         var body: some View {
             ZStack {
                 VStack(alignment: .leading) {
-                    ProfileRowView(title: "Profile settings", leadingImage: Images.PROFILE_ICON, trailingimage: Images.DISCLOSURE){
+                    ProfileRowView(title: Strings.PROFILE_SETTINGS, leadingImage: Images.PROFILE_ICON, trailingimage: Images.DISCLOSURE){
                         showProfileSettings = true
                     }
-                    ProfileRowView(title: "Notifications", leadingImage: Images.NOTIFICATION_ICON, trailingimage: Images.DISCLOSURE){
+                    ProfileRowView(title: Strings.NOTIFICATIONS, leadingImage: Images.NOTIFICATION_ICON, trailingimage: Images.DISCLOSURE){
                         showNotificationSettings = true
                     }
-                    ProfileRowView(title: "Security", leadingImage: Images.SECURITY_ICON, trailingimage: Images.DISCLOSURE){
+                    ProfileRowView(title: Strings.SECURITY, leadingImage: Images.SECURITY_ICON, trailingimage: Images.DISCLOSURE){
                         showSecuritySettings = true
                     }
                 }
                 .navigationDestination(isPresented: $showProfileSettings) {
-                    ProfileSettingsView()
+                    ProfileSettingsView(profileVM: profileVM)
                 }
                 .navigationDestination(isPresented: $showNotificationSettings) {
-                    NotificationSettingsView()
+                    NotificationSettingsView(profileVM: profileVM)
                 }
                 .navigationDestination(isPresented: $showSecuritySettings) {
-                    SecuritySettingsView()
+                    SecuritySettingsView(profileVM: profileVM)
                 }
             }
             .background(Color.SCREEN_BG)
         }
     }
-    struct ContactDetailsView: View {
+    struct LegalsView: View {
         @State private var pushNotificationOn = true
         @State private var marketingNotificationOn = true
         var body: some View {
             ZStack {
                 VStack(alignment: .leading) {
-                    ProfileRowView(title: "Privacy statement", leadingImage: Images.PRIVACY_ICON, trailingimage: Images.LEGAL_DISCLOSURE) {
+                    ProfileRowView(title: Strings.PRIVACY_STATEMENT, leadingImage: Images.PRIVACY_ICON, trailingimage: Images.LEGAL_DISCLOSURE) {
                         
                     }
                     
-                    ProfileRowView(title: "Terms and conditions", leadingImage: Images.TANDC_ICON, trailingimage: Images.LEGAL_DISCLOSURE){
+                    ProfileRowView(title: Strings.T_AND_C, leadingImage: Images.TANDC_ICON, trailingimage: Images.LEGAL_DISCLOSURE){
                         
                     }
                 }
@@ -211,6 +222,6 @@ struct ColoredToggleStyle: ToggleStyle {
 }
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView()
+        ProfileView(profileVM: ProfileViewModel())
     }
 }

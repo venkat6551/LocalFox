@@ -46,10 +46,16 @@ struct Strings {
     static let UPDATE = "Update"
     static let ADDRESS = "Address"
     static let PROFILE_SETTINGS = "Profile settings"
+    static let NOTIFICATIONS = "Notifications"
+    static let SETTINGS = "Settings"
+    static let LEGAL = "Legal"
+    static let LOGOUT = "Logout"
     static let SET_PIN_TEXT = "Set up a PIN Lock"
     static let CHANGE_PIN_TEXT = "Change PIN"
     static let FACE_ID_TEXT = "Enable Face ID"
     static let SECURITY = "Security"
+    static let PRIVACY_STATEMENT = "Privacy statement"
+    static let T_AND_C = "Terms and conditions"
     static let NEXT = "Next"
     static let EMAIL_ADDRESS_SUBTITLE = "Please enter your email address. This will be used as your username to login to app."
     static let EMAIL_CODE = "Email code"
@@ -82,4 +88,10 @@ struct Strings {
     static let ERROR_INVALID_LOGIN = "Incorrect email or activation code, please try again!"
     static let ERROR_AUTH_FAILED = "Unable to authorize the user, please try again!"
 
+    
+    static let PUSH_NOTIFICATIONS = "Push Notifocations"
+    static let SMS_NOTIFICATIONS = "SMS Notifications"
+    static let EMAIL_NOTIFICATIONS = "Email Notifications"
+    static let ANNOUNCEMENTS = "Announcements"
+    static let EVENTS = "Events"
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SecuritySettingsView: View {
+    @StateObject var profileVM: ProfileViewModel
     @State private var setPinOn = true
     @State private var enableFaceeIdOn = false
     @State private var showSettingsUpdateSheet = false
@@ -35,6 +36,6 @@ struct SecuritySettingsView: View {
 
 struct SecuritySettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SecuritySettingsView()
+        SecuritySettingsView(profileVM: ProfileViewModel())
     }
 }
