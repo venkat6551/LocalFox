@@ -43,9 +43,8 @@ struct SetPasswordView: View {
                             }
                         } else {
                             if(!signupVM.isLoading && !showErrorSnackbar) {
-                                showSuccessView = true
-                                //                                signupVM.validateEmailCode(verificationCode: code) { _ in
-                                //                                }
+                                signupVM.setNewPassword(password: password, confirmPassword: verifyPassword, model: signupVM.signupModel) { _ in
+                                }
                             }
                         }
                         
@@ -64,10 +63,18 @@ struct SetPasswordView: View {
             AccountCreatedView(isResetPassword: true)
         }
         .onChange(of: signupVM.isLoading) { isloading in
-            if signupVM.registerPartnerSuccess == true {
-                showSuccessView = true
-            } else if(signupVM.registerPartnerSuccess == false && signupVM.errorString != nil) {
-                showErrorSnackbar = true
+            if isforSignUpFlow {
+                if signupVM.registerPartnerSuccess == true {
+                    showSuccessView = true
+                } else if(signupVM.registerPartnerSuccess == false && signupVM.errorString != nil) {
+                    showErrorSnackbar = true
+                }
+            } else {
+                if signupVM.setNewPasswordSuccess == true {
+                    showSuccessView = true
+                } else if(signupVM.setNewPasswordSuccess == false && signupVM.errorString != nil) {
+                    showErrorSnackbar = true
+                }
             }
         }
         .snackbar(

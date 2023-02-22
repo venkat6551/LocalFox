@@ -19,6 +19,7 @@ class SignupViewModel: ObservableObject {
     @Published var validateEmailCodeSuccess: Bool = false
     @Published var registerPartnerSuccess: Bool = false
     @Published var resetPasswordSuccess: Bool = false
+    @Published var setNewPasswordSuccess: Bool = false
     private let apiService: APIServiceProtocol
     
     init(apiService: APIServiceProtocol = MockAPIService()) {
@@ -130,6 +131,29 @@ class SignupViewModel: ObservableObject {
         }
     }
     
+    
+    func setNewPassword(password:String, confirmPassword:String, model:SignupModel, completion: @escaping (Bool) -> Void) {
+        guard !password.isEmpty else {
+            self.errorString = "Please enter valid data"
+            return completion(false)
+        }
+        guard password == confirmPassword else {
+            self.errorString = "New Password and Confirm password not matching"
+            return completion(false)
+        }
+        
+        setNewPasswordSuccess = false
+        errorString = nil
+        isLoading = true
+        
+        apiService.setNewPassword(password: password, model: signupModel, completion: { [weak self] success, errorString in
+            self?.setNewPasswordSuccess = success
+            self?.errorString = errorString
+            completion(success)
+            self?.isLoading = false
+        })
+    }
+    
     func clearData() {
         self.sendMobileCodeSuccess = false
         self.validateMobileCodeSuccess = false
@@ -137,6 +161,7 @@ class SignupViewModel: ObservableObject {
         self.validateEmailCodeSuccess = false
         self.registerPartnerSuccess = false
         self.resetPasswordSuccess = false
+        self.setNewPasswordSuccess = false
     }
 }
     

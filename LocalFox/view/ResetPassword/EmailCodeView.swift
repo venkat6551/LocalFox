@@ -10,7 +10,7 @@ import SwiftUI
 struct EmailCodeView: View {
     @StateObject var signupVM: SignupViewModel
     @State private var code:String = ""
-    
+    @Environment(\.presentationMode) var presentationMode
     @State private var showSetPSWView:Bool = false
     var isMobileVerificationCode:Bool = false
     var isforSignUpFlow:Bool = false
@@ -58,12 +58,14 @@ struct EmailCodeView: View {
         .onChange(of: signupVM.isLoading) { isloading in
             if isMobileVerificationCode {
                 if signupVM.validateMobileCodeSuccess == true {
-                    showSetPSWView = true
+                    if (isforSignUpFlow) {
+                        showSetPSWView = true
+                    }
                     showSuccessSnackbar = true
                 } else if(signupVM.validateMobileCodeSuccess == false && signupVM.errorString != nil) {
                     showErrorSnackbar = true
                 }
-            } else {
+            }  else {
                 if signupVM.validateEmailCodeSuccess == true {
                     showSetPSWView = true
                     showSuccessSnackbar = true
@@ -87,7 +89,12 @@ struct EmailCodeView: View {
             title: nil,
             message: signupVM.errorString,
             secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
-            onSnackbarDismissed: {showSuccessSnackbar = false },
+            onSnackbarDismissed: {
+                showSuccessSnackbar = false
+                if(isMobileVerificationCode && !isforSignUpFlow) {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            },
             isAlignToBottom: true
         )
     }

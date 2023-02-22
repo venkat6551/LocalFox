@@ -29,4 +29,28 @@ class ProfileViewModel: ObservableObject {
             self?.isLoading = false
         }
     }
+    
+    func setNewPassword(password:String, confirmPassword:String,completion: @escaping (Bool) -> Void) {
+        guard !password.isEmpty else {
+            self.errorString = "Please enter valid data"
+            return completion(false)
+        }
+        guard password == confirmPassword else {
+            self.errorString = "New Password and Confirm password not matching"
+            return completion(false)
+        }
+        
+        setNewPasswordSuccess = false
+        errorString = nil
+        isLoading = true
+        
+        apiService.setNewPassword(password: password, model: signupModel, completion: { [weak self] success, errorString in
+            self?.setNewPasswordSuccess = success
+            self?.errorString = errorString
+            completion(success)
+            self?.isLoading = false
+        })
+    }
+    
+
 }

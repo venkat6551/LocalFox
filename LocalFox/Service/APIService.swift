@@ -20,6 +20,7 @@ protocol APIServiceProtocol {
     func validateEmailCode(sigmUpModel: SignupModel,verificateCode: String, context: String, completion: @escaping (_ success: Bool, _ referenceNumber: String? ,_ errorString: String?) -> Void)
     func registerPartner(sigmUpModel: SignupModel,password: String, completion: @escaping (_ success: Bool,_ errorString: String?) -> Void)
     func getProfile(completion: @escaping (_ success: Bool, _ profileModel : ProfileModel?, _ errorString: String?) -> Void)
+    func setNewPassword(password:String, model: SignupModel, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
 }
 
 final class MockAPIService: APIServiceProtocol {
@@ -67,6 +68,41 @@ final class MockAPIService: APIServiceProtocol {
         ]
         let request = AF.request(
             APIEndpoints.RESET_PASSWORD,
+            method: HTTPMethod.post,
+            parameters: parameters,
+            encoding:JSONEncoding.default
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: LoginResponseDecodable.self) { response in
+                debugPrint(response)
+                switch response.result {
+                case .success(_):
+                    completion(true, "")
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    do{
+                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                        completion(false,errorObj.error)
+                    } catch{
+                        completion(false,error.localizedDescription)
+                    }
+                }
+            }
+    }
+    
+    func setNewPassword(password:String, model: SignupModel, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+       
+        let parameters: Parameters = [
+            "emailAddress" : model.email.trimmingCharacters(in: .whitespaces).lowercased(),
+            "newPassword" : password,
+            "referenceId" : model.emailVerificationReference!
+        ]
+        let request = AF.request(
+            APIEndpoints.SET_NEW_PASSWORD,
             method: HTTPMethod.post,
             parameters: parameters,
             encoding:JSONEncoding.default
