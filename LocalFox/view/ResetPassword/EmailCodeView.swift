@@ -60,8 +60,18 @@ struct EmailCodeView: View {
                 if signupVM.validateMobileCodeSuccess == true {
                     if (isforSignUpFlow) {
                         showSetPSWView = true
+                        showSuccessSnackbar = true
+                    } else {
+                        if (signupVM.updateMobileNumberSuccess != true) {
+                            if(!signupVM.isLoading && !showErrorSnackbar) {
+                                signupVM.updateMobileNumber(data: signupVM.signupModel, completion: { _ in
+                                })
+                            }
+                        } else {
+                            showSuccessSnackbar = true
+                        }
+                        
                     }
-                    showSuccessSnackbar = true
                 } else if(signupVM.validateMobileCodeSuccess == false && signupVM.errorString != nil) {
                     showErrorSnackbar = true
                 }

@@ -29,7 +29,7 @@ struct SecuritySettingsView: View {
         .setNavTitle(Strings.SECURITY, showBackButton: true,leadingSpace: 20)
         .sheet(isPresented: $showSettingsUpdateSheet){
             SettingsUpdateSheet(onClickClose: {
-            }, settingsType: SettingsType.pin,text: $pin)
+            }, profileVM: profileVM, settingsType: SettingsType.pin,text: $pin)
         }
     }
 }

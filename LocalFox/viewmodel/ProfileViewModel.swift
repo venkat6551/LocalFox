@@ -12,12 +12,14 @@ class ProfileViewModel: ObservableObject {
     @Published private(set) var isLoading: Bool = false
     @Published var errorString: String?
     @Published var getProfileSuccess: Bool = false
+    @Published var updateNotificationSettingsSuccess: Bool = false
     private let apiService: APIServiceProtocol
+    
     
     init(apiService: APIServiceProtocol = MockAPIService()) {
         self.apiService = apiService
     }
-  
+    
     func getProfile() {
         getProfileSuccess = false
         errorString = nil
@@ -30,27 +32,17 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
-    func setNewPassword(password:String, confirmPassword:String,completion: @escaping (Bool) -> Void) {
-        guard !password.isEmpty else {
-            self.errorString = "Please enter valid data"
-            return completion(false)
-        }
-        guard password == confirmPassword else {
-            self.errorString = "New Password and Confirm password not matching"
-            return completion(false)
-        }
-        
-        setNewPasswordSuccess = false
+    func updateNotificationSettings(pushNotifications:Bool, smsNotifications:Bool, emailNotifications:Bool, announcements:Bool, events:Bool) {
+        updateNotificationSettingsSuccess = false
         errorString = nil
         isLoading = true
-        
-        apiService.setNewPassword(password: password, model: signupModel, completion: { [weak self] success, errorString in
-            self?.setNewPasswordSuccess = success
+        apiService.updateNotificationSettings(pushNotifications: pushNotifications, smsNotifications: smsNotifications, emailNotifications: emailNotifications, announcements: announcements, events: events) { [weak self] success, errorString in
+            self?.updateNotificationSettingsSuccess = success
             self?.errorString = errorString
-            completion(success)
             self?.isLoading = false
-        })
+            if success {
+                self?.profileModel?.data?.NotificationSettings = NotificationSettings(pushNotifications: pushNotifications, smsNotifications: smsNotifications, emailNotifications: emailNotifications, announcements: announcements, events: events)
+            }
+        }
     }
-    
-
 }

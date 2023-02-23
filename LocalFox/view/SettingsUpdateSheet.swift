@@ -38,6 +38,7 @@ enum SettingsType: Equatable {
 
 struct SettingsUpdateSheet: View {
     var onClickClose: () -> Void
+    @StateObject var profileVM: ProfileViewModel
     @StateObject private var signupVM: SignupViewModel = SignupViewModel()
     @State private var showOTPCodeView:Bool = false
     @State private var showErrorSnackbar: Bool = false
@@ -115,9 +116,9 @@ struct SettingsUpdateSheet: View {
                     } else if(signupVM.sendMobileCodeSuccess == false && signupVM.errorString != nil) {
                         showErrorSnackbar = true
                     }
-                    
                 }.onAppear{
-                    
+                    signupVM.signupModel.mobileNumber = text;
+                    signupVM.signupModel.firstName = profileVM.profileModel?.data?.firstName ?? ""
                 }
         }
     }
@@ -129,6 +130,6 @@ struct SettingsUpdateSheet_Previews: PreviewProvider {
     static var previews: some View {
         SettingsUpdateSheet(onClickClose: {
             
-        }, settingsType: .mobileNumber, text:$sampleInputText)
+        }, profileVM: ProfileViewModel(), settingsType: .mobileNumber, text:$sampleInputText)
     }
 }

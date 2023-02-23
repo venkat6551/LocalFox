@@ -69,7 +69,7 @@ struct Strings {
     static let PROCEED_TO_LOGIN = "Proceed to login"
     static let ACCOUNT_CREATED = "Account created."
     static let ACCOUNT_CREATED_MESSAGE = "Your account has been created successfully. Proceed to login."
-    
+    static let UPDATE_SETTINGS = "Update Settings"
     static let YOUR_NAME = "Your name"
     static let YOUR_NAME_MESSAGE = "Please enter your first and last name"
     static let FIRST_NAME = "First name"

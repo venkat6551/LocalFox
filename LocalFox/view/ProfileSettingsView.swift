@@ -91,7 +91,7 @@ struct ProfileSettingsView: View {
         .setNavTitle(Strings.PROFILE_SETTINGS, showBackButton: true,leadingSpace: 20)
         .sheet(isPresented: $showSettingsUpdateSheet){
             SettingsUpdateSheet(onClickClose: {
-            }, settingsType: settingsType,text: $changeText)
+            }, profileVM: profileVM, settingsType: settingsType,text: $changeText)
         }
     }
 }

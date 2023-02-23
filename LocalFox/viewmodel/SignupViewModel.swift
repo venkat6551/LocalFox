@@ -20,6 +20,7 @@ class SignupViewModel: ObservableObject {
     @Published var registerPartnerSuccess: Bool = false
     @Published var resetPasswordSuccess: Bool = false
     @Published var setNewPasswordSuccess: Bool = false
+    @Published var updateMobileNumberSuccess: Bool = false
     private let apiService: APIServiceProtocol
     
     init(apiService: APIServiceProtocol = MockAPIService()) {
@@ -54,6 +55,18 @@ class SignupViewModel: ObservableObject {
         apiService.validateMobileCode(sigmUpModel: signupModel, verificateCode: verificationCode) { [weak self] success, referenceNumber, errorString in
             self?.signupModel.mobileVerificationReference = referenceNumber
             self?.validateMobileCodeSuccess = success
+            self?.errorString = errorString
+            completion(success)
+            self?.isLoading = false
+        }
+    }
+    
+    func updateMobileNumber(data:SignupModel, completion: @escaping (Bool) -> Void) {
+        updateMobileNumberSuccess = false
+        errorString = nil
+        isLoading = true
+        apiService.updateMobileNumber(mobileNumber: data.mobileNumber, referanceNumber: data.mobileVerificationReference!) {[weak self] success, errorString in
+            self?.updateMobileNumberSuccess = success
             self?.errorString = errorString
             completion(success)
             self?.isLoading = false
@@ -162,6 +175,7 @@ class SignupViewModel: ObservableObject {
         self.registerPartnerSuccess = false
         self.resetPasswordSuccess = false
         self.setNewPasswordSuccess = false
+        self.updateMobileNumberSuccess = false
     }
 }
     

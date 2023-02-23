@@ -21,7 +21,10 @@ protocol APIServiceProtocol {
     func registerPartner(sigmUpModel: SignupModel,password: String, completion: @escaping (_ success: Bool,_ errorString: String?) -> Void)
     func getProfile(completion: @escaping (_ success: Bool, _ profileModel : ProfileModel?, _ errorString: String?) -> Void)
     func setNewPassword(password:String, model: SignupModel, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func updateMobileNumber(mobileNumber:String, referanceNumber:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func updateNotificationSettings(pushNotifications:Bool, smsNotifications:Bool, emailNotifications:Bool, announcements:Bool, events:Bool, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
 }
+
 
 final class MockAPIService: APIServiceProtocol {
     
@@ -235,7 +238,6 @@ final class MockAPIService: APIServiceProtocol {
             "emailAddress": sigmUpModel.email.trimmingCharacters(in: .whitespaces).lowercased()
         ]
         
-        
         let urlString = (context == "VERIFY_EMAIL") ? APIEndpoints.VALIDATE_EMAIL_CODE : APIEndpoints.VALIDATE_RESET_PASSWORD_CODE
         let request = AF.request(
             urlString,
@@ -301,6 +303,78 @@ final class MockAPIService: APIServiceProtocol {
             }
     }
     
+    func updateMobileNumber(mobileNumber:String, referanceNumber:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let parameters: Parameters = [
+            "mobileNumber" :mobileNumber.trimmingCharacters(in: .whitespaces),
+            "mobileVerificationReference":referanceNumber,
+        ]
+        let request = AF.request(
+            APIEndpoints.UPDATE_MOBILE_NUMBER,
+            method: HTTPMethod.put,
+            parameters: parameters,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: SuccessResponseDecodable.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(true,data.data)
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    do{
+                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                        completion(false,errorObj.error)
+                    } catch{
+                        completion(false,error.localizedDescription)
+                    }
+                }
+            }
+    }
+    
+    func updateNotificationSettings(pushNotifications:Bool, smsNotifications:Bool, emailNotifications:Bool, announcements:Bool, events:Bool, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+        
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let parameters: Parameters = [
+            "pushNotifications": pushNotifications,
+            "smsNotifications": smsNotifications,
+            "emailNotifications": emailNotifications,
+            "announcements": announcements,
+            "events": events
+        ]
+        let request = AF.request(
+            APIEndpoints.UPDATE_NOTIFICATION_SETTINGS,
+            method: HTTPMethod.put,
+            parameters: parameters,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: SuccessResponseDecodable.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(true,data.data)
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    do{
+                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                        completion(false,errorObj.error)
+                    } catch{
+                        completion(false,error.localizedDescription)
+                    }
+                }
+            }
+    }
+
     func getProfile(completion: @escaping (_ success: Bool, _ profileModel : ProfileModel?, _ errorString: String?) -> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
         let request = AF.request(

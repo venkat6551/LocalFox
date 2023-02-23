@@ -15,7 +15,7 @@ struct ProfileModel: Decodable {
 }
 
 struct ProfileData: Codable {
-    let NotificationSettings:NotificationSettings
+    var NotificationSettings:NotificationSettings
     let checkList: CheckList
     var location:Location?
     let _id: String
@@ -47,11 +47,11 @@ struct Location: Codable {
 }
 
 struct NotificationSettings: Codable {
-    let pushNotifications: Bool
-    let smsNotifications: Bool
-    let emailNotifications: Bool
-    let announcements: Bool
-    let events: Bool
+    var pushNotifications: Bool
+    var smsNotifications: Bool
+    var emailNotifications: Bool
+    var announcements: Bool
+    var events: Bool
 }
 
 struct CheckList: Codable {

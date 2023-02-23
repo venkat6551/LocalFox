@@ -14,22 +14,41 @@ struct NotificationSettingsView: View {
     @State private var emailiNotificationOn = true
     @State private var announcementsNotificationOn = true
     @State private var eventsNotificationOn = true
+    @State private var showErrorSnackbar: Bool = false
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var body: some View {
-        VStack {            
+        VStack {
             ToggleView(settingsType: $pushNotificationOn, title: Strings.PUSH_NOTIFICATIONS, leadingImage: Images.PUSH_NOTIFCATION_ICON).padding(.top, 20)
             ToggleView(settingsType: $smsNotificationOn, title: Strings.SMS_NOTIFICATIONS, leadingImage: Images.SMS_NOTIFCATION_ICON)
             ToggleView(settingsType: $emailiNotificationOn, title: Strings.EMAIL_NOTIFICATIONS, leadingImage: Images.EMAIL_NOTIFCATION_ICON)
             ToggleView(settingsType: $announcementsNotificationOn, title: Strings.ANNOUNCEMENTS, leadingImage: Images.ANNOUNCEMENTS_ICON)
             ToggleView(settingsType: $eventsNotificationOn, title: Strings.EVENTS, leadingImage: Images.EVENTS_NOTIFCATION_ICON)
-            Spacer()
+            
+            MyButton(
+                text: Strings.UPDATE_SETTINGS,
+                onClickButton: {
+                    if(pushNotificationOn != profileVM.profileModel?.data?.NotificationSettings.pushNotifications
+                       || smsNotificationOn != profileVM.profileModel?.data?.NotificationSettings.smsNotifications
+                       || emailiNotificationOn != profileVM.profileModel?.data?.NotificationSettings.emailNotifications
+                       || announcementsNotificationOn != profileVM.profileModel?.data?.NotificationSettings.announcements
+                       || eventsNotificationOn != profileVM.profileModel?.data?.NotificationSettings.events) {
+                        
+                        profileVM.updateNotificationSettings(pushNotifications: pushNotificationOn, smsNotifications: smsNotificationOn, emailNotifications: emailiNotificationOn, announcements: announcementsNotificationOn, events: eventsNotificationOn)
 
+                    } else {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
+                },
+                bgColor: Color.PRIMARY
+            ).padding(.top, 50)
+            Spacer()
         }
         .onAppear{
             if let pushNotification =  profileVM.profileModel?.data?.NotificationSettings.pushNotifications,
-                let smsNotification =  profileVM.profileModel?.data?.NotificationSettings.smsNotifications,
-                let emailiNotification =  profileVM.profileModel?.data?.NotificationSettings.emailNotifications,
-                let announcementsNotification =  profileVM.profileModel?.data?.NotificationSettings.announcements,
-                let eventsNotification =  profileVM.profileModel?.data?.NotificationSettings.events {
+               let smsNotification =  profileVM.profileModel?.data?.NotificationSettings.smsNotifications,
+               let emailiNotification =  profileVM.profileModel?.data?.NotificationSettings.emailNotifications,
+               let announcementsNotification =  profileVM.profileModel?.data?.NotificationSettings.announcements,
+               let eventsNotification =  profileVM.profileModel?.data?.NotificationSettings.events {
                 pushNotificationOn = pushNotification
                 smsNotificationOn = smsNotification
                 emailiNotificationOn = emailiNotification
@@ -39,6 +58,23 @@ struct NotificationSettingsView: View {
         }
         .padding(.horizontal,20)
         .setNavTitle(Strings.NOTIFICATIONS, showBackButton: true,leadingSpace: 20)
+        .snackbar(
+            show: $showErrorSnackbar,
+            snackbarType: SnackBarType.error,
+            title: "Error",
+            message: profileVM.errorString,
+            secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+            onSnackbarDismissed: {showErrorSnackbar = false },
+            isAlignToBottom: true
+        )
+        .onChange(of: profileVM.isLoading) { isloading in
+            if profileVM.updateNotificationSettingsSuccess == true {
+                self.presentationMode.wrappedValue.dismiss()
+                showErrorSnackbar = false
+            } else if(profileVM.updateNotificationSettingsSuccess == false && profileVM.errorString != nil) {
+                showErrorSnackbar = true
+            }
+        }
     }
 }
 struct ToggleView: View {
@@ -49,13 +85,13 @@ struct ToggleView: View {
         HStack {
             leadingImage
                 .padding(.leading,15)
-        Toggle("", isOn: $settingsType)
-                                .toggleStyle(
-                                    ColoredToggleStyle(label: title,
-                                                       onColor: .PRIMARY,
-                                                       thumbColor: .white))
-                                .padding(.vertical,15)
-                                .padding(.horizontal,5)
+            Toggle("", isOn: $settingsType)
+                .toggleStyle(
+                    ColoredToggleStyle(label: title,
+                                       onColor: .PRIMARY,
+                                       thumbColor: .white))
+                .padding(.vertical,15)
+                .padding(.horizontal,5)
         }.cardify()
     }
 }
