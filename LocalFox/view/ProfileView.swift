@@ -66,9 +66,20 @@ struct ProfileView: View {
                 VStack(alignment: .leading) {
                     HStack  {
                         VStack {
-                            Images.PROFILE
-                                .foregroundColor(Color.BLUE)
-                        }.cardify()
+                            if let image = profileVM.profileModel?.data?.profilePhoto {
+                                AsyncImage(
+                                    url: URL(string: image)!,
+                                   placeholder: { Text("Loading ...") },
+                                   image: { Image(uiImage: $0).resizable() }
+                                ).frame(width: 100, height: 80, alignment: .center)
+                            } else {
+                                // TODO: Add the placeholder image here
+                                Images.PRIVACY_ICON
+                                    .resizable()
+                                    .frame(width: 100, height: 80, alignment: .center)
+                                    .foregroundColor(Color.BLUE)
+                            }
+                            }.cardify()
                         VStack {
                             HStack(spacing: 0) {
                                 if let fName = profileVM.profileModel?.data?.firstName , let lName = profileVM.profileModel?.data?.lastName {

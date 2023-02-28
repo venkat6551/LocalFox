@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 import Alamofire
-
+import UIKit
 
 protocol APIServiceProtocol {
     
@@ -98,7 +98,6 @@ final class MockAPIService: APIServiceProtocol {
     }
     
     func setNewPassword(password:String, model: SignupModel, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
-       
         let parameters: Parameters = [
             "emailAddress" : model.email.trimmingCharacters(in: .whitespaces).lowercased(),
             "newPassword" : password,
@@ -374,7 +373,7 @@ final class MockAPIService: APIServiceProtocol {
                 }
             }
     }
-
+    
     func getProfile(completion: @escaping (_ success: Bool, _ profileModel : ProfileModel?, _ errorString: String?) -> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
         let request = AF.request(
@@ -405,4 +404,92 @@ final class MockAPIService: APIServiceProtocol {
                 }
             }
     }
+    
+    
+    func getHeadersWithToken() -> [String : String]? {
+        let requestHeaders:[String : String] = ["Content-Type":"application/json",
+                                                "Accept":"application/json",
+                                                "Authorization":String (format: "Bearer %@", MyUserDefaults.userToken!)]
+        return requestHeaders
+    }
+    
+    
+    typealias CompletionHandler = (_ _success:Any?, _ error:Any? ) -> Void
+    func uploadImage(_withUrl urlString:String, photo:Data, completionHandler:  @escaping CompletionHandler) -> Void {
+        
+        let filename = "image.png"
+        
+        // generate boundary string using a unique per-app string
+        let boundary = UUID().uuidString
+        
+        let fieldName = "reqtype"
+        let fieldValue = "fileupload"
+        
+        let fieldName2 = "userhash"
+        let fieldValue2 = "caa3dce4fcb36cfdf9258ad9c"
+        
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        
+        let url = URL(string: urlString)
+        guard let requestUrl = url else { fatalError() }
+        
+        // Set the URLRequest to POST and to the specified URL
+        var urlRequest = URLRequest(url: requestUrl)
+        urlRequest.httpMethod = "POST"
+        urlRequest.allHTTPHeaderFields = getHeadersWithToken()
+        // Set Content-Type Header to multipart/form-data, this is equivalent to submitting form data with file upload in a web browser
+        // And the boundary is also set here
+        urlRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        var data = Data()
+        
+        // Add the reqtype field and its value to the raw http request data
+        data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+        data.append("Content-Disposition: form-data; name=\"\(fieldName)\"\r\n\r\n".data(using: .utf8)!)
+        data.append("\(fieldValue)".data(using: .utf8)!)
+        
+        // Add the userhash field and its value to the raw http reqyest data
+        data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+        data.append("Content-Disposition: form-data; name=\"\(fieldName2)\"\r\n\r\n".data(using: .utf8)!)
+        data.append("\(fieldValue2)".data(using: .utf8)!)
+        
+        // Add the image data to the raw http request data
+        data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+        data.append("Content-Disposition: form-data; name=\"photo\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
+        data.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
+        data.append(photo)
+        
+        // End the raw http request data, note that there is 2 extra dash ("-") at the end, this is to indicate the end of the data
+        // According to the HTTP 1.1 specification https://tools.ietf.org/html/rfc7230
+        data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        // Send a POST request to the URL, with the data we created earlier
+        session.uploadTask(with: urlRequest, from: data, completionHandler: { responseData, response, error in
+            
+            guard let dataLocal = responseData, error == nil else {
+                DispatchQueue.main.async {
+                    completionHandler(nil,error)
+                }
+                return
+            }
+            let responseJSON = try? JSONSerialization.jsonObject(with: dataLocal, options: [])
+            if let responseJSON = responseJSON as? [String: Any] {
+                let status :Bool = responseJSON["success"] as! Bool
+//                if status  {
+//                    DispatchQueue.main.async {
+//                        completionHandler(responseJSON,nil)
+//                    }
+//                }
+//                else {
+//                    DispatchQueue.main.async {
+//                        let errorMsg :String = responseJSON["error"] as! String
+//                        let error = MyError(description: NSLocalizedString(errorMsg,comment: ""))
+//                        completionHandler(nil,error)
+//                    }
+//                }
+            }
+        }).resume()
+    }
+    
 }
