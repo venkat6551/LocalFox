@@ -77,4 +77,9 @@ class ProfileViewModel: ObservableObject {
             }
         }
     }
+    func logoutUser() {
+        apiService.logoutUser { _, _ in
+           
+        }
+    }
 }

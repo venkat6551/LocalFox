@@ -27,6 +27,7 @@ protocol APIServiceProtocol {
     func updateNotificationSettings(pushNotifications:Bool, smsNotifications:Bool, emailNotifications:Bool, announcements:Bool, events:Bool, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func uploadImage(_withPhoto photo:Data, completionHandler:  @escaping CompletionHandler) -> Void
     func deleteProfilePic(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func logoutUser(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) 
 }
 
 
@@ -413,6 +414,37 @@ final class MockAPIService: APIServiceProtocol {
         let request = AF.request(
             APIEndpoints.DELETE_PROFILE_PHOTO,
             method: HTTPMethod.delete,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: ProfileDeleteSuccessDecodable.self) { response in
+                print(response)
+                
+                switch response.result {
+                case .success(_):
+                    completion(true,"")
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    do{
+                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                        completion(false,errorObj.error)
+                    } catch{
+                        completion(false,error.localizedDescription)
+                    }
+                }
+            }
+    }
+    
+    func logoutUser(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let request = AF.request(
+            APIEndpoints.LOGOUT,
+            method: HTTPMethod.post,
             encoding:JSONEncoding.default,
             headers: headers
         )

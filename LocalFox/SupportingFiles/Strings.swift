@@ -96,4 +96,8 @@ struct Strings {
     static let EVENTS = "Events"
     
     static let NO_PROFILE_PIC = "no-photo.png"
+    static let IMAGE_PICKER_TITLE = "Choose mode"
+    static let IMAGE_PICKER_DESCRIPTION = "Please choose your preferred mode to set your profile image"
+    static let CAMERA = "Camera"
+    static let PHOTO_LIBRARY = "Photo Library"
 }

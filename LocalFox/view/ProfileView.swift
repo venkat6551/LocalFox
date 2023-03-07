@@ -48,6 +48,7 @@ struct ProfileView: View {
                     Text("App version. 1.20.42325").applyFontRegular(color: Color.TEXT_LEVEL_3,size: 12).padding(.top,25)
                     Button(
                         action: {
+                            profileVM.logoutUser()
                             self.presentationMode.wrappedValue.dismiss() // Go back
                         },
                         label: {
@@ -70,10 +71,10 @@ struct ProfileView: View {
             })
         }
         .actionSheet(isPresented: $shouldPresentActionScheet) { () -> ActionSheet in
-            ActionSheet(title: Text("Choose mode"), message: Text("Please choose your preferred mode to set your profile image"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
+            ActionSheet(title: Text(Strings.IMAGE_PICKER_TITLE), message: Text(Strings.IMAGE_PICKER_DESCRIPTION), buttons: [ActionSheet.Button.default(Text(Strings.CAMERA), action: {
                 self.shouldPresentImagePicker = true
                 self.shouldPresentCamera = true
-            }), ActionSheet.Button.default(Text("Photo Library"), action: {
+            }), ActionSheet.Button.default(Text(Strings.PHOTO_LIBRARY), action: {
                 self.shouldPresentImagePicker = true
                 self.shouldPresentCamera = false
             }), ActionSheet.Button.cancel()])
