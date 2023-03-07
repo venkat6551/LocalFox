@@ -58,7 +58,6 @@ enum Images {
     static let CHANGE_PIN = Image("changePin")
     static let SET_PIN = Image("setPin")
     static let CHECK_CIRCLE = Image("Checkcircle")
-    
     static let FLAG = Image("flag")
     static let SEARCH_TAB = Image("SearchTab")
     

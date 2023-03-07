@@ -10,6 +10,8 @@ import CoreLocation
 import Alamofire
 import UIKit
 
+typealias CompletionHandler = (_ success: Bool, _ photoUrl : String, _ errorString : String?) -> Void
+
 protocol APIServiceProtocol {
     
     func login(credentials: LoginCredentialsModel, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
@@ -23,6 +25,7 @@ protocol APIServiceProtocol {
     func setNewPassword(password:String, model: SignupModel, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func updateMobileNumber(mobileNumber:String, referanceNumber:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func updateNotificationSettings(pushNotifications:Bool, smsNotifications:Bool, emailNotifications:Bool, announcements:Bool, events:Bool, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func uploadImage(_withPhoto photo:Data, completionHandler:  @escaping CompletionHandler) -> Void
 }
 
 
@@ -405,17 +408,15 @@ final class MockAPIService: APIServiceProtocol {
             }
     }
     
-    
     func getHeadersWithToken() -> [String : String]? {
-        let requestHeaders:[String : String] = ["Content-Type":"application/json",
+        let requestHeaders:[String : String] = ["Content-Type":"multipart/form-data",
                                                 "Accept":"application/json",
                                                 "Authorization":String (format: "Bearer %@", MyUserDefaults.userToken!)]
         return requestHeaders
     }
     
     
-    typealias CompletionHandler = (_ _success:Any?, _ error:Any? ) -> Void
-    func uploadImage(_withUrl urlString:String, photo:Data, completionHandler:  @escaping CompletionHandler) -> Void {
+    func uploadImage(_withPhoto photo:Data, completionHandler:  @escaping CompletionHandler) -> Void {
         
         let filename = "image.png"
         
@@ -431,7 +432,7 @@ final class MockAPIService: APIServiceProtocol {
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
         
-        let url = URL(string: urlString)
+        let url = URL(string:  APIEndpoints.UPLOAD_PROFILE_PHOTO)
         guard let requestUrl = url else { fatalError() }
         
         // Set the URLRequest to POST and to the specified URL
@@ -456,7 +457,7 @@ final class MockAPIService: APIServiceProtocol {
         
         // Add the image data to the raw http request data
         data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
-        data.append("Content-Disposition: form-data; name=\"photo\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
+        data.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
         data.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
         data.append(photo)
         
@@ -466,28 +467,21 @@ final class MockAPIService: APIServiceProtocol {
         
         // Send a POST request to the URL, with the data we created earlier
         session.uploadTask(with: urlRequest, from: data, completionHandler: { responseData, response, error in
-            
             guard let dataLocal = responseData, error == nil else {
                 DispatchQueue.main.async {
-                    completionHandler(nil,error)
+                    completionHandler(false, "", error?.localizedDescription)
                 }
                 return
             }
-            let responseJSON = try? JSONSerialization.jsonObject(with: dataLocal, options: [])
-            if let responseJSON = responseJSON as? [String: Any] {
-                let status :Bool = responseJSON["success"] as! Bool
-//                if status  {
-//                    DispatchQueue.main.async {
-//                        completionHandler(responseJSON,nil)
-//                    }
-//                }
-//                else {
-//                    DispatchQueue.main.async {
-//                        let errorMsg :String = responseJSON["error"] as! String
-//                        let error = MyError(description: NSLocalizedString(errorMsg,comment: ""))
-//                        completionHandler(nil,error)
-//                    }
-//                }
+            do{
+                let responseObj = try JSONDecoder().decode(SuccessResponseDecodable.self, from: dataLocal)
+                if responseObj.success {
+                    completionHandler(true,responseObj.data, "")
+                } else {
+                    completionHandler(false,"",responseObj.data)
+                }
+            } catch{
+                completionHandler(false,"",error.localizedDescription)
             }
         }).resume()
     }

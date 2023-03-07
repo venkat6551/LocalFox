@@ -5,7 +5,7 @@
 //  Created by venkatesh karra on 16/02/23.
 //
 
-import Foundation
+import SwiftUI
 class ProfileViewModel: ObservableObject {
     
     @Published var profileModel: ProfileModel?
@@ -13,6 +13,7 @@ class ProfileViewModel: ObservableObject {
     @Published var errorString: String?
     @Published var getProfileSuccess: Bool = false
     @Published var updateNotificationSettingsSuccess: Bool = false
+    @Published var uploadProfilePhotoSuccess: Bool = false
     private let apiService: APIServiceProtocol
     
     
@@ -42,6 +43,24 @@ class ProfileViewModel: ObservableObject {
             self?.isLoading = false
             if success {
                 self?.profileModel?.data?.NotificationSettings = NotificationSettings(pushNotifications: pushNotifications, smsNotifications: smsNotifications, emailNotifications: emailNotifications, announcements: announcements, events: events)
+            }
+        }
+    }
+    
+    func uploadProfilePhoto(_withPhoto photo:UIImage) {
+        uploadProfilePhotoSuccess = false
+        errorString = nil
+        isLoading = true
+        guard let imageData = photo.jpegData(compressionQuality: 0.5) else { return }
+        print(imageData)
+        apiService.uploadImage(_withPhoto: imageData) {[weak self]  success, photoUrl, errorString in
+            DispatchQueue.main.async {
+                self?.uploadProfilePhotoSuccess = success
+                self?.errorString = errorString
+                self?.isLoading = false
+                if success {
+                    self?.profileModel?.data?.profilePhoto = photoUrl
+                }
             }
         }
     }

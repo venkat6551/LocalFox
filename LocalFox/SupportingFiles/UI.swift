@@ -119,16 +119,14 @@ extension View {
                                 Spacer()
                             }
                         }
-                        if let trailingView = trailingView {
-                            HStack {
-                                Spacer()
-                                trailingView
-                            }
-                        }
+                        
                     }
                     HStack {
                         Text(title).applyFontHeader()
                         Spacer()
+                        if let trailingView = trailingView {
+                            trailingView.padding(.trailing, 8)
+                        }
                     }.padding(.top, 8)
                     if let subtitle = subtitle {
                         HStack {
@@ -197,7 +195,19 @@ extension View {
     
     
 }
+struct ActivityIndicator: UIViewRepresentable {
 
+    @Binding var isAnimating: Bool
+    let style: UIActivityIndicatorView.Style
+
+    func makeUIView(context: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
+        return UIActivityIndicatorView(style: style)
+    }
+
+    func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<ActivityIndicator>) {
+        isAnimating ? uiView.startAnimating() : uiView.stopAnimating()
+    }
+}
 struct MyButton: View {
     
     var leadingImage: Image?

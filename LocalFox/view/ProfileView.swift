@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @State private var shouldPresentImagePicker = false
+    @State private var shouldPresentActionScheet = false
+    @State private var shouldPresentCamera = false
+    @State private var showProfilePhotoView = false
     @StateObject var profileVM: ProfileViewModel
+    @State var imageSelected = UIImage()
+    @State private var photoSelectedFromCam = false
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var body: some View {
         VStack {
@@ -16,10 +22,14 @@ struct ProfileView: View {
                 HStack {
                     Text(Strings.PROFILE).applyFontHeader()
                     Spacer()
-
                 }
-                ProfileCardView(profileVM: profileVM).cardify()
-                
+                ProfileCardView(profileVM: profileVM) {
+                    if(profileVM.profileModel?.data?.profilePhoto != nil && profileVM.profileModel?.data?.profilePhoto != "no-photo.png"){
+                        self.showProfilePhotoView = true
+                    } else {
+                        self.shouldPresentActionScheet = true
+                    }
+                }.cardify()
                 ScrollView {
                     HStack {
                         Text(Strings.SETTINGS).applyFontBold(size: 20)
@@ -36,7 +46,6 @@ struct ProfileView: View {
                     .padding(.bottom,10)
                     LegalsView().cardify()
                     Text("App version. 1.20.42325").applyFontRegular(color: Color.TEXT_LEVEL_3,size: 12).padding(.top,25)
-
                     Button(
                         action: {
                             self.presentationMode.wrappedValue.dismiss() // Go back
@@ -47,9 +56,7 @@ struct ProfileView: View {
                                 .padding(.horizontal,10)
                         }
                     ).cardify(cardBgColor: Color.LIGHT_GRAY)
-
                 }
-                
             }
             Spacer()
         }
@@ -57,21 +64,51 @@ struct ProfileView: View {
         .padding(.horizontal,25)
         .padding(.top,25)
         .background(Color.SCREEN_BG.ignoresSafeArea())
+        .sheet(isPresented: $shouldPresentImagePicker) {
+            ImagePicker(selectedImage: $imageSelected, sourceType: self.shouldPresentCamera ? .camera : .photoLibrary,onPhotoSelected: {
+                self.photoSelectedFromCam = true
+            })
+        }
+        .actionSheet(isPresented: $shouldPresentActionScheet) { () -> ActionSheet in
+            ActionSheet(title: Text("Choose mode"), message: Text("Please choose your preferred mode to set your profile image"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
+                self.shouldPresentImagePicker = true
+                self.shouldPresentCamera = true
+            }), ActionSheet.Button.default(Text("Photo Library"), action: {
+                self.shouldPresentImagePicker = true
+                self.shouldPresentCamera = false
+            }), ActionSheet.Button.cancel()])
+        }
+        .navigationDestination(isPresented: $showProfilePhotoView) {
+            ProfileImageView(profileVM: profileVM)
+        }
+        .navigationDestination(isPresented: $photoSelectedFromCam) {
+            ImagePreview(profileVM: profileVM, imageSelected: imageSelected)
+        }
     }
     
     struct ProfileCardView: View {
         @StateObject var profileVM: ProfileViewModel
+        @State var reloadViews = false
+        var onProfilePicClick: () -> Void
         var body: some View {
             ZStack {
                 VStack(alignment: .leading) {
                     HStack  {
                         VStack {
                             if let image = profileVM.profileModel?.data?.profilePhoto {
-                                AsyncImage(
-                                    url: URL(string: image)!,
-                                   placeholder: { Text("Loading ...") },
-                                   image: { Image(uiImage: $0).resizable() }
-                                ).frame(width: 100, height: 80, alignment: .center)
+                                if(reloadViews){
+                                    AsyncImage(
+                                        url: URL(string: image)!,
+                                        placeholder: { Text("Loading ...") },
+                                        image: { Image(uiImage: $0).resizable() }
+                                    ).frame(width: 100, height: 80, alignment: .center)
+                                } else {
+                                    AsyncImage(
+                                        url: URL(string: image)!,
+                                        placeholder: { Text("Loading ...") },
+                                        image: { Image(uiImage: $0).resizable() }
+                                    ).frame(width: 100, height: 80, alignment: .center)
+                                }
                             } else {
                                 // TODO: Add the placeholder image here
                                 Images.PRIVACY_ICON
@@ -79,7 +116,8 @@ struct ProfileView: View {
                                     .frame(width: 100, height: 80, alignment: .center)
                                     .foregroundColor(Color.BLUE)
                             }
-                            }.cardify()
+                        }.cardify(borderColor: Color.GRAY_TEXT)
+                            .onTapGesture { onProfilePicClick() }
                         VStack {
                             HStack(spacing: 0) {
                                 if let fName = profileVM.profileModel?.data?.firstName , let lName = profileVM.profileModel?.data?.lastName {
@@ -107,12 +145,13 @@ struct ProfileView: View {
                                     Text(address)
                                         .applyFontRegular(size: 13)
                                 }
-                                
                                 Spacer()
                             }
-                        }
+                        }.padding(.leading,5)
                     }
                 }.padding(15)
+            }.onAppear{
+                reloadViews.toggle()
             }
         }
     }
@@ -155,9 +194,7 @@ struct ProfileView: View {
             ZStack {
                 VStack(alignment: .leading) {
                     ProfileRowView(title: Strings.PRIVACY_STATEMENT, leadingImage: Images.PRIVACY_ICON, trailingimage: Images.LEGAL_DISCLOSURE) {
-                        
                     }
-                    
                     ProfileRowView(title: Strings.T_AND_C, leadingImage: Images.TANDC_ICON, trailingimage: Images.LEGAL_DISCLOSURE){
                         
                     }
@@ -173,7 +210,6 @@ struct ProfileRowView: View {
     var trailingimage: Image?
     var onRowClick: () -> Void
     var body: some View {
-        
         ZStack {
             HStack {
                 if let leadingImage = leadingImage {
@@ -192,11 +228,10 @@ struct ProfileRowView: View {
                 .cardify()
         }
         .contentShape(Rectangle())
-            .frame(maxWidth: .infinity)
-            .onTapGesture {
-                onRowClick()
-            }
-        
+        .frame(maxWidth: .infinity)
+        .onTapGesture {
+            onRowClick()
+        }
     }
 }
 

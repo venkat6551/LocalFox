@@ -11,6 +11,8 @@
 		CC1AE67129ABBF12005FC846 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1AE67029ABBF12005FC846 /* ImageLoader.swift */; };
 		CC1AE67329ABBF28005FC846 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1AE67229ABBF28005FC846 /* ImageCache.swift */; };
 		CC1AE67529ABBF31005FC846 /* EnvironmentValues+ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1AE67429ABBF31005FC846 /* EnvironmentValues+ImageCache.swift */; };
+		CC1AE67F29AE666F005FC846 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1AE67E29AE666F005FC846 /* ProfileImageView.swift */; };
+		CC1AE68929B65091005FC846 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1AE68829B65091005FC846 /* ImagePicker.swift */; };
 		CCE597F9299161AE0055AC9B /* ResetPasswordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */; };
 		CCE597FC29916A3E0055AC9B /* ResetPSWViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */; };
 		CCE597FE299774A70055AC9B /* SignupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FD299774A70055AC9B /* SignupModel.swift */; };
@@ -81,6 +83,8 @@
 		CC1AE67029ABBF12005FC846 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		CC1AE67229ABBF28005FC846 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		CC1AE67429ABBF31005FC846 /* EnvironmentValues+ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+ImageCache.swift"; sourceTree = "<group>"; };
+		CC1AE67E29AE666F005FC846 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
+		CC1AE68829B65091005FC846 /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordModel.swift; sourceTree = "<group>"; };
 		CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPSWViewModel.swift; sourceTree = "<group>"; };
 		CCE597FD299774A70055AC9B /* SignupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupModel.swift; sourceTree = "<group>"; };
@@ -276,6 +280,8 @@
 				CD07688A2972907B00CB7075 /* NotificationSettingsView.swift */,
 				CD07688C297296AE00CB7075 /* SettingsUpdateSheet.swift */,
 				CD07688E2972A61B00CB7075 /* SecuritySettingsView.swift */,
+				CC1AE67E29AE666F005FC846 /* ProfileImageView.swift */,
+				CC1AE68829B65091005FC846 /* ImagePicker.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -415,6 +421,7 @@
 				CD006F8429438DBA004BBF4A /* LeadViewModel.swift in Sources */,
 				CDDDD1DD295DF78600E92D33 /* LeadImagesView.swift in Sources */,
 				CD0768992972B74600CB7075 /* AccountCreatedView.swift in Sources */,
+				CC1AE67F29AE666F005FC846 /* ProfileImageView.swift in Sources */,
 				CD0768932972AEC700CB7075 /* EmailAddressView.swift in Sources */,
 				CD051AFE29435AB7009C054F /* LeadCardView.swift in Sources */,
 				CD07689D2972C97D00CB7075 /* MobileNumberView.swift in Sources */,
@@ -452,6 +459,7 @@
 				CD0768952972B3A600CB7075 /* EmailCodeView.swift in Sources */,
 				CD1D0BC22941EAD0000CB2D1 /* Utils.swift in Sources */,
 				CC1AE67129ABBF12005FC846 /* ImageLoader.swift in Sources */,
+				CC1AE68929B65091005FC846 /* ImagePicker.swift in Sources */,
 				CCE597F9299161AE0055AC9B /* ResetPasswordModel.swift in Sources */,
 				CCE59804299E01D00055AC9B /* ProfileViewModel.swift in Sources */,
 				CDF2B02D2941D8AF00CF2B28 /* LocalFoxApp.swift in Sources */,

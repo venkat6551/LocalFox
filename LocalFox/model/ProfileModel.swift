@@ -25,7 +25,7 @@ struct ProfileData: Codable {
     let isMobileVerified: Bool
     let isEmailVerified: Bool
     let mobileNumber: String
-    let profilePhoto: String
+    var profilePhoto: String
     let isActive: Bool
     let isApproved: Bool
     let role: String

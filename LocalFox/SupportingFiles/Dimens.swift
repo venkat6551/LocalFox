@@ -11,7 +11,6 @@ import Foundation
 import SwiftUI
 
 enum Dimens {
-    
     static let BUTTON_HEIGHT: CGFloat = 35.0
     static let INPUT_FIELD_HEIGHT: CGFloat = 48.0
     static let CARD_CORNER_RADIUS_DEFAULT: CGFloat = 5.0
