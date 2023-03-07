@@ -18,6 +18,14 @@ struct SuccessResponseDecodable: Decodable {
     let success: Bool
     let data: String
 }
+
+struct ProfileDeleteSuccessDecodable: Decodable {
+    let success: Bool
+    let data: Emptystruct
+}
+
+struct Emptystruct: Decodable {
+}
 struct validateMobileCodeDecodable: Decodable {
     let success: Bool
     let mobileVerificationReference: String

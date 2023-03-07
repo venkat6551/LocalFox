@@ -94,4 +94,6 @@ struct Strings {
     static let EMAIL_NOTIFICATIONS = "Email Notifications"
     static let ANNOUNCEMENTS = "Announcements"
     static let EVENTS = "Events"
+    
+    static let NO_PROFILE_PIC = "no-photo.png"
 }

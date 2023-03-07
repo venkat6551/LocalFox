@@ -19,7 +19,6 @@ struct ProfileImageView: View {
     var body: some View {
         ZStack {
             if (photoSelectedFromCam == true) {
-               
                 VStack {
                     Image(uiImage: imageSelected).resizable()
                     HStack {
@@ -49,15 +48,24 @@ struct ProfileImageView: View {
                 }
             } else {
                 VStack {
-                    if let image = profileVM.profileModel?.data?.profilePhoto {
-                        AsyncImage(
-                            url: URL(string: image)!,
-                            placeholder: { Text("Loading ...") },
-                            image: {
-                                Image(uiImage: $0).resizable() }
-                        )
-                    } else {
-                        Text("Loading ...")
+                    ZStack {
+                        if let image = profileVM.profileModel?.data?.profilePhoto {
+                            AsyncImage(
+                                url: URL(string: image)!,
+                                placeholder: { Text("Loading ...") },
+                                image: {
+                                    Image(uiImage: $0).resizable() }
+                            )
+                        } else {
+                            Text("Loading ...")
+                        }
+                        if(profileVM.isLoading) {
+                            VStack {
+                                Text("Deleting...").foregroundColor(Color.white)
+                                    .padding(.horizontal,35).padding(.top,15)
+                                ActivityIndicator(isAnimating: .constant(true), style: .large).foregroundColor(Color.white).padding(.bottom,10)
+                            }.background(Color.gray).cardify()
+                        }
                     }
                 }.padding(20)
             }
@@ -85,6 +93,7 @@ struct ProfileImageView: View {
         }
         .confirmationDialog("", isPresented: $shouldPresentActionScheet, titleVisibility: .hidden) {
             Button("Delete Photo",role: .destructive) {
+                profileVM.deleteProfilePhoto()
             }
             Button("Take Photo") {
                 self.shouldPresentImagePicker = true
@@ -107,9 +116,9 @@ struct ProfileImageView: View {
             isAlignToBottom: true
         )
         .onChange(of: profileVM.isLoading) { isloading in
-            if profileVM.uploadProfilePhotoSuccess == true {
+            if profileVM.editProfilePhotoSuccess == true {
                 self.presentationMode.wrappedValue.dismiss()
-            } else if(profileVM.uploadProfilePhotoSuccess == false && profileVM.errorString != nil) {
+            } else if(profileVM.editProfilePhotoSuccess == false && profileVM.errorString != nil) {
                 showErrorSnackbar = true
             }
         }
@@ -164,9 +173,9 @@ struct ImagePreview: View {
                 isAlignToBottom: true
             )
             .onChange(of: profileVM.isLoading) { isloading in
-                if profileVM.uploadProfilePhotoSuccess == true {
+                if profileVM.editProfilePhotoSuccess == true {
                     self.presentationMode.wrappedValue.dismiss()
-                } else if(profileVM.uploadProfilePhotoSuccess == false && profileVM.errorString != nil) {
+                } else if(profileVM.editProfilePhotoSuccess == false && profileVM.errorString != nil) {
                     showErrorSnackbar = true
                 }
             }

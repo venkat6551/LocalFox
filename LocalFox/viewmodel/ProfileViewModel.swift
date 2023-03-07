@@ -13,7 +13,7 @@ class ProfileViewModel: ObservableObject {
     @Published var errorString: String?
     @Published var getProfileSuccess: Bool = false
     @Published var updateNotificationSettingsSuccess: Bool = false
-    @Published var uploadProfilePhotoSuccess: Bool = false
+    @Published var editProfilePhotoSuccess: Bool = false
     private let apiService: APIServiceProtocol
     
     
@@ -48,19 +48,32 @@ class ProfileViewModel: ObservableObject {
     }
     
     func uploadProfilePhoto(_withPhoto photo:UIImage) {
-        uploadProfilePhotoSuccess = false
+        editProfilePhotoSuccess = false
         errorString = nil
         isLoading = true
         guard let imageData = photo.jpegData(compressionQuality: 0.5) else { return }
         print(imageData)
         apiService.uploadImage(_withPhoto: imageData) {[weak self]  success, photoUrl, errorString in
             DispatchQueue.main.async {
-                self?.uploadProfilePhotoSuccess = success
+                self?.editProfilePhotoSuccess = success
                 self?.errorString = errorString
                 self?.isLoading = false
                 if success {
                     self?.profileModel?.data?.profilePhoto = photoUrl
                 }
+            }
+        }
+    }
+    func deleteProfilePhoto() {
+        editProfilePhotoSuccess = false
+        errorString = nil
+        isLoading = true
+        apiService.deleteProfilePic {[weak self] success, errorString in
+            self?.editProfilePhotoSuccess = success
+            self?.errorString = errorString
+            self?.isLoading = false
+            if success {
+                self?.profileModel?.data?.profilePhoto = Strings.NO_PROFILE_PIC
             }
         }
     }

@@ -24,7 +24,7 @@ struct ProfileView: View {
                     Spacer()
                 }
                 ProfileCardView(profileVM: profileVM) {
-                    if(profileVM.profileModel?.data?.profilePhoto != nil && profileVM.profileModel?.data?.profilePhoto != "no-photo.png"){
+                    if(profileVM.profileModel?.data?.profilePhoto != nil && profileVM.profileModel?.data?.profilePhoto != Strings.NO_PROFILE_PIC){
                         self.showProfilePhotoView = true
                     } else {
                         self.shouldPresentActionScheet = true
@@ -95,16 +95,16 @@ struct ProfileView: View {
                 VStack(alignment: .leading) {
                     HStack  {
                         VStack {
-                            if let image = profileVM.profileModel?.data?.profilePhoto {
+                            if(profileVM.profileModel?.data?.profilePhoto != nil && profileVM.profileModel?.data?.profilePhoto != Strings.NO_PROFILE_PIC) {
                                 if(reloadViews){
                                     AsyncImage(
-                                        url: URL(string: image)!,
+                                        url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")!,
                                         placeholder: { Text("Loading ...") },
                                         image: { Image(uiImage: $0).resizable() }
                                     ).frame(width: 100, height: 80, alignment: .center)
                                 } else {
                                     AsyncImage(
-                                        url: URL(string: image)!,
+                                        url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")!,
                                         placeholder: { Text("Loading ...") },
                                         image: { Image(uiImage: $0).resizable() }
                                     ).frame(width: 100, height: 80, alignment: .center)
