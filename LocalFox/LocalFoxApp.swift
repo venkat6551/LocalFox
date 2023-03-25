@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct LocalFoxApp: App {
     @StateObject var authenticationStatus = AuthenticationStatus()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
         WindowGroup {
 //            if authenticationStatus.isAuthenticated {

@@ -13,6 +13,10 @@
 		CC1AE67529ABBF31005FC846 /* EnvironmentValues+ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1AE67429ABBF31005FC846 /* EnvironmentValues+ImageCache.swift */; };
 		CC1AE67F29AE666F005FC846 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1AE67E29AE666F005FC846 /* ProfileImageView.swift */; };
 		CC1AE68929B65091005FC846 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1AE68829B65091005FC846 /* ImagePicker.swift */; };
+		CC56571529C0DEFE0098D16F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56571429C0DEFE0098D16F /* AppDelegate.swift */; };
+		CC56571A29C0E4190098D16F /* GoogleApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56571929C0E4190098D16F /* GoogleApiHelper.swift */; };
+		CC56571C29C0E4200098D16F /* GoogleApiHelper+Nearby.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56571B29C0E4200098D16F /* GoogleApiHelper+Nearby.swift */; };
+		CC56571E29C0E4260098D16F /* NearByEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56571D29C0E4260098D16F /* NearByEnum.swift */; };
 		CCE597F9299161AE0055AC9B /* ResetPasswordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */; };
 		CCE597FC29916A3E0055AC9B /* ResetPSWViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */; };
 		CCE597FE299774A70055AC9B /* SignupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FD299774A70055AC9B /* SignupModel.swift */; };
@@ -85,6 +89,10 @@
 		CC1AE67429ABBF31005FC846 /* EnvironmentValues+ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+ImageCache.swift"; sourceTree = "<group>"; };
 		CC1AE67E29AE666F005FC846 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		CC1AE68829B65091005FC846 /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		CC56571429C0DEFE0098D16F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CC56571929C0E4190098D16F /* GoogleApiHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleApiHelper.swift; sourceTree = "<group>"; };
+		CC56571B29C0E4200098D16F /* GoogleApiHelper+Nearby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GoogleApiHelper+Nearby.swift"; sourceTree = "<group>"; };
+		CC56571D29C0E4260098D16F /* NearByEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearByEnum.swift; sourceTree = "<group>"; };
 		CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordModel.swift; sourceTree = "<group>"; };
 		CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPSWViewModel.swift; sourceTree = "<group>"; };
 		CCE597FD299774A70055AC9B /* SignupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupModel.swift; sourceTree = "<group>"; };
@@ -163,6 +171,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CC56571829C0E3FF0098D16F /* ThirdPartyLibs */ = {
+			isa = PBXGroup;
+			children = (
+				CC56571D29C0E4260098D16F /* NearByEnum.swift */,
+				CC56571B29C0E4200098D16F /* GoogleApiHelper+Nearby.swift */,
+				CC56571929C0E4190098D16F /* GoogleApiHelper.swift */,
+			);
+			path = ThirdPartyLibs;
+			sourceTree = "<group>";
+		};
 		CCF81AB5298D680500A6E2A5 /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +262,7 @@
 				CDF2B03B2941D95B00CF2B28 /* model */,
 				CDF2B03A2941D95500CF2B28 /* view */,
 				CDF2B02C2941D8AF00CF2B28 /* LocalFoxApp.swift */,
+				CC56571429C0DEFE0098D16F /* AppDelegate.swift */,
 				CDF2B02E2941D8AF00CF2B28 /* LoginView.swift */,
 				CDF2B0302941D8B100CF2B28 /* Assets.xcassets */,
 				CDF2B0512941DDDB00CF2B28 /* Colors.xcassets */,
@@ -314,6 +333,7 @@
 		CDF2B03D2941DA9C00CF2B28 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				CC56571829C0E3FF0098D16F /* ThirdPartyLibs */,
 				CCF81ABF298FEC2A00A6E2A5 /* MyUserDefaults.swift */,
 				CD1D0BBB2941EA06000CB2D1 /* UI.swift */,
 				CD1D0BB72941E961000CB2D1 /* Dimens.swift */,
@@ -426,6 +446,7 @@
 				CD051AFE29435AB7009C054F /* LeadCardView.swift in Sources */,
 				CD07689D2972C97D00CB7075 /* MobileNumberView.swift in Sources */,
 				CDF2B02F2941D8AF00CF2B28 /* LoginView.swift in Sources */,
+				CC56571E29C0E4260098D16F /* NearByEnum.swift in Sources */,
 				CD1D0BBC2941EA06000CB2D1 /* UI.swift in Sources */,
 				CD051AEE29434BCE009C054F /* LeadsView.swift in Sources */,
 				CCF81ABE298FEB6100A6E2A5 /* AuthenticationStatus.swift in Sources */,
@@ -448,6 +469,7 @@
 				CD50661D2971A69200FC4804 /* InvitationView.swift in Sources */,
 				CDE5873F2943A5CD008A8022 /* SearchView.swift in Sources */,
 				CD07688D297296AE00CB7075 /* SettingsUpdateSheet.swift in Sources */,
+				CC56571C29C0E4200098D16F /* GoogleApiHelper+Nearby.swift in Sources */,
 				CD051B0029435CF8009C054F /* LeadModel.swift in Sources */,
 				CCF81AB7298D682200A6E2A5 /* APIEndPoints.swift in Sources */,
 				CD1D0BC02941EA54000CB2D1 /* LoginCredentialsModel.swift in Sources */,
@@ -460,6 +482,7 @@
 				CD1D0BC22941EAD0000CB2D1 /* Utils.swift in Sources */,
 				CC1AE67129ABBF12005FC846 /* ImageLoader.swift in Sources */,
 				CC1AE68929B65091005FC846 /* ImagePicker.swift in Sources */,
+				CC56571A29C0E4190098D16F /* GoogleApiHelper.swift in Sources */,
 				CCE597F9299161AE0055AC9B /* ResetPasswordModel.swift in Sources */,
 				CCE59804299E01D00055AC9B /* ProfileViewModel.swift in Sources */,
 				CDF2B02D2941D8AF00CF2B28 /* LocalFoxApp.swift in Sources */,
@@ -469,6 +492,7 @@
 				CD1D0BBA2941E9DB000CB2D1 /* Strings.swift in Sources */,
 				CD1D0BBE2941EA43000CB2D1 /* LoginViewModel.swift in Sources */,
 				CCF81AC2298FEDE200A6E2A5 /* EncodableDecodables.swift in Sources */,
+				CC56571529C0DEFE0098D16F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
