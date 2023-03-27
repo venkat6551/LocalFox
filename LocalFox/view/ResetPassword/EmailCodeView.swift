@@ -16,6 +16,8 @@ struct EmailCodeView: View {
     var isforSignUpFlow:Bool = false
     @State private var showErrorSnackbar: Bool = false
     @State private var showSuccessSnackbar: Bool = false
+    
+    var onSuccess: () -> Void
     var body: some View {
         VStack{
             VStack(alignment: .leading) {
@@ -62,15 +64,14 @@ struct EmailCodeView: View {
                         showSetPSWView = true
                         showSuccessSnackbar = true
                     } else {
-                        if (signupVM.updateMobileNumberSuccess != true) {
+                        if (signupVM.updateMobileNumberSuccess != true && !signupVM.isLoading) {
                             if(!signupVM.isLoading && !showErrorSnackbar) {
                                 signupVM.updateMobileNumber(data: signupVM.signupModel, completion: { _ in
                                 })
                             }
-                        } else {
+                        } else if (signupVM.updateMobileNumberSuccess == true && !signupVM.isLoading){
                             showSuccessSnackbar = true
                         }
-                        
                     }
                 } else if(signupVM.validateMobileCodeSuccess == false && signupVM.errorString != nil) {
                     showErrorSnackbar = true
@@ -103,7 +104,8 @@ struct EmailCodeView: View {
                 showSuccessSnackbar = false
                 if(isMobileVerificationCode && !isforSignUpFlow) {
                     presentationMode.wrappedValue.dismiss()
-                }
+                    onSuccess()
+                } 
             },
             isAlignToBottom: true
         )
@@ -112,6 +114,8 @@ struct EmailCodeView: View {
 
 struct EmailCodeView_Previews: PreviewProvider {
     static var previews: some View {
-        EmailCodeView(signupVM: SignupViewModel())
+        EmailCodeView(signupVM: SignupViewModel()) {
+            
+        }
     }
 }

@@ -46,7 +46,9 @@ struct MobileNumberView: View {
         }
         .setNavTitle(Strings.MOBILE,subtitle: Strings.MOBILE_NUMBER_MESSAGE, showBackButton: true)
         .navigationDestination(isPresented: $showMobileCodeView) {
-            EmailCodeView(signupVM: signupVM, isMobileVerificationCode: true, isforSignUpFlow: true)
+            EmailCodeView(signupVM: signupVM, isMobileVerificationCode: true, isforSignUpFlow: true) {
+                
+            }
         }
         .snackbar(
             show: $showErrorSnackbar,

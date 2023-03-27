@@ -50,7 +50,9 @@ struct EmailAddressView: View {
             
         }.setNavTitle(Strings.EMAIL_ADDRESS,subtitle: Strings.EMAIL_ADDRESS_SUBTITLE, showBackButton: true)
             .navigationDestination(isPresented: $showEmailCodeView) {
-            EmailCodeView(signupVM: signupVM,isforSignUpFlow: isforSignUpFlow)
+                EmailCodeView(signupVM: signupVM,isforSignUpFlow: isforSignUpFlow) {
+                    
+                }
         }
             .snackbar(
                 show: $showErrorSnackbar,

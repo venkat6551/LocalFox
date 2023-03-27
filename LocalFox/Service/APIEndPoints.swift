@@ -40,7 +40,7 @@ enum APIEndpoints {
     static var UPDATE_NOTIFICATION_SETTINGS = BASE_URL + "/api/v1/partner/profile/updateNotificationSettings"
     
     //JOBS
-    static var ADD_JOB_ACTIVITY = BASE_URL + "/api/v1/customer/authenticate"
+    static var GET_JOBS = BASE_URL + "/api/v1/partner/jobs/getJobs"
     static var ASSIGN_JOB_TO_EMPLOYEE = BASE_URL + "/api/v1/customer/authenticate"
     
     //JOB INVITATION

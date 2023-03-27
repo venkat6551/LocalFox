@@ -27,7 +27,8 @@ protocol APIServiceProtocol {
     func updateNotificationSettings(pushNotifications:Bool, smsNotifications:Bool, emailNotifications:Bool, announcements:Bool, events:Bool, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func uploadImage(_withPhoto photo:Data, completionHandler:  @escaping CompletionHandler) -> Void
     func deleteProfilePic(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
-    func logoutUser(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) 
+    func logoutUser(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func getJobs(completion: @escaping (_ success: Bool, _ jobsModel : JobsModel?, _ errorString: String?)-> Void)
 }
 
 
@@ -323,6 +324,8 @@ final class MockAPIService: APIServiceProtocol {
         request
             .validate(statusCode: 200..<300)
             .responseDecodable(of: SuccessResponseDecodable.self) { response in
+                
+                print(response)
                 switch response.result {
                 case .success(let data):
                     completion(true,data.data)
@@ -393,6 +396,37 @@ final class MockAPIService: APIServiceProtocol {
                 switch response.result {
                 case .success(let data):
                     let model = ProfileModel(success: data.success, data:  data.data)
+                    completion(true,model,"")
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,nil,err.localizedDescription)
+                        return
+                    }
+                    do{
+                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                        completion(false,nil,errorObj.error)
+                    } catch{
+                        completion(false,nil,error.localizedDescription)
+                    }
+                }
+            }
+    }
+    
+    
+    func getJobs(completion: @escaping (_ success: Bool, _ jobsModel : JobsModel?, _ errorString: String?)-> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let request = AF.request(
+            APIEndpoints.GET_JOBS,
+            method: HTTPMethod.get,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: ProfileModel.self) { response in
+                switch response.result {
+                case .success(let data):
+                    let model = JobsModel(success: data.success, data:  data.data)
                     print(model)
                     completion(true,model,"")
                 case .failure(let err):
@@ -420,8 +454,6 @@ final class MockAPIService: APIServiceProtocol {
         request
             .validate(statusCode: 200..<300)
             .responseDecodable(of: ProfileDeleteSuccessDecodable.self) { response in
-                print(response)
-                
                 switch response.result {
                 case .success(_):
                     completion(true,"")
@@ -451,7 +483,6 @@ final class MockAPIService: APIServiceProtocol {
         request
             .validate(statusCode: 200..<300)
             .responseDecodable(of: ProfileDeleteSuccessDecodable.self) { response in
-                print(response)
                 
                 switch response.result {
                 case .success(_):

@@ -37,7 +37,6 @@ struct ProfileData: Codable {
 struct Location: Codable {
     let type: String
     let formattedAddress: String
-    //let unit: Int
     let streetName: String
     let suburb: String
     let state: String

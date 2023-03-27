@@ -17,6 +17,8 @@
 		CC56571A29C0E4190098D16F /* GoogleApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56571929C0E4190098D16F /* GoogleApiHelper.swift */; };
 		CC56571C29C0E4200098D16F /* GoogleApiHelper+Nearby.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56571B29C0E4200098D16F /* GoogleApiHelper+Nearby.swift */; };
 		CC56571E29C0E4260098D16F /* NearByEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56571D29C0E4260098D16F /* NearByEnum.swift */; };
+		CC56574029CF31470098D16F /* JobsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56573F29CF31470098D16F /* JobsViewModel.swift */; };
+		CC56574229CF31BD0098D16F /* JobsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56574129CF31BD0098D16F /* JobsModel.swift */; };
 		CCE597F9299161AE0055AC9B /* ResetPasswordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */; };
 		CCE597FC29916A3E0055AC9B /* ResetPSWViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */; };
 		CCE597FE299774A70055AC9B /* SignupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FD299774A70055AC9B /* SignupModel.swift */; };
@@ -93,6 +95,8 @@
 		CC56571929C0E4190098D16F /* GoogleApiHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleApiHelper.swift; sourceTree = "<group>"; };
 		CC56571B29C0E4200098D16F /* GoogleApiHelper+Nearby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GoogleApiHelper+Nearby.swift"; sourceTree = "<group>"; };
 		CC56571D29C0E4260098D16F /* NearByEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearByEnum.swift; sourceTree = "<group>"; };
+		CC56573F29CF31470098D16F /* JobsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsViewModel.swift; sourceTree = "<group>"; };
+		CC56574129CF31BD0098D16F /* JobsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsModel.swift; sourceTree = "<group>"; };
 		CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordModel.swift; sourceTree = "<group>"; };
 		CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPSWViewModel.swift; sourceTree = "<group>"; };
 		CCE597FD299774A70055AC9B /* SignupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupModel.swift; sourceTree = "<group>"; };
@@ -314,6 +318,7 @@
 				CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */,
 				CCE597FD299774A70055AC9B /* SignupModel.swift */,
 				CCE59801299DEC230055AC9B /* ProfileModel.swift */,
+				CC56574129CF31BD0098D16F /* JobsModel.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -326,6 +331,7 @@
 				CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */,
 				CCE597FF299779300055AC9B /* SignupViewModel.swift */,
 				CCE59803299E01D00055AC9B /* ProfileViewModel.swift */,
+				CC56573F29CF31470098D16F /* JobsViewModel.swift */,
 			);
 			path = viewmodel;
 			sourceTree = "<group>";
@@ -470,6 +476,7 @@
 				CDE5873F2943A5CD008A8022 /* SearchView.swift in Sources */,
 				CD07688D297296AE00CB7075 /* SettingsUpdateSheet.swift in Sources */,
 				CC56571C29C0E4200098D16F /* GoogleApiHelper+Nearby.swift in Sources */,
+				CC56574029CF31470098D16F /* JobsViewModel.swift in Sources */,
 				CD051B0029435CF8009C054F /* LeadModel.swift in Sources */,
 				CCF81AB7298D682200A6E2A5 /* APIEndPoints.swift in Sources */,
 				CD1D0BC02941EA54000CB2D1 /* LoginCredentialsModel.swift in Sources */,
@@ -491,6 +498,7 @@
 				CDE587412943A5DD008A8022 /* ProfileView.swift in Sources */,
 				CD1D0BBA2941E9DB000CB2D1 /* Strings.swift in Sources */,
 				CD1D0BBE2941EA43000CB2D1 /* LoginViewModel.swift in Sources */,
+				CC56574229CF31BD0098D16F /* JobsModel.swift in Sources */,
 				CCF81AC2298FEDE200A6E2A5 /* EncodableDecodables.swift in Sources */,
 				CC56571529C0DEFE0098D16F /* AppDelegate.swift in Sources */,
 			);

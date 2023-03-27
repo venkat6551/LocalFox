@@ -131,7 +131,9 @@ struct SettingsUpdateSheet: View {
                 }.padding(40)
             }.background(Color.SCREEN_BG.ignoresSafeArea())
                 .navigationDestination(isPresented: $showOTPCodeView) {
-                    EmailCodeView(signupVM: signupVM,isMobileVerificationCode: true)
+                    EmailCodeView(signupVM: signupVM,isMobileVerificationCode: true) {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
                 }
                 .onChange(of: signupVM.isLoading) { isloading in
                     if(settingsType == .mobileNumber) {
