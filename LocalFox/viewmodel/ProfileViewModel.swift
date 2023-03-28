@@ -14,6 +14,7 @@ class ProfileViewModel: ObservableObject {
     @Published var getProfileSuccess: Bool = false
     @Published var updateNotificationSettingsSuccess: Bool = false
     @Published var editProfilePhotoSuccess: Bool = false
+    @Published var editAddressSuccess: Bool = false
     private let apiService: APIServiceProtocol
     
     
@@ -63,6 +64,23 @@ class ProfileViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func updateAddress(_withAddress address:String) {
+        editAddressSuccess = false
+        errorString = nil
+        isLoading = true
+        apiService.updateAddress(address: address) {[weak self]  success, errorString in
+            DispatchQueue.main.async {
+                self?.editAddressSuccess = success
+                self?.errorString = errorString
+                self?.isLoading = false
+                if success {
+                    self?.profileModel?.data?.location?.formattedAddress = address
+                }
+            }
+        }
+        
     }
     func deleteProfilePhoto() {
         editProfilePhotoSuccess = false

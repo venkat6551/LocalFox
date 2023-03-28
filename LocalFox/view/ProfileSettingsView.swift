@@ -85,13 +85,14 @@ struct ProfileSettingsView: View {
             mobileNumText = (self.profileVM.profileModel?.data?.mobileNumber ?? "")
             emailText = (self.profileVM.profileModel?.data?.emailAddress ?? "")
             addressText = (self.profileVM.profileModel?.data?.location?.formattedAddress ?? "")
-
         }
         .padding(.horizontal,20)
         .setNavTitle(Strings.PROFILE_SETTINGS, showBackButton: true,leadingSpace: 20)
         .sheet(isPresented: $showSettingsUpdateSheet){
             SettingsUpdateSheet(onClickClose: {
-            }, profileVM: profileVM, settingsType: settingsType,text: $changeText)
+            }, profileVM: profileVM, onUpdateSuccess: {
+                addressText = (self.profileVM.profileModel?.data?.location?.formattedAddress ?? "")
+            }, settingsType: settingsType, text: $changeText)
         }
     }
 }

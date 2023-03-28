@@ -29,6 +29,7 @@ protocol APIServiceProtocol {
     func deleteProfilePic(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func logoutUser(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func getJobs(completion: @escaping (_ success: Bool, _ jobsModel : JobsModel?, _ errorString: String?)-> Void)
+    func updateAddress(address:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
 }
 
 
@@ -316,6 +317,41 @@ final class MockAPIService: APIServiceProtocol {
         ]
         let request = AF.request(
             APIEndpoints.UPDATE_MOBILE_NUMBER,
+            method: HTTPMethod.put,
+            parameters: parameters,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: SuccessResponseDecodable.self) { response in
+                
+                print(response)
+                switch response.result {
+                case .success(let data):
+                    completion(true,data.data)
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    do{
+                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                        completion(false,errorObj.error)
+                    } catch{
+                        completion(false,error.localizedDescription)
+                    }
+                }
+            }
+    }
+    
+    func updateAddress(address:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let parameters: Parameters = [
+            "newAddress" :address.trimmingCharacters(in: .whitespaces)
+        ]
+        let request = AF.request(
+            APIEndpoints.UPDATE_ADDRESS,
             method: HTTPMethod.put,
             parameters: parameters,
             encoding:JSONEncoding.default,

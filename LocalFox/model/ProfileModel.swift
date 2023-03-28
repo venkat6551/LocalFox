@@ -36,13 +36,13 @@ struct ProfileData: Codable {
 
 struct Location: Codable {
     let type: String
-    let formattedAddress: String
-    let streetName: String
-    let suburb: String
-    let state: String
-    let postCode: String
-    let country: String
-    let googlePlaceId: String
+    var formattedAddress: String?
+    var streetName: String?
+    var suburb: String?
+    var state: String?
+    var postCode: String?
+    var country: String?
+    var googlePlaceId: String?
 }
 
 struct NotificationSettings: Codable {

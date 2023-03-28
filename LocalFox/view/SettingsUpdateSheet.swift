@@ -42,9 +42,10 @@ struct SettingsUpdateSheet: View {
     @StateObject private var signupVM: SignupViewModel = SignupViewModel()
     @State private var showOTPCodeView:Bool = false
     @State private var showErrorSnackbar: Bool = false
-    
+    @State private var showSuccessSnackbar: Bool = false
+    @State private var addressSelected: Bool = false
     @State private var addressList: [String] = []
-    
+    var onUpdateSuccess: () -> Void
     var settingsType: SettingsType
     @Binding var text: String
     @State var autocompleteResults :[GApiResponse.Autocomplete] = []
@@ -83,151 +84,181 @@ struct SettingsUpdateSheet: View {
                             leadingImage: Images.FLAG,
                             leadingText: "+61"
                         )
-                        
                     } else if(settingsType == .address) {
-                        MyInputTextBox(
-                            text: $text,
-                            keyboardType: UIKeyboardType.default
-                        )
-                        
-                        if addressList.count > 0 {
-                            AddressesView(addressList: addressList) { selectedAddress in
-                                print(selectedAddress)
-                            }
-                            
-//
-//                            ScrollView {
-//                                LazyVStack(spacing: 15) {
-//                                    ForEach(addressList, id: \.self) { address in
-//                                        HStack {
-//                                            Text(address).multilineTextAlignment(.leading).frame(minHeight: 45)
-//                                            Spacer()
-//                                        }.cardify()
-//                                    }
-//                                }
-//                            }
-                        }
-                    } else if(settingsType == .pin) {
-                        MyInputTextBox(
-                            text: $text,
-                            keyboardType: UIKeyboardType.numberPad,
-                            isPassword: true
-                        )
-                    }
-                   
-                   
-                    MyButton(
-                        text: Strings.UPDATE,
-                        onClickButton: {
-                            if(settingsType == .mobileNumber) {
-                                signupVM.sendMobileCode { _ in
+                            MyInputTextBox(
+                                text: $text,
+                                keyboardType: UIKeyboardType.default
+                            )
+                            if autocompleteResults.count > 0 {
+                                AddressesView(addressList: $addressList) { selectedAddress in
+                                    print(selectedAddress)
+                                    text = selectedAddress
+                                    addressList.removeAll()
+                                    addressList.removeAll()
+                                    addressSelected = true
                                 }
                             }
-                        },
-                        showLoading: signupVM.isLoading,
-                        bgColor: Color.PRIMARY
-                    ).padding(.top, 35)
-                    Spacer()
-                }.padding(40)
-            }.background(Color.SCREEN_BG.ignoresSafeArea())
-                .navigationDestination(isPresented: $showOTPCodeView) {
-                    EmailCodeView(signupVM: signupVM,isMobileVerificationCode: true) {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }
-                }
-                .onChange(of: signupVM.isLoading) { isloading in
-                    if(settingsType == .mobileNumber) {
-                        if signupVM.sendMobileCodeSuccess == true {
-                            showOTPCodeView = true
-                            showErrorSnackbar = false
-                        } else if(signupVM.sendMobileCodeSuccess == false && signupVM.errorString != nil) {
-                            showErrorSnackbar = true
+                        } else if(settingsType == .pin) {
+                            MyInputTextBox(
+                                text: $text,
+                                keyboardType: UIKeyboardType.numberPad,
+                                isPassword: true
+                            )
                         }
-                    }
-                }.onChange(of: text) { text in
-                    print(text)
-                    if (text.count > 3) {
-                        var input = GInput()
-                        input.keyword = text
                         
-                        GoogleApi.shared.callApi(input: input) { (response) in
-                            if response.isValidFor(.autocomplete) {
-                                DispatchQueue.main.async {
-                                    autocompleteResults = response.data as! [GApiResponse.Autocomplete]
-                                    var ary:[String] = []
-                                    for autocompleteResult in autocompleteResults  {
-                                        ary.append(autocompleteResult.formattedAddress)
+                        MyButton(
+                            text: Strings.UPDATE,
+                            onClickButton: {
+                                if(settingsType == .mobileNumber) {
+                                    signupVM.sendMobileCode { _ in
                                     }
-                                    addressList = ary
+                                } else if(settingsType == .address) {
+                                    profileVM.updateAddress(_withAddress: text)
                                 }
-                            } else { print(response.error ?? "ERROR") }
+                            },
+                            showLoading: (settingsType == .address) ? profileVM.isLoading : signupVM.isLoading,
+                            bgColor: Color.PRIMARY
+                        ).padding(.top, 35)
+                        Spacer()
+                    }.padding(40)
+                }.background(Color.SCREEN_BG.ignoresSafeArea())
+                    .navigationDestination(isPresented: $showOTPCodeView) {
+                        EmailCodeView(signupVM: signupVM,isMobileVerificationCode: true) {
+                            self.presentationMode.wrappedValue.dismiss()
                         }
                     }
-                }
-                .onAppear{
-                    signupVM.signupModel.mobileNumber = text;
-                    signupVM.signupModel.firstName = profileVM.profileModel?.data?.firstName ?? ""
-                }
+                    .onChange(of: signupVM.isLoading || profileVM.isLoading) { isloading in
+                        if(settingsType == .mobileNumber) {
+                            if signupVM.sendMobileCodeSuccess == true {
+                                showOTPCodeView = true
+                                showErrorSnackbar = false
+                            } else if(signupVM.sendMobileCodeSuccess == false && signupVM.errorString != nil) {
+                                showErrorSnackbar = true
+                            }
+                        }
+                        if(settingsType == .address) {
+                            if profileVM.editAddressSuccess == true {
+                                showSuccessSnackbar = true
+                            } else if(profileVM.editAddressSuccess == false && signupVM.errorString != nil) {
+                                showErrorSnackbar = true
+                            }
+                        }
+                    }.onChange(of: text) { text in
+                        if(!addressSelected) {
+                            if (text.count > 3) {
+                                var input = GInput()
+                                input.keyword = text
+                                GoogleApi.shared.callApi(input: input) { (response) in
+                                    if response.isValidFor(.autocomplete) {
+                                        DispatchQueue.main.async {
+                                            autocompleteResults.removeAll()
+                                            addressList.removeAll()
+                                            autocompleteResults = response.data as! [GApiResponse.Autocomplete]
+                                            var ary:[String] = []
+                                            for autocompleteResult in autocompleteResults  {
+                                                // print(autocompleteResult.formattedAddress)
+                                                ary.append(autocompleteResult.formattedAddress)
+                                            }
+                                            addressList = ary
+                                            // print(addressList)
+                                        }
+                                    } else {
+                                        autocompleteResults.removeAll()
+                                        addressList.removeAll()
+                                        print(response.error ?? "ERROR") }
+                                }
+                            }
+                        }
+                        addressSelected = false
+                    }
+                    .onAppear{
+                        signupVM.signupModel.mobileNumber = text;
+                        signupVM.signupModel.firstName = profileVM.profileModel?.data?.firstName ?? ""
+                    }
+                    .snackbar(
+                        show: $showErrorSnackbar,
+                        snackbarType: SnackBarType.error,
+                        title: "Error",
+                        message: (settingsType == .address) ? profileVM.errorString : signupVM.errorString,
+                        secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+                        onSnackbarDismissed: {showErrorSnackbar = false },
+                        isAlignToBottom: true
+                    )
+                    .snackbar(
+                        show: $showSuccessSnackbar,
+                        snackbarType: SnackBarType.success,
+                        title: nil,
+                        message: (settingsType == .address) ? profileVM.errorString : signupVM.errorString,
+                        secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+                        onSnackbarDismissed: {
+                            if(settingsType == .address){
+                                self.presentationMode.wrappedValue.dismiss()
+                                onUpdateSuccess()
+                            }
+                            showSuccessSnackbar = false
+                        },
+                        isAlignToBottom: true
+                    )
+            }
         }
     }
-}
-
-
-struct AddressesView: View {
-    @State var addressList: [String]
-    var onChangeEnvironment: (String) -> Void
-    var body: some View {
-        VStack(spacing: 0) {
-            if addressList.count > 0 {
-                ScrollView {
-                    LazyVStack(spacing: 15) {
-                        ForEach(addressList, id: \.self) { address in
-                            EnvironmentRow(environmentType: address) {
-                                changeEnvironment(environment: address)
+    
+    struct AddressesView: View {
+        @Binding var addressList: [String]
+        var onChangeEnvironment: (String) -> Void
+        var body: some View {
+            VStack(spacing: 0) {
+                if addressList.count > 0 {
+                    ScrollView {
+                        LazyVStack(spacing: 15) {
+                            ForEach(addressList, id: \.self) { address in
+                                EnvironmentRow(environmentType: address) {
+                                    changeEnvironment(environment: address)
+                                }
                             }
                         }
                     }
                 }
             }
         }
-    }
-    
-    struct EnvironmentRow: View {
-        var environmentType : String
-        var onClick: () -> Void
         
-        private let LEADING_ICON_SIZE: CGFloat = 20
-        private let ROW_INNER_SPACING: CGFloat = 12
+        struct EnvironmentRow: View {
+            var environmentType : String
+            var onClick: () -> Void
+            
+            private let LEADING_ICON_SIZE: CGFloat = 20
+            private let ROW_INNER_SPACING: CGFloat = 12
+            
+            var body: some View {
+                Button(action: {
+                    onClick()
+                }, label: {
+                    HStack(spacing: ROW_INNER_SPACING) {
+                        Text(environmentType)
+                            .applyFontText()
+                            .padding(.leading, 10)
+                        Spacer()
+                    }
+                    .padding(.vertical, 10)
+                    .background(Color.white )
+                    .cornerRadius(5)
+                })
+            }
+        }
         
-        var body: some View {
-            Button(action: {
-                onClick()
-            }, label: {
-                HStack(spacing: ROW_INNER_SPACING) {
-                    Text(environmentType)
-                        .applyFontText()
-                        .padding(.leading, 10)
-                    Spacer()
-                }
-                .padding(.vertical, 10)
-                .background(Color.white )
-                .cornerRadius(5)
-            })
+        private func changeEnvironment(environment:String) {
+            onChangeEnvironment(environment)
         }
     }
     
-    private func changeEnvironment(environment:String) {
-        onChangeEnvironment(environment)
+    
+    struct SettingsUpdateSheet_Previews: PreviewProvider {
+        @State static private var sampleInputText: String = ""
+        @State var text:String = ""
+        static var previews: some View {
+            SettingsUpdateSheet(onClickClose: {
+                
+            }, profileVM: ProfileViewModel(), onUpdateSuccess: {
+            }, settingsType: .mobileNumber, text:$sampleInputText)
+        }
     }
-}
-
-
-struct SettingsUpdateSheet_Previews: PreviewProvider {
-    @State static private var sampleInputText: String = ""
-    @State var text:String = ""
-    static var previews: some View {
-        SettingsUpdateSheet(onClickClose: {
-            
-        }, profileVM: ProfileViewModel(), settingsType: .mobileNumber, text:$sampleInputText)
-    }
-}
