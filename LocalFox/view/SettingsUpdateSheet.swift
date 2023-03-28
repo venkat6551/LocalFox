@@ -91,7 +91,6 @@ struct SettingsUpdateSheet: View {
                             )
                             if autocompleteResults.count > 0 {
                                 AddressesView(addressList: $addressList) { selectedAddress in
-                                    print(selectedAddress)
                                     text = selectedAddress
                                     addressList.removeAll()
                                     addressList.removeAll()
@@ -156,16 +155,14 @@ struct SettingsUpdateSheet: View {
                                             autocompleteResults = response.data as! [GApiResponse.Autocomplete]
                                             var ary:[String] = []
                                             for autocompleteResult in autocompleteResults  {
-                                                // print(autocompleteResult.formattedAddress)
                                                 ary.append(autocompleteResult.formattedAddress)
                                             }
                                             addressList = ary
-                                            // print(addressList)
                                         }
                                     } else {
                                         autocompleteResults.removeAll()
-                                        addressList.removeAll()
-                                        print(response.error ?? "ERROR") }
+                                        addressList.removeAll()                                        
+                                    }
                                 }
                             }
                         }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 struct LeadsView: View {
+    @StateObject var jobsVM: JobsViewModel
     @State private var searchText: String = ""
     @State private var showLeadDetails = false
     @State private var showInvitations = false
@@ -44,6 +45,14 @@ struct LeadsView: View {
                 }
             }
             Spacer()
+        }
+        .onAppear{
+            jobsVM.getJobs()
+        }
+        .onChange(of: jobsVM.isLoading) { isLoading in
+            
+            
+            
         }
         
         .navigationBarHidden(true)
@@ -184,16 +193,12 @@ struct LeadsView: View {
                     onCardClick()
                 }
                 .cardify(cardBgColor: Color.LIGHT_PINK, borderColor: Color.BORDER_RED)
-        }
-        
-        
+        }        
     }
-    
-    
 }
 
 struct LeadsView_Previews: PreviewProvider {
     static var previews: some View {
-        LeadsView()
+        LeadsView(jobsVM: JobsViewModel())
     }
 }

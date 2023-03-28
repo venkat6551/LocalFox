@@ -35,7 +35,7 @@ struct ProfileData: Codable {
 }
 
 struct Location: Codable {
-    let type: String
+    let type: String?
     var formattedAddress: String?
     var streetName: String?
     var suburb: String?

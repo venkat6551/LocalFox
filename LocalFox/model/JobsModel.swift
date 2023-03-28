@@ -8,11 +8,11 @@
 import Foundation
 struct JobsModel: Decodable {
     var success: Bool?
-    var invitationsCount:Int?
-    var jobsCount:Int?
-    var pageNumber:Int?
-    var pageSize: Int?
-    var data: ProfileData?
+    var invitationsCount:Int
+    var jobsCount:Int
+    var pageNumber:Int
+    let pageSize: Int
+    var data: JobsData?
 }
 
 struct JobsData: Decodable {
@@ -32,7 +32,7 @@ struct Job: Decodable {
     let urgency: String
     var images: [String]
     let status: String
-    let createdDate: Bool
+    let createdDate: String
 }
 
 struct Customer: Decodable {
@@ -76,16 +76,14 @@ struct JobInviation: Decodable {
 struct NewJob: Decodable {
     let location: Location?
     let _id: String?
-    let customer: String?
-    let partners: [String]?
-    let description: String
+     let description: String
     let type: String
     var category: String?
-    var service: String?
+    var service: Service?
     let urgency: String
     var images: [String]
     var address:String
-    let status: Bool
+    let status: String
     let markedAsCompleteByPartner:Bool
     let createdDate: String
     let lastUpdatedDate:String

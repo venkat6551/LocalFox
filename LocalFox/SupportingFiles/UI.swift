@@ -727,7 +727,7 @@ struct UI_Previews: PreviewProvider {
                         leadingImage: Images.ERROR,
                         text: "MyButton",
                         onClickButton: {
-                            print("Clicked on button")
+                            
                         }
                     )
                     MyInputTextBox(
@@ -747,7 +747,7 @@ struct UI_Previews: PreviewProvider {
                 title: "SnackBarType.success",
                 message: "message",
                 secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
-                onSnackbarDismissed: { print("Snackbar dismissed") },
+                onSnackbarDismissed: { },
                 isAlignToBottom: true
             )
             .snackbar(
@@ -756,7 +756,7 @@ struct UI_Previews: PreviewProvider {
                 title: "SnackBarType.error",
                 message: "message",
                 secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
-                onSnackbarDismissed: { print("Snackbar dismissed") },
+                onSnackbarDismissed: {  },
                 isAlignToBottom: true
             )
             .snackbar(
@@ -765,7 +765,7 @@ struct UI_Previews: PreviewProvider {
                 title: "SnackBarType.success",
                 message: "message",
                 secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
-                onSnackbarDismissed: { print("Snackbar dismissed") },
+                onSnackbarDismissed: { },
                 isAlignToBottom: true
             )
         }

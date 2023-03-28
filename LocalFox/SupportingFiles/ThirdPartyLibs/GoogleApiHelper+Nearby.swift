@@ -38,7 +38,6 @@ class NearbyExtension : NSObject {
                     localResponse.error = error
                     completion(localResponse)
                 }
-                print(response.error ?? "ERROR")
             }
         }
     }

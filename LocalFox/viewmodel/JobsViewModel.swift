@@ -24,10 +24,30 @@ class JobsViewModel: ObservableObject {
         getJobsSuccess = false
         errorString = nil
         isLoading = true
-        apiService.getJobs { [weak self] success, jobsModel, errorString in
+        let pageNumber = (jobsModel?.pageNumber ?? 0) + 1;
+        apiService.getJobs(_pagenumber: pageNumber) { [weak self] success, jobsModel, errorString in
             self?.getJobsSuccess = success
             self?.errorString = errorString
-            self?.jobsModel = jobsModel
+            if (self?.jobsModel != nil) {
+                if let jobs = jobsModel?.data?.jobs {
+                    self?.jobsModel?.data?.jobs?.append(contentsOf: jobs)
+                }
+//                if let invitations = jobsModel?.data?.jobInviations {
+//                    self?.jobsModel?.data?.jobInviations?.append(contentsOf: invitations)
+//                }
+                if let pageNumber = jobsModel?.pageNumber {
+                    self?.jobsModel?.pageNumber = pageNumber
+                }
+                if let jobsCount = jobsModel?.jobsCount {
+                    self?.jobsModel?.jobsCount = jobsCount
+                }
+                if let invitationsCount = jobsModel?.invitationsCount {
+                    self?.jobsModel?.invitationsCount = invitationsCount
+                }
+            } else {
+                self?.jobsModel = jobsModel
+            }
+            
             self?.isLoading = false
         }
     }

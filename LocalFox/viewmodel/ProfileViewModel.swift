@@ -53,7 +53,6 @@ class ProfileViewModel: ObservableObject {
         errorString = nil
         isLoading = true
         guard let imageData = photo.jpegData(compressionQuality: 0.5) else { return }
-        print(imageData)
         apiService.uploadImage(_withPhoto: imageData) {[weak self]  success, photoUrl, errorString in
             DispatchQueue.main.async {
                 self?.editProfilePhotoSuccess = success

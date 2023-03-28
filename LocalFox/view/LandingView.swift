@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LandingView: View {
     @StateObject var profileVM: ProfileViewModel
+    @StateObject var jobsViewModel: JobsViewModel = JobsViewModel()
     private enum TabItem: Int {
         case leads
         case search
@@ -45,7 +46,7 @@ struct LandingView: View {
                 Group {
                     switch selectedTabItem {
                         case .leads:
-                            LeadsView()
+                            LeadsView(jobsVM: jobsViewModel)
                         case .search:
                             SearchView()
                         case .profile:
@@ -90,6 +91,6 @@ struct LandingView: View {
 
 struct LandingView_Previews: PreviewProvider {
     static var previews: some View {
-        LandingView(profileVM: ProfileViewModel())
+        LandingView(profileVM: ProfileViewModel(),jobsViewModel: JobsViewModel())
     }
 }
