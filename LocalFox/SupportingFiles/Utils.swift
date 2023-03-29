@@ -50,13 +50,10 @@ extension String {
     
     func convertDateFormate(sorceFormate:String, destinationFormate: String) -> String? {
         let dateFormatter = DateFormatter()
-        //dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
         dateFormatter.dateFormat = sorceFormate
         let yourDate =  dateFormatter.date(from: self)
         dateFormatter.dateFormat = destinationFormate
         let myStringDate = dateFormatter.string(from: yourDate!)
-
-        print(myStringDate)
         return myStringDate
     }
 }
