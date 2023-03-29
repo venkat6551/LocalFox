@@ -20,7 +20,10 @@ struct JobsData: Decodable {
     var jobInviations: [JobInviation]?
 }
 
-struct Job: Decodable {
+struct Job: Decodable,Identifiable {
+    var id: String {
+        return _id!
+    }
     var location:Location?
     let _id: String?
     let customer: Customer?
@@ -31,6 +34,7 @@ struct Job: Decodable {
     let service: Service
     let urgency: String
     var images: [String]
+    var address: String?
     let status: String
     let createdDate: String
 }

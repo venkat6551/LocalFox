@@ -14,7 +14,7 @@ struct ProfileModel: Decodable {
     var data: ProfileData?
 }
 
-struct ProfileData: Codable {
+struct ProfileData: Decodable {
     var NotificationSettings:NotificationSettings
     let checkList: CheckList
     var location:Location?
@@ -34,7 +34,7 @@ struct ProfileData: Codable {
     let lastUpdatedDate: String
 }
 
-struct Location: Codable {
+struct Location: Decodable {
     let type: String?
     var formattedAddress: String?
     var streetName: String?
@@ -45,7 +45,7 @@ struct Location: Codable {
     var googlePlaceId: String?
 }
 
-struct NotificationSettings: Codable {
+struct NotificationSettings: Decodable {
     var pushNotifications: Bool
     var smsNotifications: Bool
     var emailNotifications: Bool
@@ -53,7 +53,7 @@ struct NotificationSettings: Codable {
     var events: Bool
 }
 
-struct CheckList: Codable {
+struct CheckList: Decodable {
     let isBusinessDetailsCaptured: Bool
     let isContractSigned: Bool
     let isLicenceVerified: Bool

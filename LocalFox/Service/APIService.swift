@@ -455,10 +455,8 @@ final class MockAPIService: APIServiceProtocol {
         request
             .validate(statusCode: 200..<300)
             .responseDecodable(of: JobsModel.self) { response in
-                print(response)
                 switch response.result {
                 case .success(let data):
-                    //print(data)
                     completion(true,data,"")
                 case .failure(let err):
                     guard let data = response.data else {

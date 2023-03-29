@@ -47,6 +47,18 @@ extension String {
         dateFormatter.dateFormat = formate
         return dateFormatter.date(from: self)
     }
+    
+    func convertDateFormate(sorceFormate:String, destinationFormate: String) -> String? {
+        let dateFormatter = DateFormatter()
+        //dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+        dateFormatter.dateFormat = sorceFormate
+        let yourDate =  dateFormatter.date(from: self)
+        dateFormatter.dateFormat = destinationFormate
+        let myStringDate = dateFormatter.string(from: yourDate!)
+
+        print(myStringDate)
+        return myStringDate
+    }
 }
 
 // Checks if camera hardware available or not. [Note: This is NOT a permission check]
@@ -84,12 +96,17 @@ enum DateFormates {
     static let TIME: String = "hh:mm a"
     static let DATE: String = "MMM d, y"
     static let DATE_TIME: String = "\(TIME) \(DATE)"
-    //static let API_DATE_TIME: String = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    
+    
+    //"2023-03-28T13:39:34.124Z",
+    static let API_DATE_TIME: String = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    //21 Jan 2022 11:45 PM"
+    static let LOCAL_DATE_TIME: String = "dd MMM yyyy HH:mm a"
     //static let API_DATE_TIME: String = "yyyy-MM-dd'T'HH:mm:ssZ"
     //static let API_DATE_TIME_RECENT_PAIRING: String = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
     
     // TODO: Keep an eye on this format on API side, if this changes, the date will disappear on UI. Blame DBP people :D
-    static let API_DATE_TIME: String = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"
+//    static let API_DATE_TIME: String = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"
     
 }
 

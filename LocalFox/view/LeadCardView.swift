@@ -57,6 +57,7 @@ enum LeadStatus: Equatable {
 
 
 struct LeadCardView: View {
+    @State var job: Job
     @State var isForSearch = false
     @State var status:LeadStatus
     var onCardClick: () -> Void
@@ -74,7 +75,7 @@ struct LeadCardView: View {
                             
                             VStack(alignment: .leading, spacing: 10) {
                                 HStack(alignment: .top){
-                                    Text("Alex Eadie")
+                                    Text(job.customer?.fullName ?? "")
                                         .applyFontBold(size: 16)
                                     Images.GREEN_CHECK
                                         .padding(.leading, 5)
@@ -88,10 +89,13 @@ struct LeadCardView: View {
                                             .frame(width: 15,height: 15)
                                     }
                                     VStack (alignment: .leading, spacing: 5){
-                                        Text("Marsden Park, NSW 2765")
-                                            .applyFontRegular(color: Color.TEXT_LEVEL_2,size: 13)
-                                        Text("Posted on 21 Jan 2022 11:45 PM")
-                                            .applyFontRegular(color: Color.TEXT_LEVEL_3,size: 12)
+                                        Text(job.location?.formattedAddress ?? "-")
+                                                .applyFontRegular(color: Color.TEXT_LEVEL_2,size: 13)
+                                        
+                                        if let date  = job.createdDate.convertDateFormate(sorceFormate: DateFormates.API_DATE_TIME, destinationFormate: DateFormates.LOCAL_DATE_TIME) {
+                                            Text("Posted on \(date)")
+                                                .applyFontRegular(color: Color.TEXT_LEVEL_3,size: 12)
+                                        }
                                     }
                                     Spacer()
                                 }
@@ -160,11 +164,11 @@ struct LeadCardView: View {
     }
     
 }
-struct LeadCardView_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        LeadCardView(status: LeadStatus.active) {
-            
-        }
-    }
-}
+//struct LeadCardView_Previews: PreviewProvider {
+//    
+//    static var previews: some View {
+////        LeadCardView(status: LeadStatus.active, job: Binding<Job>) {
+////            
+////        }
+//    }
+//}

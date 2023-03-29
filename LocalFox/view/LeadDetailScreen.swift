@@ -35,7 +35,7 @@ struct LeadDetailScreen: View {
                     )
                 }.padding(.top, 25)
                 ScrollView (showsIndicators: false){
-                    LeadCardView(status: LeadStatus.active,onCardClick:{}).cardify()
+                    //LeadCardView(status: LeadStatus.active,onCardClick:{}).cardify()
             
                     RowView(title: "Job location",image: Images.LOCATION_PIN, description: "Marsden Park, NSW 2765")
                     

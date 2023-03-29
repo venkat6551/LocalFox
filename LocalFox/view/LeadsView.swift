@@ -32,15 +32,26 @@ struct LeadsView: View {
                 }).padding(.bottom, 5)
                 
                 ScrollView(showsIndicators: false) {
-                    LeadCardView(status: LeadStatus.active, onCardClick: {
-                        showLeadDetails = true
-                    }).cardify()
-                    LeadCardView(status: LeadStatus.active, onCardClick: {
-                        showLeadDetails = true
-                    }).cardify()
-                    LeadCardView(status: LeadStatus.expired, onCardClick: {
-                        showLeadDetails = true
-                    }).cardify()
+                    
+                    
+                    if let jobs = jobsVM.jobsModel?.data?.jobs {
+                        ForEach(jobs) { job in
+                            LeadCardView(job: job, status: LeadStatus.active) {
+                                showLeadDetails = true
+                            }.cardify()
+                        }
+                    }
+                    
+//                        
+//                    LeadCardView(status: LeadStatus.active, onCardClick: {
+//                        showLeadDetails = true
+//                    }).cardify()
+//                    LeadCardView(status: LeadStatus.active, onCardClick: {
+//                        showLeadDetails = true
+//                    }).cardify()
+//                    LeadCardView(status: LeadStatus.expired, onCardClick: {
+//                        showLeadDetails = true
+//                    }).cardify()
                     Spacer()
                 }
             }
@@ -50,9 +61,6 @@ struct LeadsView: View {
             jobsVM.getJobs()
         }
         .onChange(of: jobsVM.isLoading) { isLoading in
-            
-            
-            
         }
         
         .navigationBarHidden(true)

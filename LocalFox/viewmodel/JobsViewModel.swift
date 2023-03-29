@@ -32,9 +32,9 @@ class JobsViewModel: ObservableObject {
                 if let jobs = jobsModel?.data?.jobs {
                     self?.jobsModel?.data?.jobs?.append(contentsOf: jobs)
                 }
-//                if let invitations = jobsModel?.data?.jobInviations {
-//                    self?.jobsModel?.data?.jobInviations?.append(contentsOf: invitations)
-//                }
+                if let invitations = jobsModel?.data?.jobInviations {
+                    self?.jobsModel?.data?.jobInviations?.append(contentsOf: invitations)
+                }
                 if let pageNumber = jobsModel?.pageNumber {
                     self?.jobsModel?.pageNumber = pageNumber
                 }
