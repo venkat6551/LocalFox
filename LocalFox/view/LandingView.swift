@@ -48,7 +48,7 @@ struct LandingView: View {
                         case .leads:
                             LeadsView(jobsVM: jobsViewModel)
                         case .search:
-                            SearchView()
+                            SearchView(jobsVM: jobsViewModel)
                         case .profile:
                             ProfileView(profileVM: profileVM)
                         }

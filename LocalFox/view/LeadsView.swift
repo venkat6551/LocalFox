@@ -7,7 +7,7 @@
 
 import SwiftUI
 struct LeadsView: View {
-    @StateObject var jobsVM: JobsViewModel
+    @ObservedObject var jobsVM: JobsViewModel
     @State private var searchText: String = ""
     @State private var showLeadDetails = false
     @State private var showInvitations = false

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SearchView: View {
+    @ObservedObject var jobsVM: JobsViewModel
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     @State private var searchText: String = ""
     @FocusState private var keyboardFocused: Bool
@@ -41,15 +42,21 @@ struct SearchView: View {
                             keyboardFocused = true
                         }
                     }
-                ScrollView (showsIndicators: false){
-                    
-//                    LeadCardView(isForSearch: true, status: LeadStatus.active,onCardClick:{}).cardify()
-//                    LeadCardView(isForSearch: true,status: LeadStatus.invite,onCardClick:{}).cardify()
-//                    LeadCardView(isForSearch: true,status: LeadStatus.quoted,onCardClick:{}).cardify()
-//                    LeadCardView(isForSearch: true,status: LeadStatus.scheduled,onCardClick:{}).cardify()
-//                    LeadCardView(isForSearch: true,status: LeadStatus.new,onCardClick:{}).cardify()
-//                    LeadCardView(isForSearch: true,status: LeadStatus.complete,onCardClick:{}).cardify()
+                if(!getFilteredList().isEmpty) {
+                    ScrollView (showsIndicators: false){
+                        if let jobs = jobsVM.jobsModel?.data?.jobs {
+                            ForEach(getFilteredList()) { job in
+                                LeadCardView(job: job, status: LeadStatus.active) {
+    //                                selectedJob = job
+    //                                showLeadDetails = true
+                                }.cardify()
+                            }
+                        }
+                        Spacer()
+                    }
                 }
+
+              
             }
             Spacer()
         }
@@ -58,10 +65,26 @@ struct SearchView: View {
         .padding(.top,25)
         .background(Color.SCREEN_BG.ignoresSafeArea())
     }
+    
+    private func getFilteredList() -> [Job] {
+        var jobsList:[Job]  = []
+        if let jobs = jobsVM.jobsModel?.data?.jobs {
+            jobsList = jobs
+            if !searchText.isEmpty {
+                jobsList = jobsList.filter({ job in
+                    job.customer?.fullName?.lowercased().contains(searchText.lowercased()) == true ||
+                    job.customer?.emailAddress?.lowercased().contains(searchText.lowercased()) == true ||
+                    job.customer?.mobileNumber?.lowercased().contains(searchText.lowercased()) == true ||
+                    job.address?.lowercased().contains(searchText.lowercased()) == true
+                })
+            }
+        }
+        return jobsList
+    }
 }
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+        SearchView(jobsVM: JobsViewModel())
     }
 }
