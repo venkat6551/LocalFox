@@ -44,8 +44,8 @@ enum APIEndpoints {
     static var ASSIGN_JOB_TO_EMPLOYEE = BASE_URL + "/api/v1/customer/authenticate"
     
     //JOB INVITATION
-    static var ACCEPT_INVITATION = BASE_URL + "/api/v1/customer/authenticate"
-    static var REJECT_INVITATION = BASE_URL + "/api/v1/customer/authenticate"
+    static var ACCEPT_INVITATION = BASE_URL + "/api/v1/partner/jobs/acceptJob/"
+    static var REJECT_INVITATION = BASE_URL + "/api/v1/partner/jobs/declineJob/"
 
 
 }

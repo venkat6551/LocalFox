@@ -30,8 +30,8 @@ struct Job: Decodable,Identifiable {
     let partners: [Partner]?
     let description: String
     let type: String
-    let category: Category
-    let service: Service
+    var category: Category?
+    var service: Service?
     let urgency: String
     var images: [String]
     var address: String?
@@ -40,9 +40,9 @@ struct Job: Decodable,Identifiable {
 }
 
 struct Customer: Decodable {
-    let fullName : String
-    let mobileNumber : String
-    let emailAddress : String
+    let fullName : String?
+    let mobileNumber : String?
+    let emailAddress : String?
 }
 
 struct Partner: Decodable {
@@ -71,7 +71,10 @@ struct Service: Decodable {
     let lastUpdatedDate : String
 }
 
-struct JobInviation: Decodable {
+struct JobInviation: Decodable,Identifiable {
+    var id: String {
+        return _id!
+    }
     let _id: String?
     let job: NewJob?
 }

@@ -30,6 +30,7 @@ protocol APIServiceProtocol {
     func logoutUser(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func getJobs(_pagenumber:Int, completion: @escaping (_ success: Bool, _ jobsModel : JobsModel?, _ errorString: String?)-> Void)
     func updateAddress(address:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func acceptJob(accepted:Bool, id:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
 }
 
 
@@ -323,7 +324,7 @@ final class MockAPIService: APIServiceProtocol {
         request
             .validate(statusCode: 200..<300)
             .responseDecodable(of: SuccessResponseDecodable.self) { response in
-            switch response.result {
+                switch response.result {
                 case .success(let data):
                     completion(true,data.data)
                 case .failure(let err):
@@ -356,7 +357,7 @@ final class MockAPIService: APIServiceProtocol {
         request
             .validate(statusCode: 200..<300)
             .responseDecodable(of: SuccessResponseDecodable.self) { response in
-            switch response.result {
+                switch response.result {
                 case .success(let data):
                     completion(true,data.data)
                 case .failure(let err):
@@ -483,6 +484,37 @@ final class MockAPIService: APIServiceProtocol {
         request
             .validate(statusCode: 200..<300)
             .responseDecodable(of: ProfileDeleteSuccessDecodable.self) { response in
+                switch response.result {
+                case .success(_):
+                    completion(true,"")
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    do{
+                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                        completion(false,errorObj.error)
+                    } catch{
+                        completion(false,error.localizedDescription)
+                    }
+                }
+            }
+    }
+    
+    func acceptJob(accepted:Bool, id:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let url = accepted ? "\(APIEndpoints.ACCEPT_INVITATION)\(id)" : "\(APIEndpoints.REJECT_INVITATION)\(id)"
+        let request = AF.request(
+            url,
+            method: HTTPMethod.post,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: SuccessResponseDecodable.self) { response in
+                
                 switch response.result {
                 case .success(_):
                     completion(true,"")

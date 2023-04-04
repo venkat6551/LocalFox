@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct InvitationView: View {
+    
+    let jobInvitation : JobInviation
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     @State private var offset = CGSize.zero
 
@@ -37,13 +39,13 @@ struct InvitationView: View {
                     )
                 }.padding(.top, 25)
                 ScrollView (showsIndicators: false){
-                    RowView(title: "Job location",image: Images.LOCATION_PIN, description: "Marsden Park, NSW 2765")
+                    RowView(title: "Job location",image: Images.LOCATION_PIN, description: jobInvitation.job?.address)
                     
-                    RowView(title: "How soon",image: Images.TIME_ICON, description: "In next couple of weeks")
+                    RowView(title: "How soon",image: Images.TIME_ICON, description: jobInvitation.job?.urgency)
                     
-                    RowView(title: "Job description",image: Images.DESCRIPTION_ICON, description: "We need a flooring to be done by end of this month at Marsden Park.\nThere are some broken tiles in couple of bedrooms. Those need to be replaced with new and also install the new tiles in master bedroom. 16sqm.")
+                    RowView(title: "Job description",image: Images.DESCRIPTION_ICON, description: jobInvitation.job?.description)
                     
-                    LeadImagesView()
+                    LeadImagesView(images: jobInvitation.job?.images)
                 }
                
             }.padding(.horizontal,20).background(Color.SCREEN_BG)
@@ -52,8 +54,11 @@ struct InvitationView: View {
                     leadingImage: Images.ERROR,
                     text: Strings.DECLINE,
                     onClickButton: {
+                        
                         acceptJob(accepted:false)
-                        onCardActionClick(false)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            onCardActionClick(false)
+                        }
                     },
                     bgColor: Color.PRIMARY
                 ).padding(.leading,50)
@@ -62,7 +67,10 @@ struct InvitationView: View {
                     text: Strings.ACCEPT,
                     onClickButton: {
                         acceptJob(accepted:true)
-                        onCardActionClick(true)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            onCardActionClick(true)
+                        }
+                       
                     },
                     bgColor: Color.BUTTON_GREEN
                 ).padding(.trailing,50)
@@ -91,10 +99,10 @@ struct InvitationView: View {
     }
 }
 
-struct InvitationView_Previews: PreviewProvider {
-    static var previews: some View {
-        InvitationView { accepted in
-            
-        }
-    }
-}
+//struct InvitationView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        InvitationView { accepted in
+//            
+//        }
+//    }
+//}

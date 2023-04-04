@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LeadDetailScreen: View {
+    var job:Job?
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     private let data: [Int] = Array(1...19)
 
@@ -35,14 +36,10 @@ struct LeadDetailScreen: View {
                     )
                 }.padding(.top, 25)
                 ScrollView (showsIndicators: false){
-                    //LeadCardView(status: LeadStatus.active,onCardClick:{}).cardify()
-            
-                    RowView(title: "Job location",image: Images.LOCATION_PIN, description: "Marsden Park, NSW 2765")
-                    
-                    RowView(title: "How soon",image: Images.TIME_ICON, description: "In next couple of weeks")
-                    
-                    RowView(title: "Job description",image: Images.DESCRIPTION_ICON, description: "We need a flooring to be done by end of this month at Marsden Park.\n\n There are some broken tiles in couple of bedrooms. Those need to be replaced with new and also install the new tiles in master bedroom. 16sqm.")
-                    LeadImagesView()
+                    RowView(title: "Job location",image: Images.LOCATION_PIN, description: job?.address ?? "-")
+                    RowView(title: "How soon",image: Images.TIME_ICON, description: job?.urgency ?? "-")
+                    RowView(title: "Job description",image: Images.DESCRIPTION_ICON, description: job?.description ?? "-")
+                    LeadImagesView(images: job?.images)
                 }
             }.padding(.horizontal,20)
             Spacer()
@@ -79,7 +76,12 @@ struct RowView: View {
     }
 }
 struct LeadDetailScreen_Previews: PreviewProvider {
+   
     static var previews: some View {
-        LeadDetailScreen()
+        
+        
+        let job = Job(_id: nil, customer: nil, partners: nil, description: "", type: "", urgency: "", images: [], status: "", createdDate: "")
+        
+        LeadDetailScreen(job: job)
     }
 }

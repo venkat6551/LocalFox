@@ -12,6 +12,7 @@ struct LeadsView: View {
     @State private var showLeadDetails = false
     @State private var showInvitations = false
     @State private var showBottomSheet: Bool = false
+    @State private var selectedJob:Job?
     @State private var filterModel: FilterModel = FilterModel(type: FilterType.active, isAscending: true)
     @State private var updatedFilterModel: FilterModel = FilterModel(type: FilterType.active, isAscending: true)
     var body: some View {
@@ -27,42 +28,31 @@ struct LeadsView: View {
                         .padding(.trailing, 5)                
                 }
                 
-                InvitationsWaitingView(onCardClick: {
+                InvitationsWaitingView(jobsVM: jobsVM, onCardClick: {
                     showInvitations = true
                 }).padding(.bottom, 5)
                 
                 ScrollView(showsIndicators: false) {
-                    
-                    
                     if let jobs = jobsVM.jobsModel?.data?.jobs {
                         ForEach(jobs) { job in
                             LeadCardView(job: job, status: LeadStatus.active) {
+                                selectedJob = job
                                 showLeadDetails = true
                             }.cardify()
                         }
                     }
-                    
-//                        
-//                    LeadCardView(status: LeadStatus.active, onCardClick: {
-//                        showLeadDetails = true
-//                    }).cardify()
-//                    LeadCardView(status: LeadStatus.active, onCardClick: {
-//                        showLeadDetails = true
-//                    }).cardify()
-//                    LeadCardView(status: LeadStatus.expired, onCardClick: {
-//                        showLeadDetails = true
-//                    }).cardify()
                     Spacer()
                 }
             }
             Spacer()
         }
         .onAppear{
-            jobsVM.getJobs()
+            if(jobsVM.jobsModel?.data?.jobs?.count ?? 0 <= 0 ) {
+                jobsVM.getJobs()
+            }
         }
         .onChange(of: jobsVM.isLoading) { isLoading in
         }
-        
         .navigationBarHidden(true)
         .bottomSheet(
             show: $showBottomSheet,
@@ -77,10 +67,10 @@ struct LeadsView: View {
                     }
             }
         .navigationDestination(isPresented: $showLeadDetails) {
-            LeadDetailScreen()
+            LeadDetailScreen(job: selectedJob)
         }
         .navigationDestination(isPresented: $showInvitations) {
-            InvitationsListView()
+            InvitationsListView(jobsVM: jobsVM)
         }
         .padding(.init(top: 25, leading: 25, bottom: 0, trailing: 25))
         .background(Color.SCREEN_BG.ignoresSafeArea())
@@ -178,12 +168,13 @@ struct LeadsView: View {
     }
     
     struct InvitationsWaitingView: View {
+        let jobsVM: JobsViewModel
         var onCardClick: () -> Void
         var body: some View {
             ZStack {
                 VStack(alignment: .leading) {
                     HStack {
-                        VStack(alignment: .leading) { Text("3")
+                        VStack(alignment: .leading) { Text("\(jobsVM.jobsModel?.invitationsCount ?? 0)")
                                 .applyFontBold(size: 18)
                         }
                         .frame(width: 30, height: 30)
