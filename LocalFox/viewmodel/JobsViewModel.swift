@@ -21,23 +21,31 @@ class JobsViewModel: ObservableObject {
         self.apiService = apiService
     }
     
-    func getJobs() {
+    func getJobs(onlyFirstPage:Bool = false) {
         getJobsSuccess = false
         errorString = nil
         isLoading = true
-        let pageNumber = (jobsModel?.pageNumber ?? 0) + 1;
+        let pageNumber = onlyFirstPage ? 1 : (jobsModel?.pageNumber ?? 0) + 1;
         apiService.getJobs(_pagenumber: pageNumber) { [weak self] success, jobsModel, errorString in
             self?.getJobsSuccess = success
             self?.errorString = errorString
             if (self?.jobsModel != nil) {
                 if let jobs = jobsModel?.data?.jobs {
                     self?.jobsModel?.data?.jobs?.append(contentsOf: jobs)
+                    if let jobs = self?.jobsModel?.data?.jobs {
+                        self?.jobsModel?.data?.jobs = Array(Set(jobs))
+                    }
                 }
                 if let invitations = jobsModel?.data?.jobInviations {
                     self?.jobsModel?.data?.jobInviations?.append(contentsOf: invitations)
+                    if let jobInviations = self?.jobsModel?.data?.jobInviations {
+                        self?.jobsModel?.data?.jobInviations = Array(Set(jobInviations))
+                    }
                 }
-                if let pageNumber = jobsModel?.pageNumber {
-                    self?.jobsModel?.pageNumber = pageNumber
+                if (!onlyFirstPage) {
+                    if let pageNumber = jobsModel?.pageNumber {
+                        self?.jobsModel?.pageNumber = pageNumber
+                    }
                 }
                 if let jobsCount = jobsModel?.jobsCount {
                     self?.jobsModel?.jobsCount = jobsCount

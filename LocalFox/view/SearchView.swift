@@ -44,19 +44,15 @@ struct SearchView: View {
                     }
                 if(!getFilteredList().isEmpty) {
                     ScrollView (showsIndicators: false){
-                        if let jobs = jobsVM.jobsModel?.data?.jobs {
-                            ForEach(getFilteredList()) { job in
-                                LeadCardView(job: job, status: LeadStatus.active) {
-    //                                selectedJob = job
-    //                                showLeadDetails = true
-                                }.cardify()
-                            }
+                        ForEach(getFilteredList()) { job in
+                            LeadCardView(job: job, status: LeadStatus.active) {
+                                //                                selectedJob = job
+                                //                                showLeadDetails = true
+                            }.cardify()
                         }
                         Spacer()
                     }
                 }
-
-              
             }
             Spacer()
         }

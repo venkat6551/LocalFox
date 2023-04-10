@@ -20,10 +20,18 @@ struct JobsData: Decodable {
     var jobInviations: [JobInviation]?
 }
 
-struct Job: Decodable,Identifiable {
+struct Job: Decodable,Identifiable,Hashable {
     var id: String {
         return _id!
     }
+    
+    public func hash(into hasher: inout Hasher) {
+            hasher.combine(_id)
+        }
+    static func ==(left:Job, right:Job) -> Bool {
+        return left._id == right._id
+    }
+    
     var location:Location?
     let _id: String?
     let customer: Customer?
@@ -71,12 +79,19 @@ struct Service: Decodable {
     let lastUpdatedDate : String
 }
 
-struct JobInviation: Decodable,Identifiable {
+struct JobInviation: Decodable,Identifiable,Hashable {
     var id: String {
         return _id!
     }
+    var hashValue: Int { get { return _id.hashValue } }
     let _id: String?
     let job: NewJob?
+    public func hash(into hasher: inout Hasher) {
+            hasher.combine(_id)
+        }
+    static func ==(left:JobInviation, right:JobInviation) -> Bool {
+        return left._id == right._id
+    }
 }
 
 
