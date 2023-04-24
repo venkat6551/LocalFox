@@ -78,8 +78,8 @@
             filePath = "LocalFox/Service/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "446"
-            endingLineNumber = "446"
+            startingLineNumber = "448"
+            endingLineNumber = "448"
             landmarkName = "getJobs(_pagenumber:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -87,48 +87,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "4F637499-CE82-4EE9-9BE2-8C2A2FAC7B25"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LocalFox/viewmodel/JobsViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "acceptJob(_id:accepted:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "83FC2610-6A73-4D1A-9B1A-E68A2B672CF1"
+            uuid = "6DD90E97-458F-4972-AAC7-3C9E38A1BFE4"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LocalFox/Service/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "507"
-            endingLineNumber = "507"
-            landmarkName = "acceptJob(accepted:id:completion:)"
+            startingLineNumber = "697"
+            endingLineNumber = "697"
+            landmarkName = "linkPartner(id:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "71C72BC0-3648-4537-9406-83743F67D331"
+            uuid = "C201CF4D-8234-4485-B484-38BF2073132E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LocalFox/Service/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "518"
-            endingLineNumber = "518"
-            landmarkName = "acceptJob(accepted:id:completion:)"
+            startingLineNumber = "666"
+            endingLineNumber = "666"
+            landmarkName = "registerFCMToken(token:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

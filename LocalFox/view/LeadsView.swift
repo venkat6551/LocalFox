@@ -44,7 +44,7 @@ struct LeadsView: View {
                     Spacer()
                 } .refreshable {
                     jobsVM.getJobs(onlyFirstPage: true)
-                }
+                } 
             }
             Spacer()
         }

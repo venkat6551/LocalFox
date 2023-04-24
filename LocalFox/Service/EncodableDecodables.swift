@@ -19,6 +19,16 @@ struct SuccessResponseDecodable: Decodable {
     let data: String
 }
 
+
+struct FCMRegistrationResponseDecodable: Decodable {
+    let success: Bool
+    let data: FCMRegistrationResponseData
+}
+
+struct FCMRegistrationResponseData: Decodable {
+    let _id:String
+}
+
 struct ProfileDeleteSuccessDecodable: Decodable {
     let success: Bool
     let data: Emptystruct

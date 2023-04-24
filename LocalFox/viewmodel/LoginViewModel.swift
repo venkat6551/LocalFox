@@ -30,11 +30,34 @@ class LoginViewModel: ObservableObject {
         apiService.login(credentials: credentials) { [weak self] success, errorString in
             if success {
                 MyUserDefaults.userEmail = self?.credentials.email
+                self?.linkPartner()
             }
             self?.authenticationSuccess = success
             self?.errorString = errorString
             completion(success)
             self?.isLoading = false
+        }
+    }
+    
+    func registerFCMToken(token:String) {
+        apiService.registerFCMToken(token: token) {success, errorString in
+            if success {
+                MyUserDefaults.isFcmTokenRegistered = true
+                MyUserDefaults.fcmRegistrationID = errorString
+            }
+        }
+    }
+    
+    func linkPartner() {
+        
+        guard MyUserDefaults.fcmRegistrationID != nil else {
+            return
+        }
+        
+        apiService.linkPartner(id: MyUserDefaults.fcmRegistrationID!) { success, errorString in
+            if success {
+                MyUserDefaults.isLinkUserSuccess = true
+            }
         }
     }
 }

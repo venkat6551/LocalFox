@@ -29,7 +29,7 @@ enum APIEndpoints {
     
     //FCM TOKEN
     static var REGISTER_FCM_TOKEN = BASE_URL + "/api/v1/partner/fcmToken/registerFcmToken"
-    static var LINK_USER_TO_FCM_TOKEN = BASE_URL + "/api/v1/partner/fcmToken/linkPartner/63a40263f817c1835eac6d26"
+    static var LINK_USER_TO_FCM_TOKEN = BASE_URL + "/api/v1/partner/fcmToken/linkPartner"
     
     //PROFILE SETTINGS
     static var GET_PROFILE = BASE_URL + "/api/v1/partner/profile/getProfile"
@@ -46,6 +46,5 @@ enum APIEndpoints {
     //JOB INVITATION
     static var ACCEPT_INVITATION = BASE_URL + "/api/v1/partner/jobs/acceptJob/"
     static var REJECT_INVITATION = BASE_URL + "/api/v1/partner/jobs/declineJob/"
-
 
 }

@@ -19,6 +19,9 @@
 		CC56571E29C0E4260098D16F /* NearByEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56571D29C0E4260098D16F /* NearByEnum.swift */; };
 		CC56574029CF31470098D16F /* JobsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56573F29CF31470098D16F /* JobsViewModel.swift */; };
 		CC56574229CF31BD0098D16F /* JobsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56574129CF31BD0098D16F /* JobsModel.swift */; };
+		CC8CD30729F65EBE00D9A0E3 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CC8CD30629F65EBE00D9A0E3 /* FirebaseAnalytics */; };
+		CC8CD30929F65EBE00D9A0E3 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CC8CD30829F65EBE00D9A0E3 /* FirebaseMessaging */; };
+		CC8CD30E29F6F21A00D9A0E3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC8CD30D29F6F21A00D9A0E3 /* GoogleService-Info.plist */; };
 		CCE597F9299161AE0055AC9B /* ResetPasswordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */; };
 		CCE597FC29916A3E0055AC9B /* ResetPSWViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */; };
 		CCE597FE299774A70055AC9B /* SignupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FD299774A70055AC9B /* SignupModel.swift */; };
@@ -97,6 +100,8 @@
 		CC56571D29C0E4260098D16F /* NearByEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearByEnum.swift; sourceTree = "<group>"; };
 		CC56573F29CF31470098D16F /* JobsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsViewModel.swift; sourceTree = "<group>"; };
 		CC56574129CF31BD0098D16F /* JobsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsModel.swift; sourceTree = "<group>"; };
+		CC8CD30C29F6643300D9A0E3 /* LocalFox.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LocalFox.entitlements; sourceTree = "<group>"; };
+		CC8CD30D29F6F21A00D9A0E3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordModel.swift; sourceTree = "<group>"; };
 		CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPSWViewModel.swift; sourceTree = "<group>"; };
 		CCE597FD299774A70055AC9B /* SignupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupModel.swift; sourceTree = "<group>"; };
@@ -168,6 +173,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC8CD30929F65EBE00D9A0E3 /* FirebaseMessaging in Frameworks */,
+				CC8CD30729F65EBE00D9A0E3 /* FirebaseAnalytics in Frameworks */,
 				CCF81ABA298D6D5700A6E2A5 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,6 +265,7 @@
 		CDF2B02B2941D8AF00CF2B28 /* LocalFox */ = {
 			isa = PBXGroup;
 			children = (
+				CC8CD30C29F6643300D9A0E3 /* LocalFox.entitlements */,
 				CCF81AB5298D680500A6E2A5 /* Service */,
 				CD006F4A29437B03004BBF4A /* fonts */,
 				CD051AF12943558F009C054F /* Info.plist */,
@@ -270,6 +278,7 @@
 				CDF2B02E2941D8AF00CF2B28 /* LoginView.swift */,
 				CDF2B0302941D8B100CF2B28 /* Assets.xcassets */,
 				CDF2B0512941DDDB00CF2B28 /* Colors.xcassets */,
+				CC8CD30D29F6F21A00D9A0E3 /* GoogleService-Info.plist */,
 				CDF2B0322941D8B100CF2B28 /* Preview Content */,
 			);
 			path = LocalFox;
@@ -371,6 +380,8 @@
 			name = LocalFox;
 			packageProductDependencies = (
 				CCF81AB9298D6D5700A6E2A5 /* Alamofire */,
+				CC8CD30629F65EBE00D9A0E3 /* FirebaseAnalytics */,
+				CC8CD30829F65EBE00D9A0E3 /* FirebaseMessaging */,
 			);
 			productName = LocalFox;
 			productReference = CDF2B0292941D8AF00CF2B28 /* LocalFox.app */;
@@ -402,6 +413,7 @@
 			mainGroup = CDF2B0202941D8AF00CF2B28;
 			packageReferences = (
 				CCF81AB8298D6D5700A6E2A5 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				CC8CD30529F65EBE00D9A0E3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = CDF2B02A2941D8AF00CF2B28 /* Products */;
 			projectDirPath = "";
@@ -429,6 +441,7 @@
 				CD006F5D29437B29004BBF4A /* Inter-Bold.ttf in Resources */,
 				CD9FFA012969DE1600C63372 /* Launch Screen.storyboard in Resources */,
 				CD006F6229437B29004BBF4A /* Inter-Light.ttf in Resources */,
+				CC8CD30E29F6F21A00D9A0E3 /* GoogleService-Info.plist in Resources */,
 				CDF2B0312941D8B100CF2B28 /* Assets.xcassets in Resources */,
 				CD006F6029437B29004BBF4A /* Roboto-Regular.ttf in Resources */,
 				CD006F5C29437B29004BBF4A /* Inter-ExtraLight.ttf in Resources */,
@@ -626,6 +639,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LocalFox/LocalFox.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LocalFox/Preview Content\"";
@@ -633,7 +647,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LocalFox/Info.plist;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) would like to access your camera for taking your photo.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "$(PRODUCT_NAME) would like to access your camera for taking your photo.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -643,7 +658,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.applogics.LocalFox;
+				PRODUCT_BUNDLE_IDENTIFIER = com.localfox.localfoxpartner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -656,6 +671,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LocalFox/LocalFox.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LocalFox/Preview Content\"";
@@ -663,7 +679,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LocalFox/Info.plist;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) would like to access your camera for taking your photo.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "$(PRODUCT_NAME) would like to access your camera for taking your photo.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -673,7 +690,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.applogics.LocalFox;
+				PRODUCT_BUNDLE_IDENTIFIER = com.localfox.localfoxpartner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -705,6 +722,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CC8CD30529F65EBE00D9A0E3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 		CCF81AB8298D6D5700A6E2A5 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -716,6 +741,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CC8CD30629F65EBE00D9A0E3 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC8CD30529F65EBE00D9A0E3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		CC8CD30829F65EBE00D9A0E3 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC8CD30529F65EBE00D9A0E3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
 		CCF81AB9298D6D5700A6E2A5 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CCF81AB8298D6D5700A6E2A5 /* XCRemoteSwiftPackageReference "Alamofire" */;

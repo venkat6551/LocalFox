@@ -31,6 +31,8 @@ protocol APIServiceProtocol {
     func getJobs(_pagenumber:Int, completion: @escaping (_ success: Bool, _ jobsModel : JobsModel?, _ errorString: String?)-> Void)
     func updateAddress(address:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func acceptJob(accepted:Bool, id:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func registerFCMToken(token:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func linkPartner(id:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
 }
 
 
@@ -638,6 +640,75 @@ final class MockAPIService: APIServiceProtocol {
                 completionHandler(false,"",error.localizedDescription)
             }
         }).resume()
+    }
+    
+    
+    func registerFCMToken(token:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+       
+        let parameters: Parameters = [
+            "fcmToken": token,
+            "deviceOS":"iOS",
+            "deviceOSVersion":UIDevice.current.systemVersion,
+            "deviceModel":UIDevice.modelName,
+            "appVersion":Bundle.main.releaseVersionNumber ?? ""
+        ]
+        
+        let request = AF.request(
+            APIEndpoints.REGISTER_FCM_TOKEN,
+            method: HTTPMethod.post,
+            parameters: parameters,
+            encoding:JSONEncoding.default
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: FCMRegistrationResponseDecodable.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(true,data.data._id)
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    do{
+                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                        completion(false,errorObj.error)
+                    } catch{
+                        completion(false,error.localizedDescription)
+                    }
+                }
+            }
+    }
+    
+    func linkPartner(id:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let urlString = "\(APIEndpoints.LINK_USER_TO_FCM_TOKEN)/\(id)"
+       
+        let request = AF.request(
+            urlString,
+            method: HTTPMethod.put,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: FCMRegistrationResponseDecodable.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(true,data.data._id)
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    do{
+                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                        completion(false,errorObj.error)
+                    } catch{
+                        completion(false,error.localizedDescription)
+                    }
+                }
+            }
     }
     
 }

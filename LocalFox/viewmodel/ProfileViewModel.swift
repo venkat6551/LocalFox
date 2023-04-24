@@ -70,6 +70,7 @@ class ProfileViewModel: ObservableObject {
         errorString = nil
         isLoading = true
         apiService.updateAddress(address: address) {[weak self]  success, errorString in
+           
             DispatchQueue.main.async {
                 self?.editAddressSuccess = success
                 self?.errorString = errorString

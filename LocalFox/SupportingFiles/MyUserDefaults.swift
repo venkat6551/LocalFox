@@ -24,6 +24,36 @@ enum MyUserDefaults {
         }
     }
     
+    
+    //fcmToken
+    private static let KEY_FCM_TOKEN: String = "fcmToken"
+    static var fcmToken: String? = (UserDefaults.standard.string(forKey: KEY_FCM_TOKEN) == "" ? nil : UserDefaults.standard.string(forKey: KEY_FCM_TOKEN)) {
+        didSet {
+            UserDefaults.standard.set(fcmToken, forKey: KEY_FCM_TOKEN)
+        }
+    }
+    
+    private static let KEY_FCM_REGISTRATION_ID: String = "fcmRegistrationID"
+    static var fcmRegistrationID: String? = (UserDefaults.standard.string(forKey: KEY_FCM_REGISTRATION_ID) == "" ? nil : UserDefaults.standard.string(forKey: KEY_FCM_REGISTRATION_ID)) {
+        didSet {
+            UserDefaults.standard.set(fcmRegistrationID, forKey: KEY_FCM_REGISTRATION_ID)
+        }
+    }
+    
+    private static let KEY_FCM_REGESTERED: String = "isFcmTokenRegisterred"
+    static var isFcmTokenRegistered = (UserDefaults.standard.bool(forKey: KEY_FCM_REGESTERED) == true) {
+        didSet {
+            UserDefaults.standard.set(isFcmTokenRegistered, forKey: KEY_FCM_REGESTERED)
+        }
+    }
+    
+    private static let KEY_LINK_USER_SUCCESS: String = "isLinkUserSuccess"
+    static var isLinkUserSuccess = (UserDefaults.standard.bool(forKey: KEY_LINK_USER_SUCCESS) == true) {
+        didSet {
+            UserDefaults.standard.set(isLinkUserSuccess, forKey: KEY_LINK_USER_SUCCESS)
+        }
+    }
+    
     private static let KEY_FIRST_LOGIN: String = "isLoggedInFirstTime"
     static var isLoggedInFirstTime = (UserDefaults.standard.bool(forKey: KEY_FIRST_LOGIN) == true) {
         didSet {
