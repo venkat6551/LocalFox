@@ -133,6 +133,7 @@ extension View {
                             Text(subtitle).applyFontRegular(color: .TEXT_LEVEL_2,size: 16)
                                 .multilineTextAlignment(.leading)
                                 .lineSpacing(5)
+                                .padding(.trailing,Dimens.INPUT_FIELD_BOX_CONTENT_PADDING)
                         }
                     }
                     Spacer()
@@ -320,14 +321,13 @@ struct MyInputTextBox: View {
     var inputTextColor: Color { isFocused ? isInputError ? Color.ERROR : Color.PRIMARY : isInputError ? Color.ERROR : Color.DEFAULT_TEXT
     }
     
-    var inputBoxColor: Color { isInputError ? Color.ERROR : isFocused ? Color.PRIMARY : Color.LINES
-    }
+    var inputBoxColor: Color { isInputError ? Color.ERROR : Color.LINES}
     
     var body: some View {
         VStack(alignment: .leading) {
-            VStack(alignment: .leading, spacing: 5) {
+            VStack(alignment: .leading, spacing: 3) {
                 if(!hintText.isEmpty) {
-                    Text(hintText).applyFontRegular(color: .TEXT_LEVEL_3,size: 13)
+                    Text(hintText).applyFontRegular(color: .TEXT_LEVEL_3,size: 14)
                 }
                 HStack(spacing: 0) {
                     if !isPassword {
@@ -343,6 +343,7 @@ struct MyInputTextBox: View {
                                     isFocused = editingChanged
                                 }
                             })
+                            .font(Font.custom("Inter-Regular", size: 14))
                             .applyFontSubheading(color: Color.DEFAULT_TEXT)
                             .keyboardType(keyboardType)
                             .autocorrectionDisabled(true)
@@ -350,6 +351,7 @@ struct MyInputTextBox: View {
                             .frame(height: Dimens.INPUT_FIELD_HEIGHT)
                             .textFieldStyle(PlainTextFieldStyle())
                             .padding([.leading, .trailing], 4)
+                            .textContentType(.oneTimeCode)
                             if isInputError {
                                 Images.WARNING_ROUNDED
                                     .applyFontRegular(color: Color.ERROR,size: 16)
@@ -371,6 +373,7 @@ struct MyInputTextBox: View {
                                     .textFieldStyle(PlainTextFieldStyle())
                                     .padding([.leading, .trailing], 4)
                                     .disableAutocorrection(true)
+                                    .font(Font.custom("Inter-Regular", size: 14))
                             }
                             
                         } else {
@@ -387,13 +390,16 @@ struct MyInputTextBox: View {
                                     .disableAutocorrection(true)
                                     .frame(height: Dimens.INPUT_FIELD_HEIGHT)
                                     .textFieldStyle(PlainTextFieldStyle())
-                                    .padding([.leading, .trailing], 4)
+                                    .font(Font.custom("Inter-Regular", size: 14))
                             }
                         }
                         Button(
                             action: { isSecured.toggle() },
                             label: {
-                                (!self.isSecured ? Images.EYE : Images.EYE_SLASH)
+                                (!self.isSecured ? Images.EYE: Images.EYE_SLASH)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 18,height: 18)
                                     .accentColor(.gray)
                             }
                         )
@@ -623,7 +629,7 @@ struct MySearchBox: View {
                 Images.SEARCH
                 TextField("", text: $text)
                     .focused($isFocused)
-                    .applyFontRegular(size: 16)
+                    .applyFontRegular(size: 14)
                     .keyboardType(keyboardType)
                     .disableAutocorrection(true)
                     .frame(height: Dimens.INPUT_FIELD_HEIGHT)
@@ -709,7 +715,7 @@ struct BackButtonOnlyClickBack: View {
 
 struct UI_Previews: PreviewProvider {
     
-    @State static private var sampleInputText: String = ""
+    @State static private var sampleInputText: String = "21321312313"
     
     // Make below show_ variables to true each at one time to reveal the snackbar on preview
     @State static private var showNormalSnackbar: Bool = true

@@ -41,13 +41,14 @@ struct LoginView: View {
                     ).padding(.top,9)
                     
                     HStack(spacing: 0) {
+                        
                         Text(Strings.TC_PART1)
                             .applyFontRegular(color: Color.DEFAULT_TEXT,size: 14)
-                        Text(Strings.TC_PART2)
+                        Link(Strings.TC_PART2, destination: URL(string: Strings.TERMS_LINK)!)
                             .applyFontRegular(color: Color.PRIMARY,size: 14)
                     }.padding(.top, 10)
                     VStack{
-                        Text(Strings.TC_PART3)
+                        Link(Strings.TC_PART3, destination: URL(string: Strings.TERMS_LINK)!)
                             .applyFontRegular(color: Color.PRIMARY,size: 14)
                         MyButton(
                             text: Strings.LOGIN,

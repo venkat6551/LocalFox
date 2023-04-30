@@ -24,8 +24,9 @@ struct EmailCodeView: View {
                 MyInputTextBox(
                     hintText: Strings.VERIFICATION_CODE,
                     text: $code,
-                    keyboardType: UIKeyboardType.default
+                    keyboardType: UIKeyboardType.numberPad
                 ).padding(.top,25)
+
                 MyButton(
                     text: Strings.NEXT,
                     onClickButton: {
