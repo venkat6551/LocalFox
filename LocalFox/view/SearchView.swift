@@ -19,17 +19,21 @@ struct SearchView: View {
                 HStack {
                     Text("Search Leads").applyFontHeader()
                     Spacer()
+                    
                     Button(
                         action: {
                             UIApplication.shared.endEditing()
                             onSearchCancleClick()
                         },
                         label: {
-                            Images.ERROR
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 18)
-                                .foregroundColor(Color.BLUE)
+                            VStack {
+                                Images.CLOSE
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 12,height: 12)
+                            } .frame(width: 34,height: 34)
+                                .cardify(cardCornerRadius: 15)
+                                .background(Color.SCREEN_BG)
                         }
                     )
                 }

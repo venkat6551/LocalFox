@@ -12,7 +12,7 @@ struct NameView: View {
     @State private var firstNameError: Bool = false
     @State private var lastNameError: Bool = false
     @State private var showMobileNumberView:Bool = false
-    
+    @FocusState private var keyboardFocused: Bool
     var body: some View {
         VStack{
             VStack(alignment: .leading) {
@@ -21,8 +21,13 @@ struct NameView: View {
                         hintText: Strings.FIRST_NAME,
                         text: $signupVM.signupModel.firstName,
                         keyboardType: UIKeyboardType.default,
-                        isInputError: firstNameError
-                    )
+                        isInputError: firstNameError,
+                        isFocused:_keyboardFocused
+                    ).onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            keyboardFocused = true
+                        }
+                    }
                     MyInputTextBox(
                         hintText: Strings.LAST_NAME,
                         text: $signupVM.signupModel.lastName,

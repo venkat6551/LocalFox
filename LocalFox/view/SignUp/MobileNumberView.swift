@@ -14,6 +14,7 @@ struct MobileNumberView: View {
     @State private var mobileNumberError: Bool = false
     @State private var showErrorSnackbar: Bool = false
     @State private var showSuccessSnackbar: Bool = false
+    @FocusState private var keyboardFocused: Bool
     var body: some View {
         VStack{
             VStack(alignment: .leading) {
@@ -23,8 +24,14 @@ struct MobileNumberView: View {
                     keyboardType: UIKeyboardType.numberPad,
                     isInputError: mobileNumberError,
                     leadingImage: Images.FLAG,
-                    leadingText: "+61"
+                    leadingText: "+61",
+                    isFocused:_keyboardFocused
                 ).padding(.top,25)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            keyboardFocused = true
+                        }
+                    }
                 MyButton(
                     text: Strings.NEXT,
                     onClickButton: {

@@ -71,10 +71,10 @@ struct LandingView: View {
                                 tabItem.icon
                                     .resizable()
                                     .renderingMode(.template)
-                                    .foregroundColor(selectedTabItem == tabItem ? Color.PRIMARY : Color.DISABLED_TEXT)
+                                    .foregroundColor(selectedTabItem == tabItem ? Color.PRIMARY : Color.HINT_TEXT_COLLOR)
                                     .frame(width: Dimens.TAB_ITEM_ICON_SIZE, height: Dimens.TAB_ITEM_ICON_SIZE)
                                 Text(tabItem.title)
-                                    .applyFontRegular(color:selectedTabItem == tabItem ? Color.PRIMARY : Color.DISABLED_TEXT,size: 11)
+                                    .applyFontRegular(color:selectedTabItem == tabItem ? Color.PRIMARY : Color.HINT_TEXT_COLLOR,size: 11)
                             }
                             
                         })

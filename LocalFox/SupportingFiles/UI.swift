@@ -133,14 +133,15 @@ extension View {
                             Text(subtitle).applyFontRegular(color: .TEXT_LEVEL_2,size: 16)
                                 .multilineTextAlignment(.leading)
                                 .lineSpacing(5)
-                                .padding(.trailing,Dimens.INPUT_FIELD_BOX_CONTENT_PADDING)
+                                .padding(.trailing,40)
+                            
                         }
                     }
                     Spacer()
                 }
             }
             .padding(.leading,leadingSpace)
-            .frame(maxHeight:(subtitle == nil) ? Dimens.TOP_BAR_HEIGHT : 200)
+            .frame(maxHeight:(subtitle == nil) ? Dimens.TOP_BAR_HEIGHT : 150)
             ZStack {
                 Color.SCREEN_BG
                 self
@@ -316,9 +317,9 @@ struct MyInputTextBox: View {
     
     @Environment(\.isEnabled) private var isEnabled
     @State private var isSecured: Bool = true
-    @State private var isFocused: Bool = false
-    
-    var inputTextColor: Color { isFocused ? isInputError ? Color.ERROR : Color.PRIMARY : isInputError ? Color.ERROR : Color.DEFAULT_TEXT
+    @State private var isTextFocused: Bool = false
+    @FocusState var isFocused: Bool
+    var inputTextColor: Color { isTextFocused ? isInputError ? Color.ERROR : Color.PRIMARY : isInputError ? Color.ERROR : Color.DEFAULT_TEXT
     }
     
     var inputBoxColor: Color { isInputError ? Color.ERROR : Color.LINES}
@@ -327,7 +328,7 @@ struct MyInputTextBox: View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 3) {
                 if(!hintText.isEmpty) {
-                    Text(hintText).applyFontRegular(color: .TEXT_LEVEL_3,size: 14)
+                    Text(hintText).applyFontRegular(color: .TEXT_LEVEL_3,size: 16)
                 }
                 HStack(spacing: 0) {
                     if !isPassword {
@@ -336,14 +337,15 @@ struct MyInputTextBox: View {
                                 leadingImage
                             }
                             if let leadingText = leadingText {
-                                Text(leadingText).applyFontRegular(size: 14).padding(.horizontal,10)
+                                Text(leadingText).applyFontRegular(size: 16).padding(.horizontal,10)
                             }
                             TextField("", text: $text, onEditingChanged: { (editingChanged) in
                                 DispatchQueue.main.async {
-                                    isFocused = editingChanged
+                                    isTextFocused = editingChanged
                                 }
                             })
-                            .font(Font.custom("Inter-Regular", size: 14))
+                            .focused($isFocused)
+                            .font(Font.custom("Inter-Regular", size: 16))
                             .applyFontSubheading(color: Color.DEFAULT_TEXT)
                             .keyboardType(keyboardType)
                             .autocorrectionDisabled(true)
@@ -367,13 +369,14 @@ struct MyInputTextBox: View {
                                     Text(leadingText).applyFontRegular(size: 14).padding(.horizontal,10)
                                 }
                                 SecureField("", text: $text)
+                                    .focused($isFocused)
                                     .applyFontSubheading()
                                     .autocapitalization(UITextAutocapitalizationType.none)
                                     .frame(height: Dimens.INPUT_FIELD_HEIGHT)
                                     .textFieldStyle(PlainTextFieldStyle())
                                     .padding([.leading, .trailing], 4)
                                     .disableAutocorrection(true)
-                                    .font(Font.custom("Inter-Regular", size: 14))
+                                    .font(Font.custom("Inter-Regular", size: 16))
                             }
                             
                         } else {
@@ -385,12 +388,13 @@ struct MyInputTextBox: View {
                                     Text(leadingText).applyFontRegular(size: 14).padding(.horizontal,10)
                                 }
                                 TextField("", text: $text)
+                                    .focused($isFocused)
                                     .applyFontSubheading()
                                     .autocapitalization(UITextAutocapitalizationType.none)
                                     .disableAutocorrection(true)
                                     .frame(height: Dimens.INPUT_FIELD_HEIGHT)
                                     .textFieldStyle(PlainTextFieldStyle())
-                                    .font(Font.custom("Inter-Regular", size: 14))
+                                    .font(Font.custom("Inter-Regular", size: 16))
                             }
                         }
                         Button(

@@ -14,6 +14,7 @@ struct SetPasswordView: View {
     @State private var showSuccessView:Bool = false
     var isforSignUpFlow:Bool = false
     @State private var showErrorSnackbar: Bool = false
+    @FocusState private var keyboardFocused: Bool
     //    @State private var showSuccessSnackbar: Bool = false
     var body: some View {
         VStack{
@@ -24,7 +25,11 @@ struct SetPasswordView: View {
                     text: $password,
                     keyboardType: UIKeyboardType.default,
                     isPassword: true
-                )
+                ).onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        keyboardFocused = true
+                    }
+                }
                 
                 MyInputTextBox(
                     hintText: Strings.CONFIRM_PASSWORD,

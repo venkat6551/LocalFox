@@ -16,7 +16,7 @@ struct EmailCodeView: View {
     var isforSignUpFlow:Bool = false
     @State private var showErrorSnackbar: Bool = false
     @State private var showSuccessSnackbar: Bool = false
-    
+    @FocusState private var keyboardFocused: Bool
     var onSuccess: () -> Void
     var body: some View {
         VStack{
@@ -24,8 +24,14 @@ struct EmailCodeView: View {
                 MyInputTextBox(
                     hintText: Strings.VERIFICATION_CODE,
                     text: $code,
-                    keyboardType: UIKeyboardType.numberPad
+                    keyboardType: UIKeyboardType.numberPad,
+                    isFocused:_keyboardFocused
                 ).padding(.top,25)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            keyboardFocused = true
+                        }
+                    }
 
                 MyButton(
                     text: Strings.NEXT,
