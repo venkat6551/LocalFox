@@ -12,6 +12,7 @@ struct SearchView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     @State private var searchText: String = ""
     @FocusState private var keyboardFocused: Bool
+    var onSearchCancleClick: () -> Void
     var body: some View {
         VStack {
             VStack {
@@ -20,7 +21,8 @@ struct SearchView: View {
                     Spacer()
                     Button(
                         action: {
-                            self.presentationMode.wrappedValue.dismiss() // Go back
+                            UIApplication.shared.endEditing()
+                            onSearchCancleClick()
                         },
                         label: {
                             Images.ERROR
@@ -45,7 +47,7 @@ struct SearchView: View {
                 if(!getFilteredList().isEmpty) {
                     ScrollView (showsIndicators: false){
                         ForEach(getFilteredList()) { job in
-                            LeadCardView(job: job, status: LeadStatus.active) {
+                            LeadCardView(job: job, isForSearch: true, status: LeadStatus.active) {
                                 //                                selectedJob = job
                                 //                                showLeadDetails = true
                             }.cardify()
@@ -79,8 +81,14 @@ struct SearchView: View {
     }
 }
 
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView(jobsVM: JobsViewModel())
+        SearchView(jobsVM: JobsViewModel()) {
+        }
     }
 }

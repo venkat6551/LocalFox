@@ -46,9 +46,13 @@ struct LandingView: View {
                 Group {
                     switch selectedTabItem {
                         case .leads:
-                            LeadsView(jobsVM: jobsViewModel)
+                        LeadsView(jobsVM: jobsViewModel) {
+                            selectedTabItem = .search
+                        }
                         case .search:
-                            SearchView(jobsVM: jobsViewModel)
+                        SearchView(jobsVM: jobsViewModel) {
+                            selectedTabItem = .leads
+                        }
                         case .profile:
                             ProfileView(profileVM: profileVM)
                         }
@@ -85,7 +89,7 @@ struct LandingView: View {
                 )
             }
         }
-        .ignoresSafeArea(SafeAreaRegions.container, edges: Edge.Set.bottom)
+        .ignoresSafeArea(SafeAreaRegions.all, edges: Edge.Set.bottom)
     }
 }
 

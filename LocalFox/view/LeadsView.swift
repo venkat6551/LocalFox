@@ -15,17 +15,21 @@ struct LeadsView: View {
     @State private var selectedJob:Job?
     @State private var filterModel: FilterModel = FilterModel(type: FilterType.active, isAscending: true)
     @State private var updatedFilterModel: FilterModel = FilterModel(type: FilterType.active, isAscending: true)
+    var onSearchActionClick: () -> Void
     var body: some View {
         VStack {
             VStack {
                 HStack {
                     Text("Jobs").applyFontHeader()
                     Spacer()
-                    Images.SEARCH
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 34,height: 34)
-                        .padding(.trailing, 5)                
+                    Button(
+                        action: {
+                            onSearchActionClick()
+                        },
+                        label: {
+                            Images.SEARCH
+                        }
+                    )
                 }
                 
                 InvitationsWaitingView(jobsVM: jobsVM, onCardClick: {
@@ -200,6 +204,7 @@ struct LeadsView: View {
 
 struct LeadsView_Previews: PreviewProvider {
     static var previews: some View {
-        LeadsView(jobsVM: JobsViewModel())
+        LeadsView(jobsVM: JobsViewModel()) {
+        }
     }
 }

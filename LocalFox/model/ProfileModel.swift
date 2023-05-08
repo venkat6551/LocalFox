@@ -37,6 +37,7 @@ struct ProfileData: Decodable {
 struct Location: Decodable {
     let type: String?
     var formattedAddress: String?
+    var streetNumber:String?
     var streetName: String?
     var suburb: String?
     var state: String?

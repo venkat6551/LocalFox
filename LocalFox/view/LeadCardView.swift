@@ -89,7 +89,7 @@ struct LeadCardView: View {
                                             .frame(width: 15,height: 15)
                                     }
                                     VStack (alignment: .leading, spacing: 5){
-                                        Text(job.location?.formattedAddress ?? "-")
+                                        Text(getLocation())
                                                 .applyFontRegular(color: Color.TEXT_LEVEL_2,size: 13)
                                         
                                         if let date  = job.createdDate.convertDateFormate(sorceFormate: DateFormates.API_DATE_TIME, destinationFormate: DateFormates.LOCAL_DATE_TIME) {
@@ -143,6 +143,34 @@ struct LeadCardView: View {
             }
     }
     
+    private func getLocation() -> String {
+        
+        var location = ""
+        
+        if let streenNum = job.location?.streetNumber {
+            location = streenNum
+        }
+        if let streenName = job.location?.streetName {
+            location = "\(location) \(streenName)"
+        }
+        
+        if location.count > 0 {
+            location = "\(location) \n"
+        }
+        
+        if let suburb = job.location?.suburb {
+            location = "\(location)\(suburb)"
+        }
+        if let state = job.location?.state {
+            location = "\(location) \(state)"
+        }
+        
+        if let postCode = job.location?.postCode {
+            location = "\(location) \(postCode)"
+        }
+        
+        return location
+    }
     private func getStatusColor() -> Color {
         if(status == LeadStatus.invite) {
             return Color.BLUE
