@@ -36,7 +36,7 @@ struct LeadDetailScreen: View {
                     )
                 }.padding(.top, 25)
                 ScrollView (showsIndicators: false){
-                    RowView(title: "Job location",image: Images.LOCATION_PIN, description: job?.address ?? "-")
+                    RowView(title: "Job location",image: Images.LOCATION_PIN, description: job?.getFormattedLocation() ?? "-")
                     RowView(title: "How soon",image: Images.TIME_ICON, description: job?.urgency ?? "-")
                     RowView(title: "Job description",image: Images.DESCRIPTION_ICON, description: job?.description ?? "-")
                     LeadImagesView(images: job?.images)

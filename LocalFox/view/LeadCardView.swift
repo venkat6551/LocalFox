@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
-
+import MessageUI
+import CoreLocation
+import MapKit
 
 enum LeadStatus: Equatable {
     case active
@@ -61,6 +63,11 @@ struct LeadCardView: View {
     @State var isForSearch = false
     @State var status:LeadStatus
     var onCardClick: () -> Void
+    
+    @State var isShowingMailView = false
+    @State var alertNoMail = false
+    @State var result: Result<MFMailComposeResult, Error>? = nil
+    
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
@@ -89,7 +96,7 @@ struct LeadCardView: View {
                                             .frame(width: 15,height: 15)
                                     }
                                     VStack (alignment: .leading, spacing: 5){
-                                        Text(getLocation())
+                                        Text(job.getFormattedLocation())
                                                 .applyFontRegular(color: Color.TEXT_LEVEL_2,size: 13)
                                         
                                         if let date  = job.createdDate.convertDateFormate(sorceFormate: DateFormates.API_DATE_TIME, destinationFormate: DateFormates.LOCAL_DATE_TIME) {
@@ -110,6 +117,7 @@ struct LeadCardView: View {
                                 Spacer()
                                 Button(
                                     action: {
+                                        openAddressInMap(address: job.getFormattedLocation())
                                     },
                                     label: {
                                         Images.LOCATION_BUTTON
@@ -117,6 +125,10 @@ struct LeadCardView: View {
                                 )
                                 Button(
                                     action: {
+                                        if job.customer?.emailAddress != nil {
+                                            MFMailComposeViewController.canSendMail() ? self.isShowingMailView.toggle() : self.alertNoMail.toggle()
+                                        }
+                                       
                                     },
                                     label: {
                                         Images.EMAIL_BUTTON
@@ -124,6 +136,12 @@ struct LeadCardView: View {
                                 )
                                 Button(
                                     action: {
+                                        if let mobileNum = job.customer?.mobileNumber {
+                                            let telephone = "tel://"
+                                            let formattedString = telephone + mobileNum
+                                                guard let url = URL(string: formattedString) else { return }
+                                                UIApplication.shared.open(url)
+                                        }
                                     },
                                     label: {
                                         Images.CALL_BUTTON
@@ -131,7 +149,6 @@ struct LeadCardView: View {
                                 )
                             }
                         }
-                       
                     }
                 }
             }.padding(.horizontal,20)
@@ -141,6 +158,35 @@ struct LeadCardView: View {
             .onTapGesture {
                 onCardClick()
             }
+            .sheet(isPresented: $isShowingMailView) {
+                MailView(result: self.$result,recipients: [job.customer?.emailAddress ?? ""])
+                       }
+                       .alert(isPresented: self.$alertNoMail) {
+                           Alert(title: Text("NO MAIL SETUP"))
+                       }
+    }
+    
+    ///Opens text address in maps
+     func openAddressInMap(address: String?){
+        guard let address = address else {return}
+        
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(address) { (placemarks, error) in
+            guard let placemarks = placemarks?.first else {
+                return
+            }
+            
+            let location = placemarks.location?.coordinate
+            
+            if let lat = location?.latitude, let lon = location?.longitude{
+                let destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lon)))
+                destination.name = address
+                
+                MKMapItem.openMaps(
+                    with: [destination]
+                )
+            }
+        }
     }
     
     private func getLocation() -> String {

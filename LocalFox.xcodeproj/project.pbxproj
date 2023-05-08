@@ -22,6 +22,7 @@
 		CC8CD30729F65EBE00D9A0E3 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CC8CD30629F65EBE00D9A0E3 /* FirebaseAnalytics */; };
 		CC8CD30929F65EBE00D9A0E3 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CC8CD30829F65EBE00D9A0E3 /* FirebaseMessaging */; };
 		CC8CD30E29F6F21A00D9A0E3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC8CD30D29F6F21A00D9A0E3 /* GoogleService-Info.plist */; };
+		CC8CD3102A08E68100D9A0E3 /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8CD30F2A08E68100D9A0E3 /* MailView.swift */; };
 		CCE597F9299161AE0055AC9B /* ResetPasswordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */; };
 		CCE597FC29916A3E0055AC9B /* ResetPSWViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */; };
 		CCE597FE299774A70055AC9B /* SignupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE597FD299774A70055AC9B /* SignupModel.swift */; };
@@ -102,6 +103,7 @@
 		CC56574129CF31BD0098D16F /* JobsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsModel.swift; sourceTree = "<group>"; };
 		CC8CD30C29F6643300D9A0E3 /* LocalFox.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LocalFox.entitlements; sourceTree = "<group>"; };
 		CC8CD30D29F6F21A00D9A0E3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CC8CD30F2A08E68100D9A0E3 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		CCE597F8299161AE0055AC9B /* ResetPasswordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordModel.swift; sourceTree = "<group>"; };
 		CCE597FB29916A3E0055AC9B /* ResetPSWViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPSWViewModel.swift; sourceTree = "<group>"; };
 		CCE597FD299774A70055AC9B /* SignupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupModel.swift; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 				CD07688E2972A61B00CB7075 /* SecuritySettingsView.swift */,
 				CC1AE67E29AE666F005FC846 /* ProfileImageView.swift */,
 				CC1AE68829B65091005FC846 /* ImagePicker.swift */,
+				CC8CD30F2A08E68100D9A0E3 /* MailView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -508,6 +511,7 @@
 				CDF2B02D2941D8AF00CF2B28 /* LocalFoxApp.swift in Sources */,
 				CCE59800299779300055AC9B /* SignupViewModel.swift in Sources */,
 				CCE597FE299774A70055AC9B /* SignupModel.swift in Sources */,
+				CC8CD3102A08E68100D9A0E3 /* MailView.swift in Sources */,
 				CDE587412943A5DD008A8022 /* ProfileView.swift in Sources */,
 				CD1D0BBA2941E9DB000CB2D1 /* Strings.swift in Sources */,
 				CD1D0BBE2941EA43000CB2D1 /* LoginViewModel.swift in Sources */,
