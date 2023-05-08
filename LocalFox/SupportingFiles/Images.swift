@@ -60,7 +60,8 @@ enum Images {
     static let CHECK_CIRCLE = Image("Checkcircle")
     static let FLAG = Image("flag")
     static let SEARCH_TAB = Image("SearchTab")
-    
+    static let SUCCESS_TICK = Image("SuccessTick")
+    static let ERROR_TICK = Image("ErrorTick")
    }
 
 // A place to test your images

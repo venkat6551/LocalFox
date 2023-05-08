@@ -39,4 +39,6 @@ extension Color {
     static let LIGHT_GREEN = Color("LightGreen")
     static let LIGHT_BLUE = Color("LightBlue")
     static let DARK_PURPLE = Color("DarkPurple")
+    static let ERROR_SNEAKBAR_TEXT_COLOR = Color("ErrorSneakbarTextColor")
+    static let SUCCESS_SNEAKBAR_TEXT_COLOR = Color("SuccessSneakbarTextColor")
 }

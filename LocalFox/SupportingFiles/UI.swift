@@ -425,15 +425,15 @@ enum SnackBarType {
     var icon: Image? {
         switch self {
         case .normal: return nil
-        case .error: return Images.ERROR
-        case .success: return Images.CHECKMARK_ROUNDED
+        case .error: return Images.ERROR_TICK
+        case .success: return Images.SUCCESS_TICK
         }
     }
     var textColor: Color {
         switch self {
         case .normal: return Color.PRIMARY
-        case .error: return Color.ERROR
-        case .success: return Color.SUCCESS
+        case .error: return Color.ERROR_SNEAKBAR_TEXT_COLOR
+        case .success: return Color.SUCCESS_SNEAKBAR_TEXT_COLOR
         }
     }
     var bgColor: Color {
@@ -468,17 +468,18 @@ fileprivate struct SnackBarView: View {
     var showDismissButton: Bool = false
     var onSnackbarDismissed: (() -> Void)
     
-    private static let SNACKBAR_LEADING_ICON_SIZE: CGFloat = 32.0
+    private static let SNACKBAR_LEADING_ICON_SIZE: CGFloat = 20.0
     @State private var hideSnackBarDispatchWorkerItem: DispatchWorkItem?
     
     var body: some View {
         if show {
-            HStack(spacing: Dimens.SPACING_DEFAULT) {
+            HStack(spacing: Dimens.SPACING_HIGH) {
                 if let leadingIcon = snackbarType.icon {
                     leadingIcon
                         .resizable()
                         .applyFontRegular(color: snackbarType.textColor,size: 16)
                         .frame(width: SnackBarView.SNACKBAR_LEADING_ICON_SIZE, height: SnackBarView.SNACKBAR_LEADING_ICON_SIZE)
+                        .padding(.leading, 5)
                 }
                 VStack(alignment: .leading, spacing: Dimens.SPACING_LOW) {
                     if let title = title {
@@ -488,7 +489,8 @@ fileprivate struct SnackBarView: View {
                     }
                     if let message = message {
                         Text(message)
-                            .applyFontText()
+                            .applyFontRegular(color: snackbarType.textColor,size: 14)
+                            // .applyFontRegular(size: 14)
                     }
                 }
                 Spacer()
@@ -751,7 +753,7 @@ struct UI_Previews: PreviewProvider {
                 show: $showNormalSnackbar,
                 snackbarType: SnackBarType.success,
                 title: "SnackBarType.success",
-                message: "message",
+                message: "Invalid username or password. Please try again later.",
                 secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
                 onSnackbarDismissed: { },
                 isAlignToBottom: true
@@ -760,7 +762,7 @@ struct UI_Previews: PreviewProvider {
                 show: $showErrorSnackbar,
                 snackbarType: SnackBarType.error,
                 title: "SnackBarType.error",
-                message: "message",
+                message: "Invalid username or password. Please try again later.",
                 secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
                 onSnackbarDismissed: {  },
                 isAlignToBottom: true
@@ -769,7 +771,7 @@ struct UI_Previews: PreviewProvider {
                 show: $showSuccessSnackbar,
                 snackbarType: SnackBarType.success,
                 title: "SnackBarType.success",
-                message: "message",
+                message: "Invalid username or password. Please try again later.",
                 secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
                 onSnackbarDismissed: { },
                 isAlignToBottom: true
