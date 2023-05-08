@@ -100,13 +100,25 @@ struct ProfileView: View {
                                 if(reloadViews){
                                     AsyncImage(
                                         url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")!,
-                                        placeholder: { Text("Loading ...") },
+                                        placeholder: {
+                                            if let name = profileVM.profileModel?.data?.firstName , let lastName =  profileVM.profileModel?.data?.firstName {
+                                                HStack {
+                                                    Text(String(name.prefix(1)))
+                                                    Text(String(lastName.prefix(1)))
+                                                }
+                                            }
+                                           else if let name = profileVM.profileModel?.data?.firstName {
+                                                Text(String(name.prefix(1)))
+                                            } else {
+                                                Text("Loading...").applyFontRegular(size: 10)
+                                            }
+                                        },
                                         image: { Image(uiImage: $0).resizable() }
                                     ).frame(width: 100, height: 80, alignment: .center)
                                 } else {
                                     AsyncImage(
                                         url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")!,
-                                        placeholder: { Text("Loading ...") },
+                                        placeholder: { Text("Loading ...").applyFontRegular(size: 12) },
                                         image: { Image(uiImage: $0).resizable() }
                                     ).frame(width: 100, height: 80, alignment: .center)
                                 }

@@ -446,11 +446,8 @@ final class MockAPIService: APIServiceProtocol {
     }
     func getJobs(_pagenumber: Int, completion: @escaping (_ success: Bool, _ jobsModel : JobsModel?, _ errorString: String?)-> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
-        
-        
-        print("\(APIEndpoints.GET_JOBS)?pageNumber=\(_pagenumber)&pageSize=10")
         let request = AF.request(
-            "\(APIEndpoints.GET_JOBS)?pageNumber=\(_pagenumber)&pageSize=10",
+            "\(APIEndpoints.GET_JOBS)?pageNumber=\(_pagenumber)&pageSize=20",
             method: HTTPMethod.get,
             encoding:JSONEncoding.default,
             headers: headers

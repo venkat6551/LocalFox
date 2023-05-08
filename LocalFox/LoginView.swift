@@ -11,6 +11,7 @@ struct LoginView: View {
     @StateObject private var loginVM: LoginViewModel = LoginViewModel()
     @StateObject private var profileVM: ProfileViewModel = ProfileViewModel()
     @State private var showLeads = false
+    @State private var showNotApprovedScreen = false
     @State private var resetPassword = false
     @State private var signUp = false
     @State private var isEmailError: Bool = false
@@ -101,6 +102,10 @@ struct LoginView: View {
                     .navigationDestination(isPresented: $signUp) {
                         NameView()
                     }
+                    .navigationDestination(isPresented: $showNotApprovedScreen) {
+                        NotApprovedScreen(profileVM: profileVM)
+                    }
+                
             }
             .background(Color.SCREEN_BG.ignoresSafeArea())
         }.navigationBarHidden(true)
@@ -126,8 +131,14 @@ struct LoginView: View {
             }
             .onChange(of: profileVM.isLoading) { isloading in
                 if profileVM.getProfileSuccess == true {
-                    showLeads = true
+                    
+                    if (profileVM.profileModel?.data?.isApproved == true) {
+                        showNotApprovedScreen = true
+                    } else {
+                        showLeads = true
+                    }
                     showErrorSnackbar = false
+                    
                 } else if(profileVM.getProfileSuccess == false && profileVM.errorString != nil) {
                     errorString = profileVM.errorString!
                     showErrorSnackbar = true

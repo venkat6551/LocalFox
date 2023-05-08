@@ -75,8 +75,26 @@ struct LeadCardView: View {
                     VStack {
                         HStack(alignment: .top, spacing: 10) {
                             VStack {
-                                Images.PROFILE
-                                    .foregroundColor(Color.BLUE)
+                                if let pic = job.customer?.profilePhoto {
+                                    AsyncImage(
+                                        url: URL(string: pic)!,
+                                        placeholder: {
+                                            if let name = job.customer?.fullName {
+                                                Text(String(name.prefix(1)))
+                                            } else {
+                                                Text("Loading...").applyFontRegular(size: 10)
+                                            }
+                                        },
+                                        image: { Image(uiImage: $0).resizable() }
+                                    ).frame(width: 100, height: 80, alignment: .center)
+                                } else {
+                                    if let name = job.customer?.fullName {
+                                        Text(String(name.prefix(1)))
+                                    } else {
+                                        Text("Loading...").applyFontRegular(size: 10)
+                                    }
+                                }
+                               
                             }.frame(width: 43, height: 43 )
                                 .cardify()
                             

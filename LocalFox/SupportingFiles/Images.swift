@@ -62,6 +62,8 @@ enum Images {
     static let SEARCH_TAB = Image("SearchTab")
     static let SUCCESS_TICK = Image("SuccessTick")
     static let ERROR_TICK = Image("ErrorTick")
+    static let INFO_ICON = Image("InfoIcon")
+    static let LOGOUT = Image("logout")
    }
 
 // A place to test your images

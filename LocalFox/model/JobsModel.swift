@@ -80,6 +80,7 @@ struct Customer: Decodable {
     let fullName : String?
     let mobileNumber : String?
     let emailAddress : String?
+    let profilePhoto : String?
 }
 
 struct Partner: Decodable {
