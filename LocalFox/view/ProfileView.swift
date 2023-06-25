@@ -101,33 +101,23 @@ struct ProfileView: View {
                                     AsyncImage(
                                         url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")!,
                                         placeholder: {
-                                            if let name = profileVM.profileModel?.data?.firstName , let lastName =  profileVM.profileModel?.data?.firstName {
-                                                HStack {
-                                                    Text(String(name.prefix(1)))
-                                                    Text(String(lastName.prefix(1)))
-                                                }
-                                            }
-                                           else if let name = profileVM.profileModel?.data?.firstName {
-                                                Text(String(name.prefix(1)))
-                                            } else {
-                                                Text("Loading...").applyFontRegular(size: 10)
-                                            }
+                                            Text(getNamePreFixes()).applyFontBold(size: 18)
                                         },
                                         image: { Image(uiImage: $0).resizable() }
-                                    ).frame(width: 100, height: 80, alignment: .center)
+                                    ).frame(width: 60, height: 60, alignment: .center)
                                 } else {
                                     AsyncImage(
                                         url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")!,
-                                        placeholder: { Text("Loading ...").applyFontRegular(size: 12) },
+                                        placeholder: { Text(getNamePreFixes()).applyFontBold(size: 18)},
                                         image: { Image(uiImage: $0).resizable() }
-                                    ).frame(width: 100, height: 80, alignment: .center)
+                                    ).frame(width: 60, height: 60, alignment: .center)
                                 }
                             } else {
-                                // TODO: Add the placeholder image here
-                                Images.PRIVACY_ICON
-                                    .resizable()
-                                    .frame(width: 100, height: 80, alignment: .center)
+                                VStack {
+                                    Text(getNamePreFixes()).applyFontBold(size: 18)
+                                }.frame(width: 60, height: 60, alignment: .center)
                                     .foregroundColor(Color.BLUE)
+                                    .cardify()
                             }
                         }.cardify(borderColor: Color.GRAY_TEXT)
                             .onTapGesture { onProfilePicClick() }
@@ -145,27 +135,39 @@ struct ProfileView: View {
                             }.padding(.top, 5)
                             
                             HStack {
-                                if let role = profileVM.profileModel?.data?.role {
-                                    Text(role)
-                                        .applyFontBold(color:Color.TEXT_GREEN, size: 14)
+                                if let email = profileVM.profileModel?.data?.emailAddress {
+                                    Text(email)
+                                        .applyFontRegular(size: 14)
                                 }
                                 Spacer()
                             }
-                            HStack{
-                                Images.LOCATION_PIN
-                                    .frame(width: 15)
-                                if let address = profileVM.profileModel?.data?.location?.formattedAddress {
-                                    Text(address)
-                                        .applyFontRegular(size: 13)
-                                }
-                                Spacer()
-                            }
+//                            HStack{
+//                                Images.LOCATION_PIN
+//                                    .frame(width: 15)
+//                                if let address = profileVM.profileModel?.data?.location?.formattedAddress {
+//                                    Text(address)
+//                                        .applyFontRegular(size: 13)
+//                                }
+//                                Spacer()
+//                            }
                         }.padding(.leading,5)
                     }
                 }.padding(15)
             }.onAppear{
                 reloadViews.toggle()
             }
+        }
+        
+        func getNamePreFixes()->String {
+            if let name = profileVM.profileModel?.data?.firstName , let lastName =  profileVM.profileModel?.data?.firstName {
+                    return "\(String(name.prefix(1))) \(String(lastName.prefix(1)))"
+                    
+            }
+           else if let name = profileVM.profileModel?.data?.firstName {
+               return "\(String(name.prefix(1)))"
+           } else {
+               return ""
+           }
         }
     }
     
@@ -207,9 +209,14 @@ struct ProfileView: View {
             ZStack {
                 VStack(alignment: .leading) {
                     ProfileRowView(title: Strings.PRIVACY_STATEMENT, leadingImage: Images.PRIVACY_ICON, trailingimage: Images.LEGAL_DISCLOSURE) {
+                        if let url = URL(string: Strings.PRIVACY_LINK) {
+                               UIApplication.shared.open(url)
+                            }
                     }
                     ProfileRowView(title: Strings.T_AND_C, leadingImage: Images.TANDC_ICON, trailingimage: Images.LEGAL_DISCLOSURE){
-                        
+                        if let url = URL(string: Strings.TERMS_LINK) {
+                               UIApplication.shared.open(url)
+                            }
                     }
                 }
             }.background(Color.SCREEN_BG)

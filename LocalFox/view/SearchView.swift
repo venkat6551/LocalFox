@@ -12,6 +12,8 @@ struct SearchView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     @State private var searchText: String = ""
     @FocusState private var keyboardFocused: Bool
+    @State private var selectedJob:Job?
+    @State private var showLeadDetails = false
     var onSearchCancleClick: () -> Void
     var body: some View {
         VStack {
@@ -52,8 +54,8 @@ struct SearchView: View {
                     ScrollView (showsIndicators: false){
                         ForEach(getFilteredList()) { job in
                             LeadCardView(job: job, isForSearch: true, status: LeadStatus.active) {
-                                //                                selectedJob = job
-                                //                                showLeadDetails = true
+                                                                selectedJob = job
+                                                                showLeadDetails = true
                             }.cardify()
                         }
                         Spacer()
@@ -61,6 +63,9 @@ struct SearchView: View {
                 }
             }
             Spacer()
+        }
+        .navigationDestination(isPresented: $showLeadDetails) {
+            LeadDetailScreen(job: selectedJob)
         }
         .navigationBarHidden(true)
         .padding(.horizontal,25)
@@ -77,7 +82,7 @@ struct SearchView: View {
                     job.customer?.fullName?.lowercased().contains(searchText.lowercased()) == true
                     || job.customer?.emailAddress?.lowercased().contains(searchText.lowercased()) == true
                     ||  job.customer?.mobileNumber?.lowercased().contains(searchText.lowercased()) == true
-                    || job.address?.lowercased().contains(searchText.lowercased()) == true
+                    || job.getFormattedLocation().lowercased().contains(searchText.lowercased()) == true
                 })
             }
         }

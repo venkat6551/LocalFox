@@ -100,5 +100,6 @@ struct Strings {
     static let IMAGE_PICKER_DESCRIPTION = "Please choose your preferred mode to set your profile image"
     static let CAMERA = "Camera"
     static let PHOTO_LIBRARY = "Photo Library"
-    static let TERMS_LINK = "https://localfox.vercel.app/partner/terms"
+    static let TERMS_LINK = "https://partner.localfox.com.au/terms"
+    static let PRIVACY_LINK = "https://partner.localfox.com.au/privacy"
 }

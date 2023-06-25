@@ -209,8 +209,8 @@ struct SettingsUpdateSheet: View {
                     ScrollView {
                         LazyVStack(spacing: 15) {
                             ForEach(addressList, id: \.self) { address in
-                                EnvironmentRow(environmentType: address) {
-                                    changeEnvironment(environment: address)
+                                AddressRow(environmentType: address) {
+                                    changeAddress(address: address)
                                 }
                             }
                         }
@@ -219,7 +219,7 @@ struct SettingsUpdateSheet: View {
             }
         }
         
-        struct EnvironmentRow: View {
+        struct AddressRow: View {
             var environmentType : String
             var onClick: () -> Void
             
@@ -243,8 +243,8 @@ struct SettingsUpdateSheet: View {
             }
         }
         
-        private func changeEnvironment(environment:String) {
-            onChangeEnvironment(environment)
+        private func changeAddress(address:String) {
+            onChangeEnvironment(address)
         }
     }
     

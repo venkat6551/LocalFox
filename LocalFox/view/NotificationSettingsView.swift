@@ -64,12 +64,13 @@ struct NotificationSettingsView: View {
             title: "Error",
             message: profileVM.errorString,
             secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
-            onSnackbarDismissed: {showErrorSnackbar = false },
+            onSnackbarDismissed: {
+                self.presentationMode.wrappedValue.dismiss()
+                showErrorSnackbar = false },
             isAlignToBottom: true
         )
         .onChange(of: profileVM.isLoading) { isloading in
             if profileVM.updateNotificationSettingsSuccess == true {
-                self.presentationMode.wrappedValue.dismiss()
                 showErrorSnackbar = false
             } else if(profileVM.updateNotificationSettingsSuccess == false && profileVM.errorString != nil) {
                 showErrorSnackbar = true

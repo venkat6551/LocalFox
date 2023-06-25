@@ -32,6 +32,34 @@ struct ProfileData: Decodable {
     let serviceArea: Int
     let createdDate: String
     let lastUpdatedDate: String
+    
+    func getFormattedLocation() -> String {
+        
+        var location = ""
+        
+        if let streenNum = self.location?.streetNumber {
+            location = streenNum
+        }
+        if let streenName = self.location?.streetName {
+            location = "\(location) \(streenName)"
+        }
+        
+        if location.count > 0 {
+            location = "\(location) \n"
+        }
+        
+        if let suburb = self.location?.suburb {
+            location = "\(location)\(suburb)"
+        }
+        if let state = self.location?.state {
+            location = "\(location) \(state)"
+        }
+        
+        if let postCode = self.location?.postCode {
+            location = "\(location) \(postCode)"
+        }
+        return location
+    }
 }
 
 struct Location: Decodable {

@@ -56,7 +56,8 @@ struct EmailCodeView: View {
             }.padding(.vertical,25)
                 .padding(.horizontal,40)
         }
-        .setNavTitle(isMobileVerificationCode ? Strings.VERIFICATION_CODE :Strings.EMAIL_CODE,subtitle: isMobileVerificationCode ? Strings.MOBILE_VERIFICATION_MESSSAGE :Strings.EMAIL_CODE_SUBTITLE, showBackButton: true)
+        .setNavTitle(isMobileVerificationCode ? Strings.VERIFICATION_CODE :Strings.EMAIL_CODE,subtitle: isMobileVerificationCode ? Strings.MOBILE_VERIFICATION_MESSSAGE :Strings.EMAIL_CODE_SUBTITLE, showBackButton: true).padding(.top, isforSignUpFlow ? 0 : 30)
+        .background(Color.SCREEN_BG)
         .navigationDestination(isPresented: $showSetPSWView) {
             if (isMobileVerificationCode) {
                 EmailAddressView(signupVM: signupVM,isforSignUpFlow: isforSignUpFlow)

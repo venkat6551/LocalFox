@@ -11,7 +11,11 @@ struct ProfileSettingsView: View {
     @StateObject var profileVM: ProfileViewModel
     @State private var pushNotificationOn = true
     @State private var marketingNotificationOn = true
-    @State private var showSettingsUpdateSheet = false
+    @State private var showMobileSettingsUpdateSheet = false
+    
+    @State private var showAddressSettingsUpdateSheet = false
+    
+    
     @State private var mobileNumText: String = ""
     @State private var emailText: String = ""
     @State private var addressText: String = ""
@@ -40,7 +44,7 @@ struct ProfileSettingsView: View {
                         action: {
                             changeText = mobileNumText
                             settingsType = SettingsType.mobileNumber
-                            showSettingsUpdateSheet = true
+                            showMobileSettingsUpdateSheet = true
                         },
                         label: {
                             Text(Strings.UPDATE).applyFontRegular(color: .PRIMARY, size: 12)
@@ -65,7 +69,7 @@ struct ProfileSettingsView: View {
                         action: {
                             changeText = addressText
                             settingsType = SettingsType.address
-                            showSettingsUpdateSheet = true
+                            showAddressSettingsUpdateSheet = true
                         },
                         label: {
                             Text(Strings.UPDATE).applyFontRegular(color: .PRIMARY, size: 12)
@@ -84,15 +88,21 @@ struct ProfileSettingsView: View {
         .onAppear{
             mobileNumText = (self.profileVM.profileModel?.data?.mobileNumber ?? "")
             emailText = (self.profileVM.profileModel?.data?.emailAddress ?? "")
-            addressText = (self.profileVM.profileModel?.data?.location?.formattedAddress ?? "")
+            addressText = (self.profileVM.profileModel?.data?.getFormattedLocation() ?? "")
         }
         .padding(.horizontal,20)
         .setNavTitle(Strings.PROFILE_SETTINGS, showBackButton: true,leadingSpace: 20)
-        .sheet(isPresented: $showSettingsUpdateSheet){
+        .sheet(isPresented: $showMobileSettingsUpdateSheet){
             SettingsUpdateSheet(onClickClose: {
             }, profileVM: profileVM, onUpdateSuccess: {
-                addressText = (self.profileVM.profileModel?.data?.location?.formattedAddress ?? "")
-            }, settingsType: settingsType, text: $changeText)
+                addressText = (self.profileVM.profileModel?.data?.getFormattedLocation() ?? "")
+            }, settingsType: SettingsType.mobileNumber, text: $changeText)
+        }
+        .sheet(isPresented: $showAddressSettingsUpdateSheet){
+            SettingsUpdateSheet(onClickClose: {
+            }, profileVM: profileVM, onUpdateSuccess: {
+                addressText = (self.profileVM.profileModel?.data?.getFormattedLocation() ?? "")
+            }, settingsType: SettingsType.address, text: $changeText)
         }
     }
 }
