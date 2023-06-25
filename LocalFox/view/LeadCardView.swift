@@ -146,8 +146,7 @@ struct LeadCardView: View {
                                         if job.customer?.emailAddress != nil {
                                             MFMailComposeViewController.canSendMail() ? self.isShowingMailView.toggle() : self.alertNoMail.toggle()
                                         }
-                                       
-                                    },
+                                     },
                                     label: {
                                         Images.EMAIL_BUTTON
                                     }

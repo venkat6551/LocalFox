@@ -57,7 +57,7 @@ struct SetPasswordView: View {
                     showLoading: signupVM.isLoading,
                     bgColor: Color.PRIMARY
                 )
-                .padding(.top, 35)
+                .padding(.top, 15)
                 Spacer()
             }.padding(.vertical,25)
                 .padding(.horizontal,40)

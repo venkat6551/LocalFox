@@ -64,8 +64,10 @@ struct Details: View {
                 .padding(.vertical,18)
             
             VStack(alignment: .leading,spacing: 5){
-                Text("We are reviewing your details to onboard you with Local Fox. We will get back to you as soon as possible.")
-                    .applyFontRegular(color:.TEXT_LEVEL_2, size: 18)
+                Text("Application in review").applyFontBold(size: 15).padding(.bottom, 10)
+                Text("We are reviewing your details to onboard you with Local Fox. We will get back to you as soon as possible.\n\nPlease do not hesitate to write us if you have any questions: partner@localfox.com.au")
+                    .applyFontRegular(color:.TEXT_LEVEL_2, size: 15)
+                    .accentColor(Color.BLUE)
                     .lineSpacing(5)
             } .padding(.vertical,18)
             Spacer()

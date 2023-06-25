@@ -141,7 +141,7 @@ extension View {
                 }
             }
             .padding(.leading,leadingSpace)
-            .frame(maxHeight:(subtitle == nil) ? Dimens.TOP_BAR_HEIGHT : 150)
+            .frame(maxHeight:(subtitle == nil) ? Dimens.TOP_BAR_HEIGHT : 180)
             ZStack {
                 Color.SCREEN_BG
                 self

@@ -32,10 +32,12 @@ struct LeadsView: View {
                     )
                 }
                 
-                InvitationsWaitingView(jobsVM: jobsVM, onCardClick: {
-                    showInvitations = true
-                }).padding(.bottom, 5)
-                
+                if (jobsVM.jobsModel?.invitationsCount ?? 0 > 0) {
+                    InvitationsWaitingView(jobsVM: jobsVM, onCardClick: {
+                        showInvitations = true
+                    }).padding(.bottom, 5)
+                }
+                             
                 ScrollView(showsIndicators: false) {
                     if let jobs = jobsVM.jobsModel?.data?.jobs {
                         ForEach(jobs) { job in

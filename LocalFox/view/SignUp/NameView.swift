@@ -47,7 +47,7 @@ struct NameView: View {
                     }.padding(.top, 0)
                     Link(Strings.TC_PART3, destination: URL(string: Strings.TERMS_LINK)!)
                         .applyFontRegular(color: Color.PRIMARY,size: 14)
-                }
+                }.padding(.top, 10)
                 
                 MyButton(
                     text: Strings.NEXT,

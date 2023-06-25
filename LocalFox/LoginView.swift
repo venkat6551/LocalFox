@@ -132,7 +132,7 @@ struct LoginView: View {
             .onChange(of: profileVM.isLoading) { isloading in
                 if profileVM.getProfileSuccess == true {
                     
-                    if (profileVM.profileModel?.data?.isApproved == true) {
+                    if (profileVM.profileModel?.data?.isApproved != true) {
                         showNotApprovedScreen = true
                     } else {
                         showLeads = true
