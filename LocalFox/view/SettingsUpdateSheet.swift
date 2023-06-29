@@ -237,6 +237,7 @@ struct SettingsUpdateSheet: View {
                     HStack(spacing: ROW_INNER_SPACING) {
                         Text(address)
                             .applyFontText()
+                            .multilineTextAlignment(.leading)
                             .padding(.leading, 10)
                         Spacer()
                     }

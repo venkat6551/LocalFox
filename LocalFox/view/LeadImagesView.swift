@@ -23,15 +23,21 @@ struct LeadImagesView: View {
                     .applyFontBold(size: 15)
                 VStack {
                     if let images = images {
-                        WrappingHStack(alignment: .leading) {
-                            ForEach(images , id: \.self) { item in
-                                AsyncImage(
-                                    url: URL(string:item)!,
-                                    placeholder: { Text("Loading ...") },
-                                    image: { Image(uiImage: $0).resizable() }
-                                ).frame(width: 90, height: 80, alignment: .center)
-                                .cardify()
+                        if images.count > 0 {
+                            WrappingHStack(alignment: .leading) {
+                                ForEach(images , id: \.self) { item in
+                                    AsyncImage(
+                                        url: URL(string:item)!,
+                                        placeholder: { Text("Loading ...") },
+                                        image: { Image(uiImage: $0).resizable() }
+                                    ).frame(width: 90, height: 80, alignment: .center)
+                                        .cardify()
+                                }
                             }
+                        }
+                        else {
+                            Text("No photos added by prospective customer").applyFontRegular(color:.TEXT_LEVEL_2, size: 14)
+                                .lineSpacing(5)
                         }
                     } else {
                         Text("No photos added by prospective customer").applyFontRegular(color:.TEXT_LEVEL_2, size: 14)

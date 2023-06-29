@@ -80,7 +80,7 @@ struct LeadCardView: View {
                                         url: URL(string: pic)!,
                                         placeholder: {
                                             if let name = job.customer?.fullName {
-                                                Text(String(name.prefix(1)))
+                                                Text(String(name.prefix(2))).applyFontBold(size: 17).textCase(.uppercase)
                                             } else {
                                                 Text("Loading...").applyFontRegular(size: 10)
                                             }
@@ -89,7 +89,7 @@ struct LeadCardView: View {
                                     ).frame(width: 100, height: 80, alignment: .center)
                                 } else {
                                     if let name = job.customer?.fullName {
-                                        Text(String(name.prefix(1)))
+                                        Text(String(name.prefix(2))).applyFontBold(size: 17).textCase(.uppercase)
                                     } else {
                                         Text("Loading...").applyFontRegular(size: 10)
                                     }

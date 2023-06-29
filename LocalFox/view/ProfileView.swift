@@ -101,20 +101,20 @@ struct ProfileView: View {
                                     AsyncImage(
                                         url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")!,
                                         placeholder: {
-                                            Text(getNamePreFixes()).applyFontBold(size: 18)
+                                            Text(getNamePreFixes()).applyFontBold(size: 18).textCase(.uppercase)
                                         },
-                                        image: { Image(uiImage: $0).resizable() }
+                                        image: { Image(uiImage: $0).resizable(resizingMode: .tile)}
                                     ).frame(width: 60, height: 60, alignment: .center)
                                 } else {
                                     AsyncImage(
                                         url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")!,
-                                        placeholder: { Text(getNamePreFixes()).applyFontBold(size: 18)},
-                                        image: { Image(uiImage: $0).resizable() }
+                                        placeholder: { Text(getNamePreFixes()).applyFontBold(size: 18).textCase(.uppercase)},
+                                        image: { Image(uiImage: $0).resizable(resizingMode: .stretch) }
                                     ).frame(width: 60, height: 60, alignment: .center)
                                 }
                             } else {
                                 VStack {
-                                    Text(getNamePreFixes()).applyFontBold(size: 18)
+                                    Text(getNamePreFixes()).applyFontBold(size: 18).textCase(.uppercase)
                                 }.frame(width: 60, height: 60, alignment: .center)
                                     .foregroundColor(Color.BLUE)
                                     .cardify()
@@ -160,11 +160,12 @@ struct ProfileView: View {
         
         func getNamePreFixes()->String {
             if let name = profileVM.profileModel?.data?.firstName , let lastName =  profileVM.profileModel?.data?.firstName {
-                    return "\(String(name.prefix(1))) \(String(lastName.prefix(1)))"
-                    
+                return "\(String(name.prefix(1))) \(String(lastName.prefix(1)))"
             }
            else if let name = profileVM.profileModel?.data?.firstName {
-               return "\(String(name.prefix(1)))"
+               return "\(String(name.prefix(2)))"
+           } else if let name = profileVM.profileModel?.data?.lastName {
+               return "\(String(name.prefix(2)))"
            } else {
                return ""
            }
