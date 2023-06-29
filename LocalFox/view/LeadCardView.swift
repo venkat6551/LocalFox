@@ -182,19 +182,7 @@ struct LeadCardView: View {
                            Alert(title: Text("NO MAIL SETUP"))
                        }
     }
-    
-    
-    func getNamePreFixes()->String {
-        if let name = profileVM.profileModel?.data?.firstName , let lastName =  profileVM.profileModel?.data?.firstName {
-                return "\(String(name.prefix(1))) \(String(lastName.prefix(1)))"
-                
-        }
-       else if let name = profileVM.profileModel?.data?.firstName {
-           return "\(String(name.prefix(1)))"
-       } else {
-           return ""
-       }
-    }
+
     
     ///Opens text address in maps
      func openAddressInMap(address: String?){
