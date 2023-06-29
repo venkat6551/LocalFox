@@ -24,7 +24,7 @@ struct ProfileData: Decodable {
     let emailAddress: String
     let isMobileVerified: Bool
     let isEmailVerified: Bool
-    let mobileNumber: String
+    var mobileNumber: String
     var profilePhoto: String
     let isActive: Bool
     let isApproved: Bool

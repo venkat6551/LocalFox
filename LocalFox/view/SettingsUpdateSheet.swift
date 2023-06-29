@@ -121,9 +121,12 @@ struct SettingsUpdateSheet: View {
                         Spacer()
                     }.padding(40)
                 }.background(Color.SCREEN_BG.ignoresSafeArea())
+                .ignoresSafeArea(.keyboard, edges: .bottom)
                     .navigationDestination(isPresented: $showOTPCodeView) {
                         EmailCodeView(signupVM: signupVM,isMobileVerificationCode: true) {
+                            profileVM.profileModel?.data?.mobileNumber = text
                             self.presentationMode.wrappedValue.dismiss()
+                            onUpdateSuccess()
                         }
                     }
                     .onChange(of: signupVM.isLoading || profileVM.isLoading) { isloading in
@@ -189,6 +192,7 @@ struct SettingsUpdateSheet: View {
                         secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
                         onSnackbarDismissed: {
                             if(settingsType == .address){
+                                profileVM.profileModel?.data?.location = Location(type: nil, streetName: text)
                                 self.presentationMode.wrappedValue.dismiss()
                                 onUpdateSuccess()
                             }
@@ -209,7 +213,7 @@ struct SettingsUpdateSheet: View {
                     ScrollView {
                         LazyVStack(spacing: 15) {
                             ForEach(addressList, id: \.self) { address in
-                                AddressRow(environmentType: address) {
+                                AddressRow(address: address) {
                                     changeAddress(address: address)
                                 }
                             }
@@ -220,7 +224,7 @@ struct SettingsUpdateSheet: View {
         }
         
         struct AddressRow: View {
-            var environmentType : String
+            var address : String
             var onClick: () -> Void
             
             private let LEADING_ICON_SIZE: CGFloat = 20
@@ -231,7 +235,7 @@ struct SettingsUpdateSheet: View {
                     onClick()
                 }, label: {
                     HStack(spacing: ROW_INNER_SPACING) {
-                        Text(environmentType)
+                        Text(address)
                             .applyFontText()
                             .padding(.leading, 10)
                         Spacer()

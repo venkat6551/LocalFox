@@ -85,7 +85,7 @@ struct LeadDetailScreen_Previews: PreviewProvider {
     static var previews: some View {
         
         
-        let job = Job(_id: nil, customer: nil, partners: nil, description: "", type: "", urgency: "", images: [], status: "", createdDate: "")
+        let job = Job(_id: nil, customer: nil, description: "", type: "", urgency: "", images: [], status: "", createdDate: "")
         
         LeadDetailScreen(job: job)
     }
