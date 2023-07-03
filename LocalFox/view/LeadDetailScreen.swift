@@ -9,9 +9,10 @@ import SwiftUI
 
 struct LeadDetailScreen: View {
     var job:Job?
+    @State private var showPhotoView = false
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     private let data: [Int] = Array(1...19)
-
+    @State var selectedImage = ""
     var body: some View {
         VStack {
             VStack {
@@ -44,12 +45,18 @@ struct LeadDetailScreen: View {
                     RowView(title: "Job location",image: Images.LOCATION_PIN, description: job?.getFormattedLocation() ?? "-")
                     RowView(title: "How soon",image: Images.TIME_ICON, description: job?.urgency ?? "-")
                     RowView(title: "Job description",image: Images.DESCRIPTION_ICON, description: job?.description ?? "-")
-                    LeadImagesView(images: job?.images)
+                    LeadImagesView(images: job?.images) { image in
+                        selectedImage = image
+                        self.showPhotoView = true
+                    }
                 }
             }.padding(.horizontal,20)
             Spacer()
         }
         .navigationBarHidden(true)
+        .navigationDestination(isPresented: $showPhotoView) {
+           Preview(imageName: selectedImage)
+        }
         .background(Color.SCREEN_BG.ignoresSafeArea())
     }
 }

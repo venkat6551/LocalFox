@@ -47,27 +47,19 @@ struct ProfileImageView: View {
                     }.background(Color.gray).cardify()
                 }
             } else {
-                VStack {
-                    ZStack {
-                        if let image = profileVM.profileModel?.data?.profilePhoto {
-                            AsyncImage(
-                                url: URL(string: image)!,
-                                placeholder: { Text("Loading ...") },
-                                image: {
-                                    Image(uiImage: $0).resizable() }
-                            )
-                        } else {
-                            Text("Loading ...")
-                        }
-                        if(profileVM.isLoading) {
-                            VStack {
-                                Text("Deleting...").foregroundColor(Color.white)
-                                    .padding(.horizontal,35).padding(.top,15)
-                                ActivityIndicator(isAnimating: .constant(true), style: .large).foregroundColor(Color.white).padding(.bottom,10)
-                            }.background(Color.gray).cardify()
+                Color.clear.overlay(
+                    AsyncImage(url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill() 
+                        default:
+                           ProgressView()
                         }
                     }
-                }.padding(20)
+                )
+                .clipped()
             }
         }
         .onAppear{

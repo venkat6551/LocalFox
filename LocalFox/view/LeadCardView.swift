@@ -76,17 +76,25 @@ struct LeadCardView: View {
                         HStack(alignment: .top, spacing: 10) {
                             VStack {
                                 if let pic = job.customer?.profilePhoto {
-                                    AsyncImage(
-                                        url: URL(string: pic)!,
-                                        placeholder: {
-                                            if let name = job.customer?.fullName {
-                                                Text(String(name.prefix(2))).applyFontBold(size: 17).textCase(.uppercase)
-                                            } else {
-                                                Text("Loading...").applyFontRegular(size: 10)
+                                    Color.clear.overlay(
+                                            AsyncImage(url: URL(string: pic)) { phase in
+                                                switch phase {
+                                                case .success(let image):
+                                                    image
+                                                        .resizable()
+                                                        .scaledToFill()    // << for image !!
+                                                default:
+                                                    if let name = job.customer?.fullName {
+                                                        Text(String(name.prefix(2))).applyFontBold(size: 17).textCase(.uppercase)
+                                                    } else {
+                                                        Text("Loading...").applyFontRegular(size: 10)
+                                                    }
+                                                }
                                             }
-                                        },
-                                        image: { Image(uiImage: $0).resizable() }
-                                    ).frame(width: 100, height: 80, alignment: .center)
+                                        )
+                                    .frame(width: 100, height: 80, alignment: .center)
+                                        .aspectRatio(1, contentMode: .fit) // << for square !!
+                                        .clipped()
                                 } else {
                                     if let name = job.customer?.fullName {
                                         Text(String(name.prefix(2))).applyFontBold(size: 17).textCase(.uppercase)
@@ -97,7 +105,7 @@ struct LeadCardView: View {
                                
                             }.frame(width: 43, height: 43 )
                                 .cardify()
-                            
+                                                    
                             VStack(alignment: .leading, spacing: 10) {
                                 HStack(alignment: .top){
                                     Text(job.customer?.fullName ?? "")

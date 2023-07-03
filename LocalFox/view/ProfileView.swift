@@ -98,19 +98,37 @@ struct ProfileView: View {
                         VStack {
                             if(profileVM.profileModel?.data?.profilePhoto != nil && profileVM.profileModel?.data?.profilePhoto != Strings.NO_PROFILE_PIC) {
                                 if(reloadViews){
-                                    AsyncImage(
-                                        url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")!,
-                                        placeholder: {
-                                            Text(getNamePreFixes()).applyFontBold(size: 18).textCase(.uppercase)
-                                        },
-                                        image: { Image(uiImage: $0).resizable(resizingMode: .tile)}
-                                    ).frame(width: 60, height: 60, alignment: .center)
+                                    Color.clear.overlay(
+                                        AsyncImage(url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")) { phase in
+                                            switch phase {
+                                            case .success(let image):
+                                                image
+                                                    .resizable()
+                                                    .scaledToFill()    // << for image !!
+                                            default:
+                                                Text(getNamePreFixes()).applyFontBold(size: 18).textCase(.uppercase)
+                                            }
+                                        }
+                                    )
+                                    .frame(width: 60, height: 60, alignment: .center)
+                                    .aspectRatio(1, contentMode: .fit) // << for square !!
+                                    .clipped()
                                 } else {
-                                    AsyncImage(
-                                        url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")!,
-                                        placeholder: { Text(getNamePreFixes()).applyFontBold(size: 18).textCase(.uppercase)},
-                                        image: { Image(uiImage: $0).resizable(resizingMode: .stretch) }
-                                    ).frame(width: 60, height: 60, alignment: .center)
+                                    Color.clear.overlay(
+                                        AsyncImage(url: URL(string: profileVM.profileModel?.data?.profilePhoto ?? "")) { phase in
+                                            switch phase {
+                                            case .success(let image):
+                                                image
+                                                    .resizable()
+                                                    .scaledToFill()    // << for image !!
+                                            default:
+                                                Text(getNamePreFixes()).applyFontBold(size: 18).textCase(.uppercase)
+                                            }
+                                        }
+                                    )
+                                    .frame(width: 60, height: 60, alignment: .center)
+                                    .aspectRatio(1, contentMode: .fit) // << for square !!
+                                    .clipped()
                                 }
                             } else {
                                 VStack {
@@ -141,15 +159,15 @@ struct ProfileView: View {
                                 }
                                 Spacer()
                             }
-//                            HStack{
-//                                Images.LOCATION_PIN
-//                                    .frame(width: 15)
-//                                if let address = profileVM.profileModel?.data?.location?.formattedAddress {
-//                                    Text(address)
-//                                        .applyFontRegular(size: 13)
-//                                }
-//                                Spacer()
-//                            }
+                            //                            HStack{
+                            //                                Images.LOCATION_PIN
+                            //                                    .frame(width: 15)
+                            //                                if let address = profileVM.profileModel?.data?.location?.formattedAddress {
+                            //                                    Text(address)
+                            //                                        .applyFontRegular(size: 13)
+                            //                                }
+                            //                                Spacer()
+                            //                            }
                         }.padding(.leading,5)
                     }
                 }.padding(15)
@@ -162,15 +180,16 @@ struct ProfileView: View {
             if let name = profileVM.profileModel?.data?.firstName , let lastName =  profileVM.profileModel?.data?.firstName {
                 return "\(String(name.prefix(1))) \(String(lastName.prefix(1)))"
             }
-           else if let name = profileVM.profileModel?.data?.firstName {
-               return "\(String(name.prefix(2)))"
-           } else if let name = profileVM.profileModel?.data?.lastName {
-               return "\(String(name.prefix(2)))"
-           } else {
-               return ""
-           }
+            else if let name = profileVM.profileModel?.data?.firstName {
+                return "\(String(name.prefix(2)))"
+            } else if let name = profileVM.profileModel?.data?.lastName {
+                return "\(String(name.prefix(2)))"
+            } else {
+                return ""
+            }
         }
     }
+    
     
     struct SettingsView: View {
         @StateObject var profileVM: ProfileViewModel
@@ -211,13 +230,13 @@ struct ProfileView: View {
                 VStack(alignment: .leading) {
                     ProfileRowView(title: Strings.PRIVACY_STATEMENT, leadingImage: Images.PRIVACY_ICON, trailingimage: Images.LEGAL_DISCLOSURE) {
                         if let url = URL(string: Strings.PRIVACY_LINK) {
-                               UIApplication.shared.open(url)
-                            }
+                            UIApplication.shared.open(url)
+                        }
                     }
                     ProfileRowView(title: Strings.T_AND_C, leadingImage: Images.TANDC_ICON, trailingimage: Images.LEGAL_DISCLOSURE){
                         if let url = URL(string: Strings.TERMS_LINK) {
-                               UIApplication.shared.open(url)
-                            }
+                            UIApplication.shared.open(url)
+                        }
                     }
                 }
             }.background(Color.SCREEN_BG)

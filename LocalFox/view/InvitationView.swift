@@ -45,7 +45,9 @@ struct InvitationView: View {
                     
                     RowView(title: "Job description",image: Images.DESCRIPTION_ICON, description: jobInvitation.job?.description)
                     
-                    LeadImagesView(images: jobInvitation.job?.images)
+                    LeadImagesView(images: jobInvitation.job?.images) { image in
+                        
+                    }
                 }
                
             }.padding(.horizontal,20).background(Color.SCREEN_BG)
