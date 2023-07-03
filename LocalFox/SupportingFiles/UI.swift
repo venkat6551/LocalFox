@@ -377,6 +377,7 @@ struct MyInputTextBox: View {
                                     .padding([.leading, .trailing], 4)
                                     .disableAutocorrection(true)
                                     .font(Font.custom("Inter-Regular", size: 16))
+                                    .textContentType(.oneTimeCode)
                             }
                             
                         } else {
@@ -395,6 +396,7 @@ struct MyInputTextBox: View {
                                     .frame(height: Dimens.INPUT_FIELD_HEIGHT)
                                     .textFieldStyle(PlainTextFieldStyle())
                                     .font(Font.custom("Inter-Regular", size: 16))
+                                    .textContentType(.oneTimeCode)
                             }
                         }
                         Button(
