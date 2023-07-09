@@ -49,15 +49,15 @@ struct LeadsView: View {
                     }
                     Spacer()
                 } .refreshable {
-                    jobsVM.getJobs(onlyFirstPage: true)
+                    jobsVM.getJobs()
                 } 
             }
             Spacer()
         }
         .onAppear{
-            if(jobsVM.jobsModel?.data?.jobs?.count ?? 0 <= 0 ) {
+           // if(jobsVM.jobsModel?.data?.jobs?.count ?? 0 <= 0 ) {
                 jobsVM.getJobs()
-            }
+          //  }
         }
         .onChange(of: jobsVM.isLoading) { isLoading in
         }
