@@ -104,7 +104,9 @@ struct LeadCardView: View {
                                 }
                                
                             }.frame(width: 43, height: 43 )
+                                .background(Color.SCREEN_BG)
                                 .cardify()
+                               
                                                     
                             VStack(alignment: .leading, spacing: 10) {
                                 HStack(alignment: .top){

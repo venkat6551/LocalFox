@@ -64,6 +64,7 @@ enum Images {
     static let ERROR_TICK = Image("ErrorTick")
     static let INFO_ICON = Image("InfoIcon")
     static let LOGOUT = Image("logout")
+    static let WARNING_TRIANGLE = Image("warning_triangle")
    }
 
 // A place to test your images

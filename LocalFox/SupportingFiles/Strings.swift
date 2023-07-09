@@ -99,7 +99,9 @@ struct Strings {
     static let IMAGE_PICKER_TITLE = "Choose mode"
     static let IMAGE_PICKER_DESCRIPTION = "Please choose your preferred mode to set your profile image"
     static let CAMERA = "Camera"
+    static let DELETE_ACCOUNT = "Request for account deletion"
     static let PHOTO_LIBRARY = "Photo Library"
-    static let TERMS_LINK = "https://partner.localfox.com.au/terms"
-    static let PRIVACY_LINK = "https://partner.localfox.com.au/privacy"
+    static let TERMS_LINK = "https://localfox.com.au/partner/terms"
+    static let PRIVACY_LINK = "https://localfox.com.au/partner/privacy"
+    static let DELETE_ACCOUNT_LINK = "https://localfox.com.au/partner/accountDeletion"
 }

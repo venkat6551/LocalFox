@@ -12,7 +12,8 @@ struct InvitationView: View {
     let jobInvitation : JobInviation
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     @State private var offset = CGSize.zero
-
+    @State var selectedImage = ""
+    @State private var showPhotoView = false
     var onCardActionClick: (Bool) -> Void
     
     var body: some View {
@@ -46,7 +47,8 @@ struct InvitationView: View {
                     RowView(title: "Job description",image: Images.DESCRIPTION_ICON, description: jobInvitation.job?.description)
                     
                     LeadImagesView(images: jobInvitation.job?.images) { image in
-                        
+                        selectedImage = image
+                        self.showPhotoView = true
                     }
                 }
                
@@ -85,7 +87,9 @@ struct InvitationView: View {
         .background(Color.white.ignoresSafeArea())
         .offset(x: offset.width * 1, y: offset.height * 0.4)
         .rotationEffect(.degrees(Double(offset.width / 40)))
-
+        .navigationDestination(isPresented: $showPhotoView) {
+           Preview(imageName: selectedImage)
+        }
     }
     
     func acceptJob(accepted: Bool) {

@@ -205,9 +205,17 @@ struct ProfileView: View {
                     ProfileRowView(title: Strings.NOTIFICATIONS, leadingImage: Images.NOTIFICATION_ICON, trailingimage: Images.DISCLOSURE){
                         showNotificationSettings = true
                     }
-                    ProfileRowView(title: Strings.SECURITY, leadingImage: Images.SECURITY_ICON, trailingimage: Images.DISCLOSURE){
-                        showSecuritySettings = true
+                    
+                    ProfileRowView(title: Strings.DELETE_ACCOUNT, leadingImage: Images.WARNING_TRIANGLE, trailingimage: Images.LEGAL_DISCLOSURE){
+                        if let url = URL(string: Strings.DELETE_ACCOUNT_LINK) {
+                            UIApplication.shared.open(url)
+                        }
                     }
+                    
+                    
+//                    ProfileRowView(title: Strings.SECURITY, leadingImage: Images.SECURITY_ICON, trailingimage: Images.DISCLOSURE){
+//                        showSecuritySettings = true
+//                    }
                 }
                 .navigationDestination(isPresented: $showProfileSettings) {
                     ProfileSettingsView(profileVM: profileVM)
