@@ -55,13 +55,16 @@ struct NotificationSettingsView: View {
                 announcementsNotificationOn = announcementsNotification
                 eventsNotificationOn = eventsNotification
             }
+            profileVM.updateNotificationSettingsSuccess = false
+            profileVM.errorString = nil
+            showErrorSnackbar = false
         }
         .padding(.horizontal,20)
         .setNavTitle(Strings.NOTIFICATIONS, showBackButton: true,leadingSpace: 20)
         .snackbar(
             show: $showErrorSnackbar,
-            snackbarType: SnackBarType.error,
-            title: "Error",
+            snackbarType: profileVM.updateNotificationSettingsSuccess == false ? SnackBarType.error : SnackBarType.success,
+            title: profileVM.updateNotificationSettingsSuccess == false ? "Error" : "Success",
             message: profileVM.errorString,
             secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
             onSnackbarDismissed: {
@@ -70,9 +73,10 @@ struct NotificationSettingsView: View {
             isAlignToBottom: true
         )
         .onChange(of: profileVM.isLoading) { isloading in
-            if profileVM.updateNotificationSettingsSuccess == true {
-                showErrorSnackbar = false
-            } else if(profileVM.updateNotificationSettingsSuccess == false && profileVM.errorString != nil) {
+            if profileVM.updateNotificationSettingsSuccess == true  && profileVM.errorString != nil {
+                showErrorSnackbar = true
+            } else
+            if(profileVM.updateNotificationSettingsSuccess == false && profileVM.errorString != nil) {
                 showErrorSnackbar = true
             }
         }

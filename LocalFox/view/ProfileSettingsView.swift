@@ -95,7 +95,7 @@ struct ProfileSettingsView: View {
         .sheet(isPresented: $showMobileSettingsUpdateSheet){
             SettingsUpdateSheet(onClickClose: {
             }, profileVM: profileVM, onUpdateSuccess: {
-                addressText = (self.profileVM.profileModel?.data?.getFormattedLocation() ?? "")
+                mobileNumText = (self.profileVM.profileModel?.data?.mobileNumber ?? "")
             }, settingsType: SettingsType.mobileNumber, text: $changeText)
         }
         .sheet(isPresented: $showAddressSettingsUpdateSheet){

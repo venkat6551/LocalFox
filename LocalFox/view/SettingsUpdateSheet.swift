@@ -39,7 +39,7 @@ enum SettingsType: Equatable {
 struct SettingsUpdateSheet: View {
     var onClickClose: () -> Void
     @StateObject var profileVM: ProfileViewModel
-    @StateObject private var signupVM: SignupViewModel = SignupViewModel()
+    @StateObject var signupVM: SignupViewModel = SignupViewModel()
     @State private var showOTPCodeView:Bool = false
     @State private var showErrorSnackbar: Bool = false
     @State private var showSuccessSnackbar: Bool = false
@@ -79,7 +79,7 @@ struct SettingsUpdateSheet: View {
                         .applyFontRegular(color: .TEXT_LEVEL_3,size: 13).padding(.top,25)
                     if(settingsType == .mobileNumber) {
                         MyInputTextBox(
-                            text: $signupVM.signupModel.mobileNumber,
+                            text: $text,
                             keyboardType: UIKeyboardType.numberPad,
                             leadingImage: Images.FLAG,
                             leadingText: "+61"
@@ -124,7 +124,7 @@ struct SettingsUpdateSheet: View {
                 .ignoresSafeArea(.keyboard, edges: .bottom)
                     .navigationDestination(isPresented: $showOTPCodeView) {
                         EmailCodeView(signupVM: signupVM,isMobileVerificationCode: true) {
-                            profileVM.profileModel?.data?.mobileNumber = text
+                            profileVM.profileModel?.data?.mobileNumber = text //signupVM.signupModel.mobileNumber
                             self.presentationMode.wrappedValue.dismiss()
                             onUpdateSuccess()
                         }
@@ -132,6 +132,7 @@ struct SettingsUpdateSheet: View {
                     .onChange(of: signupVM.isLoading || profileVM.isLoading) { isloading in
                         if(settingsType == .mobileNumber) {
                             if signupVM.sendMobileCodeSuccess == true {
+                                signupVM.signupModel.mobileNumber = text
                                 showOTPCodeView = true
                                 showErrorSnackbar = false
                             } else if(signupVM.sendMobileCodeSuccess == false && signupVM.errorString != nil) {
@@ -146,32 +147,39 @@ struct SettingsUpdateSheet: View {
                             }
                         }
                     }.onChange(of: text) { text in
-                        if(!addressSelected) {
-                            if (text.count > 3) {
-                                var input = GInput()
-                                input.keyword = text
-                                GoogleApi.shared.callApi(input: input) { (response) in
-                                    if response.isValidFor(.autocomplete) {
-                                        DispatchQueue.main.async {
+                        
+                        if(settingsType == .address) {
+                            if(!addressSelected) {
+                                if (text.count > 3) {
+                                    var input = GInput()
+                                    input.keyword = text
+                                    GoogleApi.shared.callApi(input: input) { (response) in
+                                        if response.isValidFor(.autocomplete) {
+                                            DispatchQueue.main.async {
+                                                autocompleteResults.removeAll()
+                                                addressList.removeAll()
+                                                autocompleteResults = response.data as! [GApiResponse.Autocomplete]
+                                                var ary:[String] = []
+                                                for autocompleteResult in autocompleteResults  {
+                                                    ary.append(autocompleteResult.formattedAddress)
+                                                }
+                                                addressList = ary
+                                            }
+                                        } else {
                                             autocompleteResults.removeAll()
                                             addressList.removeAll()
-                                            autocompleteResults = response.data as! [GApiResponse.Autocomplete]
-                                            var ary:[String] = []
-                                            for autocompleteResult in autocompleteResults  {
-                                                ary.append(autocompleteResult.formattedAddress)
-                                            }
-                                            addressList = ary
                                         }
-                                    } else {
-                                        autocompleteResults.removeAll()
-                                        addressList.removeAll()                                        
                                     }
                                 }
                             }
+                            addressSelected = false
                         }
-                        addressSelected = false
+                        else if (settingsType == .mobileNumber) {
+                            signupVM.signupModel.mobileNumber = text;
+                        }
                     }
                     .onAppear{
+                        text = profileVM.profileModel?.data?.mobileNumber ?? ""
                         signupVM.signupModel.mobileNumber = text;
                         signupVM.signupModel.firstName = profileVM.profileModel?.data?.firstName ?? ""
                     }
