@@ -36,6 +36,7 @@ struct EmailCodeView: View {
                 MyButton(
                     text: Strings.NEXT,
                     onClickButton: {
+                        dismissKeyboard()
                         if isMobileVerificationCode {
                             if(!signupVM.isLoading && !showErrorSnackbar) {
                                 signupVM.validateMobileCode(verificationCode: code) { _ in
@@ -118,6 +119,9 @@ struct EmailCodeView: View {
             isAlignToBottom: true
         )
     }
+    func dismissKeyboard() {
+          UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.endEditing(true) // 4
+        }
 }
 
 struct EmailCodeView_Previews: PreviewProvider {
