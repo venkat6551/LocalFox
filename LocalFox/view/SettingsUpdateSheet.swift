@@ -108,6 +108,7 @@ struct SettingsUpdateSheet: View {
                         MyButton(
                             text: Strings.UPDATE,
                             onClickButton: {
+                                dismissKeyboard()
                                 if(settingsType == .mobileNumber) {
                                     signupVM.sendMobileCode { _ in
                                     }
@@ -179,7 +180,9 @@ struct SettingsUpdateSheet: View {
                         }
                     }
                     .onAppear{
-                        text = profileVM.profileModel?.data?.mobileNumber ?? ""
+                        if (settingsType == .mobileNumber) {
+                            text = profileVM.profileModel?.data?.mobileNumber ?? ""
+                        }
                         signupVM.signupModel.mobileNumber = text;
                         signupVM.signupModel.firstName = profileVM.profileModel?.data?.firstName ?? ""
                     }
@@ -210,6 +213,11 @@ struct SettingsUpdateSheet: View {
                     )
             }
         }
+    
+    func dismissKeyboard() {
+          UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.endEditing(true) // 4
+        }
+    
     }
     
     struct AddressesView: View {
