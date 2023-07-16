@@ -16,6 +16,7 @@ struct ProfileView: View {
     @State var imageSelected = UIImage()
     @State private var photoSelectedFromCam = false
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var authenticationStatus: AuthenticationStatus
     var body: some View {
         VStack {
             VStack {
@@ -48,7 +49,9 @@ struct ProfileView: View {
                     Text("App version. 1.20.42325").applyFontRegular(color: Color.TEXT_LEVEL_3,size: 12).padding(.top,25)
                     Button(
                         action: {
+                            
                             profileVM.logoutUser()
+                            authenticationStatus.setAuthenticated(authenticated: false)
                             self.presentationMode.wrappedValue.dismiss() // Go back
                         },
                         label: {

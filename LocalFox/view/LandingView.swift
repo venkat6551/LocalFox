@@ -10,6 +10,7 @@ import SwiftUI
 struct LandingView: View {
     @StateObject var profileVM: ProfileViewModel
     @StateObject var jobsViewModel: JobsViewModel = JobsViewModel()
+    @EnvironmentObject var authenticationStatus: AuthenticationStatus
     private enum TabItem: Int {
         case leads
         case search
@@ -87,6 +88,9 @@ struct LandingView: View {
                     cardCornerRadius: Dimens.TAB_BAR_CORNER_RADIUS,
                     corners: [UIRectCorner.topLeft, UIRectCorner.topRight]
                 )
+            }
+            .onAppear{
+                profileVM.getProfile()
             }
         }
         .ignoresSafeArea(SafeAreaRegions.all, edges: Edge.Set.bottom)

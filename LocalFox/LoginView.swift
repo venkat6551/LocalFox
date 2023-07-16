@@ -135,6 +135,7 @@ struct LoginView: View {
                     if (profileVM.profileModel?.data?.isApproved != true) {
                         showNotApprovedScreen = true
                     } else {
+                        authenticationStatus.setAuthenticated(authenticated: true)
                         showLeads = true
                     }
                     showErrorSnackbar = false

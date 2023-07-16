@@ -18,6 +18,7 @@ struct Strings {
     static let NEW_PASSWORD = "New Password"
     static let CONFIRM_PASSWORD = "Confirm Password"
     static let TC_PART1 = "By logging in, you agree to our "
+    static let TC_PART1_REG = "By registering, you agree to our "
     static let TC_PART2 = "Terms and"
     static let TC_PART3 = "Conditions of use"
     static let SIGN_UP = "Sign up"
@@ -104,4 +105,5 @@ struct Strings {
     static let TERMS_LINK = "https://localfox.com.au/partner/terms"
     static let PRIVACY_LINK = "https://localfox.com.au/partner/privacy"
     static let DELETE_ACCOUNT_LINK = "https://localfox.com.au/partner/accountDeletion"
+    static let PRIVACY = "Privacy"
 }

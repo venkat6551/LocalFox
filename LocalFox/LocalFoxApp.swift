@@ -13,12 +13,12 @@ struct LocalFoxApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
         WindowGroup {
-//            if authenticationStatus.isAuthenticated {
-//                LandingView()
-//            } else {
+            if authenticationStatus.isAuthenticated {
+                LandingView(profileVM: ProfileViewModel()).environmentObject(authenticationStatus)
+            } else {
                 LoginView()
-                    .environmentObject(authenticationStatus) // Pass this state-object so that we can update it in nested view
-//            }
+                    .environmentObject(authenticationStatus)// Pass this state-object so that we can update it in nested view
+            }
         }
     }
 }

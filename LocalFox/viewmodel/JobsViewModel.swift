@@ -26,38 +26,43 @@ class JobsViewModel: ObservableObject {
         errorString = nil
         isLoading = true
         let pageNumber = onlyFirstPage ? 1 : (jobsModel?.pageNumber ?? 0) + 1;
-        apiService.getJobs(_pagenumber: pageNumber) { [weak self] success, jobsModel, errorString in
-            self?.getJobsSuccess = success
-            self?.errorString = errorString
-            if (self?.jobsModel != nil) {
-                if let jobs = jobsModel?.data?.jobs {
-                    self?.jobsModel?.data?.jobs?.append(contentsOf: jobs)
-                    if let jobs = self?.jobsModel?.data?.jobs {
-                        self?.jobsModel?.data?.jobs = Array(Set(jobs))
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.apiService.getJobs(_pagenumber: pageNumber) { [weak self] success, jobsModel, errorString in
+                DispatchQueue.main.async {
+                    self?.getJobsSuccess = success
+                    self?.errorString = errorString
+                    if (self?.jobsModel != nil) {
+                        if let jobs = jobsModel?.data?.jobs {
+                            self?.jobsModel?.data?.jobs?.append(contentsOf: jobs)
+                            if let jobs = self?.jobsModel?.data?.jobs {
+                                self?.jobsModel?.data?.jobs = Array(Set(jobs))
+                            }
+                        }
+                        if let invitations = jobsModel?.data?.jobInviations {
+                            self?.jobsModel?.data?.jobInviations?.append(contentsOf: invitations)
+                            if let jobInviations = self?.jobsModel?.data?.jobInviations {
+                                self?.jobsModel?.data?.jobInviations = Array(Set(jobInviations))
+                            }
+                        }
+                        if (!onlyFirstPage) {
+                            if let pageNumber = jobsModel?.pageNumber {
+                                self?.jobsModel?.pageNumber = pageNumber
+                            }
+                        }
+                        if let jobsCount = jobsModel?.jobsCount {
+                            self?.jobsModel?.jobsCount = jobsCount
+                        }
+                        if let invitationsCount = jobsModel?.invitationsCount {
+                            self?.jobsModel?.invitationsCount = invitationsCount
+                        }
+                    } else {
+                        self?.jobsModel = jobsModel
                     }
+                    
+                    self?.isLoading = false
                 }
-                if let invitations = jobsModel?.data?.jobInviations {
-                    self?.jobsModel?.data?.jobInviations?.append(contentsOf: invitations)
-                    if let jobInviations = self?.jobsModel?.data?.jobInviations {
-                        self?.jobsModel?.data?.jobInviations = Array(Set(jobInviations))
-                    }
-                }
-                if (!onlyFirstPage) {
-                    if let pageNumber = jobsModel?.pageNumber {
-                        self?.jobsModel?.pageNumber = pageNumber
-                    }
-                }
-                if let jobsCount = jobsModel?.jobsCount {
-                    self?.jobsModel?.jobsCount = jobsCount
-                }
-                if let invitationsCount = jobsModel?.invitationsCount {
-                    self?.jobsModel?.invitationsCount = invitationsCount
-                }
-            } else {
-                self?.jobsModel = jobsModel
             }
-            
-            self?.isLoading = false
         }
     }
     

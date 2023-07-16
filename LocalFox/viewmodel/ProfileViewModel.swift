@@ -26,12 +26,18 @@ class ProfileViewModel: ObservableObject {
         getProfileSuccess = false
         errorString = nil
         isLoading = true
-        apiService.getProfile { [weak self] success, profileModel, errorString in
-            self?.getProfileSuccess = success
-            self?.errorString = errorString
-            self?.profileModel = profileModel
-            self?.isLoading = false
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.apiService.getProfile { [weak self] success, profileModel, errorString in
+                DispatchQueue.main.async {
+                    self?.getProfileSuccess = success
+                    self?.errorString = errorString
+                    self?.profileModel = profileModel
+                    self?.isLoading = false
+                }
+            }
         }
+        
+       
     }
     
     func updateNotificationSettings(pushNotifications:Bool, smsNotifications:Bool, emailNotifications:Bool, announcements:Bool, events:Bool) {

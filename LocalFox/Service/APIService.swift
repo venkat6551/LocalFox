@@ -334,11 +334,17 @@ final class MockAPIService: APIServiceProtocol {
                         completion(false,err.localizedDescription)
                         return
                     }
-                    do{
-                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
-                        completion(false,errorObj.error)
-                    } catch{
-                        completion(false,error.localizedDescription)
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.updateMobileNumber(mobileNumber: mobileNumber, referanceNumber: referanceNumber, completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
+                        }
                     }
                 }
             }
@@ -367,11 +373,17 @@ final class MockAPIService: APIServiceProtocol {
                         completion(false,err.localizedDescription)
                         return
                     }
-                    do{
-                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
-                        completion(false,errorObj.error)
-                    } catch{
-                        completion(false,error.localizedDescription)
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.updateAddress(address: address, completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
+                        }
                     }
                 }
             }
@@ -405,11 +417,17 @@ final class MockAPIService: APIServiceProtocol {
                         completion(false,err.localizedDescription)
                         return
                     }
-                    do{
-                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
-                        completion(false,errorObj.error)
-                    } catch{
-                        completion(false,error.localizedDescription)
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.updateNotificationSettings(pushNotifications: pushNotifications, smsNotifications: smsNotifications, emailNotifications: emailNotifications, announcements: announcements, events: events, completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
+                        }
                     }
                 }
             }
@@ -435,15 +453,22 @@ final class MockAPIService: APIServiceProtocol {
                         completion(false,nil,err.localizedDescription)
                         return
                     }
-                    do{
-                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
-                        completion(false,nil,errorObj.error)
-                    } catch{
-                        completion(false,nil,error.localizedDescription)
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.getProfile(completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,nil,errorObj.error)
+                        } catch{
+                            completion(false,nil,error.localizedDescription)
+                        }
                     }
                 }
             }
     }
+    
     func getJobs(_pagenumber: Int, completion: @escaping (_ success: Bool, _ jobsModel : JobsModel?, _ errorString: String?)-> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
         let request = AF.request(
@@ -463,15 +488,29 @@ final class MockAPIService: APIServiceProtocol {
                         completion(false,nil,err.localizedDescription)
                         return
                     }
-                    do{
-                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
-                        completion(false,nil,errorObj.error)
-                    } catch{
-                        completion(false,nil,error.localizedDescription)
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.getJobs(_pagenumber: _pagenumber, completion: completion)
+                        }
+                    }
+                    else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,nil,errorObj.error)
+                        } catch{
+                            completion(false,nil,error.localizedDescription)
+                        }
                     }
                 }
             }
     }
+    
+    func refreshLogin(completion: @escaping () -> Void) {
+        self.login(credentials: LoginCredentialsModel(email: MyUserDefaults.userEmail ?? "",password: MyUserDefaults.userPwd ?? "")) { success, errorString in
+           completion()
+        }
+    }
+    
     func deleteProfilePic(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
         let request = AF.request(
@@ -491,11 +530,17 @@ final class MockAPIService: APIServiceProtocol {
                         completion(false,err.localizedDescription)
                         return
                     }
-                    do{
-                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
-                        completion(false,errorObj.error)
-                    } catch{
-                        completion(false,error.localizedDescription)
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.deleteProfilePic(completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
+                        }
                     }
                 }
             }
@@ -522,11 +567,17 @@ final class MockAPIService: APIServiceProtocol {
                         completion(false,err.localizedDescription, statusCode)
                         return
                     }
-                    do{
-                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
-                        completion(false,errorObj.error, statusCode)
-                    } catch{
-                        completion(false,error.localizedDescription, statusCode)
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.acceptJob(accepted: accepted, id: id, completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error, statusCode)
+                        } catch{
+                            completion(false,error.localizedDescription, statusCode)
+                        }
                     }
                 }
             }
@@ -552,11 +603,17 @@ final class MockAPIService: APIServiceProtocol {
                         completion(false,err.localizedDescription)
                         return
                     }
-                    do{
-                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
-                        completion(false,errorObj.error)
-                    } catch{
-                        completion(false,error.localizedDescription)
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.logoutUser(completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
+                        }
                     }
                 }
             }
@@ -698,12 +755,18 @@ final class MockAPIService: APIServiceProtocol {
                         completion(false,err.localizedDescription)
                         return
                     }
-                    do{
-                        let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
-                        completion(false,errorObj.error)
-                    } catch{
-                        completion(false,error.localizedDescription)
-                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.linkPartner(id: id, completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
+                        }
+                }
                 }
             }
     }

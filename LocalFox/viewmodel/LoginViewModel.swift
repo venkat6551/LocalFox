@@ -30,6 +30,7 @@ class LoginViewModel: ObservableObject {
         apiService.login(credentials: credentials) { [weak self] success, errorString in
             if success {
                 MyUserDefaults.userEmail = self?.credentials.email
+                MyUserDefaults.userPwd = self?.credentials.password
                 self?.linkPartner()
             }
             self?.authenticationSuccess = success

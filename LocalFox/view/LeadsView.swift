@@ -37,9 +37,13 @@ struct LeadsView: View {
                         showInvitations = true
                     }).padding(.bottom, 5)
                 }
-                             
+                
                 ScrollView(showsIndicators: false) {
-                    if let jobs = jobsVM.jobsModel?.data?.jobs {
+                    if(jobsVM.jobsModel?.data?.jobs == nil) {
+                        ProgressView {
+                            Text("Loading...")
+                        }
+                    }else if let jobs = jobsVM.jobsModel?.data?.jobs {
                         ForEach(jobs) { job in
                             LeadCardView(job: job, status: LeadStatus.active) {
                                 selectedJob = job
@@ -55,9 +59,7 @@ struct LeadsView: View {
             Spacer()
         }
         .onAppear{
-           // if(jobsVM.jobsModel?.data?.jobs?.count ?? 0 <= 0 ) {
-                jobsVM.getJobs()
-          //  }
+            jobsVM.getJobs()
         }
         .onChange(of: jobsVM.isLoading) { isLoading in
         }

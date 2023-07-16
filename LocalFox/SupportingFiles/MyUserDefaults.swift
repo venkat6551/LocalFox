@@ -83,6 +83,13 @@ enum MyUserDefaults {
         }
     }
     
+    private static let KEY_USER_PWD: String = "userPwd"
+    static var userPwd: String? = (UserDefaults.standard.string(forKey: KEY_USER_PWD) == "" ? nil : UserDefaults.standard.string(forKey: KEY_USER_PWD)) {
+        didSet {
+            UserDefaults.standard.set(userPwd, forKey: KEY_USER_PWD)
+        }
+    }
+    
      
     // Install Photo instructions
     private static let KEY_DONT_SHOW_CONTAINER_INSTRUCTION: String = "dontShowContainerInstruction"

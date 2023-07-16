@@ -37,16 +37,7 @@ struct NameView: View {
                 }
                 
                 VStack(alignment: .center){
-                    HStack(spacing: 0) {
-                        Spacer()
-                        Text(Strings.TC_PART1)
-                            .applyFontRegular(color: Color.DEFAULT_TEXT,size: 14)
-                        Link(Strings.TC_PART2, destination: URL(string: Strings.TERMS_LINK)!)
-                            .applyFontRegular(color: Color.PRIMARY,size: 14)
-                        Spacer()
-                    }.padding(.top, 0)
-                    Link(Strings.TC_PART3, destination: URL(string: Strings.TERMS_LINK)!)
-                        .applyFontRegular(color: Color.PRIMARY,size: 14)
+                    TermsAndConditionsTextView()
                 }.padding(.top, 10)
                 
                 MyButton(
@@ -70,6 +61,22 @@ struct NameView: View {
         }
     }
 }
+
+
+struct TermsAndConditionsTextView: View {
+    var body: some View {
+        VStack {
+            Group() {
+                let privacyPolicyText = "\(Strings.TC_PART1_REG) [terms and conditions](\(Strings.TERMS_LINK)) and [\(Strings.PRIVACY)](\(Strings.PRIVACY_LINK))"
+                Text(.init(privacyPolicyText))
+            }
+            .multilineTextAlignment(.center)
+            .applyFontRegular(color: Color.DEFAULT_TEXT,size: 14)
+            .accentColor(Color.PRIMARY)
+        }
+    }
+}
+
 
 struct NameView_Previews: PreviewProvider {
     static var previews: some View {
