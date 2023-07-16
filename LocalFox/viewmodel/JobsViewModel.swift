@@ -73,20 +73,16 @@ class JobsViewModel: ObservableObject {
         acceptOrRejectJobSuccess = false
         errorString = nil
         isLoading = true
-        apiService.acceptJob(accepted: accepted, id: id) {[weak self] success, errorString in
+        apiService.acceptJob(accepted: accepted, id: id) {[weak self] success, errorString, errorCode in
+            if (success == true || errorCode == 400) {
+                self?.jobsModel?.data?.jobInviations?.removeAll(where: { JobInviation in
+                    JobInviation.job?._id == id
+                })
+                self?.jobsModel?.invitationsCount  = self?.jobsModel?.data?.jobInviations?.count ?? 0
+            }
             self?.acceptOrRejectJobSuccess = success
             self?.errorString = errorString
             self?.isLoading = false
-            if (success == true) {
-                self?.jobsModel?.invitationsCount  = (self?.jobsModel?.invitationsCount ?? 0) - 1
-                self?.jobsModel?.data?.jobInviations = self?.jobsModel?.data?.jobInviations?.filter({ job in
-                    job.id != id
-                })
-                
-                if(accepted) {
-                    //TODO: shift the job invitation to jobs
-                }
-            }
         }
     }
 }

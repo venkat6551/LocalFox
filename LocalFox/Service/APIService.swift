@@ -30,7 +30,7 @@ protocol APIServiceProtocol {
     func logoutUser(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func getJobs(_pagenumber:Int, completion: @escaping (_ success: Bool, _ jobsModel : JobsModel?, _ errorString: String?)-> Void)
     func updateAddress(address:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
-    func acceptJob(accepted:Bool, id:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func acceptJob(accepted:Bool, id:String, completion: @escaping (_ success: Bool, _ errorString : String?,_ errorCode: Int) -> Void)
     func registerFCMToken(token:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func linkPartner(id:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
 }
@@ -501,7 +501,7 @@ final class MockAPIService: APIServiceProtocol {
             }
     }
     
-    func acceptJob(accepted:Bool, id:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+    func acceptJob(accepted:Bool, id:String, completion: @escaping (_ success: Bool, _ errorString : String?, _ errorCode: Int) -> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
         let url = accepted ? "\(APIEndpoints.ACCEPT_INVITATION)\(id)" : "\(APIEndpoints.REJECT_INVITATION)\(id)"
         let request = AF.request(
@@ -511,22 +511,22 @@ final class MockAPIService: APIServiceProtocol {
             headers: headers
         )
         request
-            .validate(statusCode: 200..<300)
+            .validate(statusCode: 200..<400)
             .responseDecodable(of: SuccessResponseDecodable.self) { response in
-                
+                let statusCode = response.response?.statusCode ?? 0
                 switch response.result {
                 case .success(_):
-                    completion(true,"")
+                    completion(true,"", statusCode)
                 case .failure(let err):
                     guard let data = response.data else {
-                        completion(false,err.localizedDescription)
+                        completion(false,err.localizedDescription, statusCode)
                         return
                     }
                     do{
                         let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
-                        completion(false,errorObj.error)
+                        completion(false,errorObj.error, statusCode)
                     } catch{
-                        completion(false,error.localizedDescription)
+                        completion(false,error.localizedDescription, statusCode)
                     }
                 }
             }
