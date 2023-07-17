@@ -147,7 +147,6 @@ struct LoginView: View {
             .onAppear{
                 DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 5) {
                     if  (MyUserDefaults.fcmToken != nil && MyUserDefaults.isFcmTokenRegistered != true) {
-                        print("my token venkat : \(MyUserDefaults.fcmToken!)")
                         loginVM.registerFCMToken(token: MyUserDefaults.fcmToken!)
                     }
                 }

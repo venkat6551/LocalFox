@@ -11,6 +11,7 @@ struct LandingView: View {
     @StateObject var profileVM: ProfileViewModel
     @StateObject var jobsViewModel: JobsViewModel = JobsViewModel()
     @EnvironmentObject var authenticationStatus: AuthenticationStatus
+    @Environment(\.scenePhase) var scenePhase
     private enum TabItem: Int {
         case leads
         case search
@@ -91,6 +92,11 @@ struct LandingView: View {
             }
             .onAppear{
                 profileVM.getProfile()
+            }
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    jobsViewModel.getJobs()
+                }
             }
         }
         .ignoresSafeArea(SafeAreaRegions.all, edges: Edge.Set.bottom)

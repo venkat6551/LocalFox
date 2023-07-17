@@ -15,6 +15,7 @@ struct LeadsView: View {
     @State private var selectedJob:Job?
     @State private var filterModel: FilterModel = FilterModel(type: FilterType.active, isAscending: true)
     @State private var updatedFilterModel: FilterModel = FilterModel(type: FilterType.active, isAscending: true)
+    
     var onSearchActionClick: () -> Void
     var body: some View {
         VStack {
@@ -61,6 +62,7 @@ struct LeadsView: View {
         .onAppear{
             jobsVM.getJobs()
         }
+        
         .onChange(of: jobsVM.isLoading) { isLoading in
         }
         .navigationBarHidden(true)
