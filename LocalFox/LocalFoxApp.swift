@@ -14,7 +14,9 @@ struct LocalFoxApp: App {
     var body: some Scene {
         WindowGroup {
             if authenticationStatus.isAuthenticated {
-                LandingView(profileVM: ProfileViewModel()).environmentObject(authenticationStatus)
+                NavigationStack {
+                    LandingView(profileVM: ProfileViewModel()).environmentObject(authenticationStatus)
+                }
             } else {
                 LoginView()
                     .environmentObject(authenticationStatus)// Pass this state-object so that we can update it in nested view

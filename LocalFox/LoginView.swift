@@ -56,7 +56,6 @@ struct LoginView: View {
                             onClickButton: {
                                 if(!loginVM.isLoading && !showErrorSnackbar  && !profileVM.isLoading) {
                                     loginVM.login { success  in
-                                        authenticationStatus.setAuthenticated(authenticated: success)
                                     }
                                 }
                             },
