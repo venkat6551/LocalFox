@@ -45,6 +45,11 @@ struct Job: Decodable,Identifiable,Hashable {
     var address: String?
     let status: String
     let createdDate: String
+    let lastUpdatedDate: String
+    
+    func getUpdatedDate() -> Date? {
+        lastUpdatedDate.convertToDate(formate: DateFormates.API_DATE_TIME)
+    }
     
     func getFormattedLocation() -> String {
         
@@ -139,5 +144,8 @@ struct NewJob: Decodable {
     let markedAsCompleteByPartner:Bool
     let createdDate: String
     let lastUpdatedDate:String
+    func getUpdatedDate() -> Date? {
+        lastUpdatedDate.convertToDate(formate: DateFormates.API_DATE_TIME)
+    }
 }
 

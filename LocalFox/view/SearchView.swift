@@ -64,6 +64,9 @@ struct SearchView: View {
             }
             Spacer()
         }
+        .onAppear{
+            jobsVM.getJobs()
+        }
         .navigationDestination(isPresented: $showLeadDetails) {
             LeadDetailScreen(job: selectedJob)
         }

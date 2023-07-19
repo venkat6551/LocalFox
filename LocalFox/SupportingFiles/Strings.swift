@@ -59,6 +59,8 @@ struct Strings {
     static let T_AND_C = "Terms and conditions"
     static let NEXT = "Next"
     static let EMAIL_ADDRESS_SUBTITLE = "Please enter your email address. This will be used as your username to login to app."
+    static let EMAIL_ADDRESS_SUBTITLE_RESET = "Please enter your registered email address to reset your password."
+    
     static let EMAIL_CODE = "Email code"
     static let EMAIL_CODE_SUBTITLE = "We’ve sent a verification code to your email. Please enter now."
     static let VERIFICATION_CODE = "Verification code"

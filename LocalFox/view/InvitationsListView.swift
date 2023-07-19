@@ -28,7 +28,8 @@ struct InvitationsListView: View {
                     Text("Loading...")
                 }
             }
-        }.disabled(jobsVM.isLoading)
+        }
+        .disabled(jobsVM.isLoading)
         .onChange(of: jobsVM.isLoading) { newValue in
             if (jobsVM.isLoading == false) {
                 if(jobsVM.jobsModel?.data?.jobInviations?.count == 0 && jobsVM.errorString != nil && jobsVM.acceptOrRejectJobSuccess == true) {

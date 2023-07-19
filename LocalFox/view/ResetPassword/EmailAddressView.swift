@@ -48,7 +48,7 @@ struct EmailAddressView: View {
             }.padding(.vertical,25)
                 .padding(.horizontal,40)
             
-        }.setNavTitle(Strings.EMAIL_ADDRESS,subtitle: Strings.EMAIL_ADDRESS_SUBTITLE, showBackButton: true)
+        }.setNavTitle(Strings.EMAIL_ADDRESS,subtitle: (isforSignUpFlow ? Strings.EMAIL_ADDRESS_SUBTITLE : Strings.EMAIL_ADDRESS_SUBTITLE_RESET), showBackButton: true)
             .navigationDestination(isPresented: $showEmailCodeView) {
                 EmailCodeView(signupVM: signupVM,isforSignUpFlow: isforSignUpFlow) {
                     

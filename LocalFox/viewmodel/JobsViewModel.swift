@@ -25,7 +25,7 @@ class JobsViewModel: ObservableObject {
         getJobsSuccess = false
         errorString = nil
         isLoading = true
-        let pageNumber = onlyFirstPage ? 1 : (jobsModel?.pageNumber ?? 0) + 1;
+        let pageNumber = 1//onlyFirstPage ? 1 : (jobsModel?.pageNumber ?? 0) + 1;
         
         DispatchQueue.global(qos: .userInitiated).async {
             self.apiService.getJobs(_pagenumber: pageNumber) { [weak self] success, jobsModel, errorString in
@@ -37,12 +37,14 @@ class JobsViewModel: ObservableObject {
                             self?.jobsModel?.data?.jobs?.append(contentsOf: jobs)
                             if let jobs = self?.jobsModel?.data?.jobs {
                                 self?.jobsModel?.data?.jobs = Array(Set(jobs))
+                                self?.sortJobs()
                             }
                         }
                         if let invitations = jobsModel?.data?.jobInviations {
                             self?.jobsModel?.data?.jobInviations?.append(contentsOf: invitations)
                             if let jobInviations = self?.jobsModel?.data?.jobInviations {
                                 self?.jobsModel?.data?.jobInviations = Array(Set(jobInviations))
+                                self?.sortJobs()
                             }
                         }
                         if (!onlyFirstPage) {
@@ -65,10 +67,27 @@ class JobsViewModel: ObservableObject {
             }
         }
     }
+        
+    func sortJobs() {
+        if let jobs = self.jobsModel?.data?.jobs {
+            self.jobsModel?.data?.jobs = jobs.sorted(by: {
+                $0.getUpdatedDate()!.compare($1.getUpdatedDate()!) == .orderedDescending
+            })
+        }
+    }
+    
+    func sortJobInvitations() {
+        if let jobs = self.jobsModel?.data?.jobInviations {
+            self.jobsModel?.data?.jobInviations = jobs.sorted(by: {
+                
+                
+                
+                $0.job?.getUpdatedDate()!.compare(($1.job?.getUpdatedDate())!) == .orderedAscending
+            })
+        }
+    }
     
     func acceptJob(_id id:String, accepted:Bool) {
-        
-        
         DispatchQueue.main.async {
             self.jobsModel?.data?.jobInviations = self.jobsModel?.data?.jobInviations?.filter({ job in
                 job.id != id

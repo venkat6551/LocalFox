@@ -42,7 +42,6 @@ struct LoginView: View {
                     ).padding(.top,9)
                     
                     HStack(spacing: 0) {
-                        
                         Text(Strings.TC_PART1)
                             .applyFontRegular(color: Color.DEFAULT_TEXT,size: 14)
                         Link(Strings.TC_PART2, destination: URL(string: Strings.TERMS_LINK)!)
