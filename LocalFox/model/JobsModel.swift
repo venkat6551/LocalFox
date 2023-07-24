@@ -121,6 +121,8 @@ struct JobInviation: Decodable,Identifiable,Hashable {
     var hashValue: Int { get { return _id.hashValue } }
     let _id: String?
     let job: NewJob?
+    let createdDate:String
+    let lastUpdatedDate:String
     public func hash(into hasher: inout Hasher) {
             hasher.combine(_id)
         }
@@ -139,13 +141,42 @@ struct NewJob: Decodable {
     var service: Service?
     let urgency: String
     var images: [String]
-    var address:String
+    //var address:String
     let status: String
-    let markedAsCompleteByPartner:Bool
+    let markedAsCompleteByPartner:Bool?
     let createdDate: String
     let lastUpdatedDate:String
     func getUpdatedDate() -> Date? {
         lastUpdatedDate.convertToDate(formate: DateFormates.API_DATE_TIME)
+    }
+    
+    func getFormattedLocation() -> String {
+        
+        var location = ""
+        
+        if let streenNum = self.location?.streetNumber {
+            location = streenNum
+        }
+        if let streenName = self.location?.streetName {
+            location = "\(location) \(streenName)"
+        }
+        
+        if location.count > 0 {
+            location = "\(location) \n"
+        }
+        
+        if let suburb = self.location?.suburb {
+            location = "\(location)\(suburb)"
+        }
+        if let state = self.location?.state {
+            location = "\(location) \(state)"
+        }
+        
+        if let postCode = self.location?.postCode {
+            location = "\(location) \(postCode)"
+        }
+        
+        return location
     }
 }
 

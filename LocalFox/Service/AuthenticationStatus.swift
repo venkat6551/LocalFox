@@ -45,6 +45,7 @@ class AuthenticationStatus: ObservableObject {
         withAnimation {
             isAuthenticated = authenticated
             MyUserDefaults.isLoggedIn = authenticated
+            MyUserDefaults.isLinkUserSuccess = false
         }
     }
     

@@ -40,7 +40,7 @@ struct InvitationView: View {
                         )
                     }.padding(.top, 25)
                     ScrollView (showsIndicators: false){
-                        RowView(title: "Job location",image: Images.LOCATION_PIN, description: jobInvitation.job?.address)
+                        RowView(title: "Job location",image: Images.LOCATION_PIN, description: jobInvitation.job?.getFormattedLocation())
                         
                         RowView(title: "How soon",image: Images.TIME_ICON, description: jobInvitation.job?.urgency)
                         
@@ -116,7 +116,7 @@ struct InvitationView: View {
                         )
                     }.padding(.top, 25)
                     ScrollView (showsIndicators: false){
-                        RowView(title: "Job location",image: Images.LOCATION_PIN, description: jobInvitation.job?.address)
+                        RowView(title: "Job location",image: Images.LOCATION_PIN, description: jobInvitation.job?.getFormattedLocation())
                         
                         RowView(title: "How soon",image: Images.TIME_ICON, description: jobInvitation.job?.urgency)
                         

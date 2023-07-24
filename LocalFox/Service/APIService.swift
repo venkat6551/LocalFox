@@ -310,10 +310,14 @@ final class MockAPIService: APIServiceProtocol {
             }
     }
     
+    func formattMobileNumber(mobileNumber: String) -> String {
+       return mobileNumber.hasPrefix("0") ? mobileNumber : "0\(mobileNumber)"
+    }
+    
     func updateMobileNumber(mobileNumber:String, referanceNumber:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
         let parameters: Parameters = [
-            "mobileNumber" :mobileNumber.trimmingCharacters(in: .whitespaces),
+            "mobileNumber" :formattMobileNumber(mobileNumber: mobileNumber).trimmingCharacters(in: .whitespaces),
             "mobileVerificationReference":referanceNumber,
         ]
         let request = AF.request(
@@ -472,7 +476,7 @@ final class MockAPIService: APIServiceProtocol {
     func getJobs(_pagenumber: Int, completion: @escaping (_ success: Bool, _ jobsModel : JobsModel?, _ errorString: String?)-> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
         let request = AF.request(
-            "\(APIEndpoints.GET_JOBS)?pageNumber=\(_pagenumber)&pageSize=100",
+            "\(APIEndpoints.GET_JOBS)?pageNumber=\(_pagenumber)&pageSize=1000",
             method: HTTPMethod.get,
             encoding:JSONEncoding.default,
             headers: headers
@@ -597,6 +601,7 @@ final class MockAPIService: APIServiceProtocol {
                 
                 switch response.result {
                 case .success(_):
+                    
                     completion(true,"")
                 case .failure(let err):
                     guard let data = response.data else {

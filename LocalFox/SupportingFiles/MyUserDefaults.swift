@@ -18,8 +18,10 @@ enum MyUserDefaults {
             UserDefaults.standard.set(isLoggedIn, forKey: KEY_LOGGED_IN)
             if !isLoggedIn { // Logging out
                 // Reset userID and userToken
-                userID = nil
+                //userID = nil
                 userToken = nil
+                userEmail = nil
+                userPwd = nil
             }
         }
     }
@@ -61,13 +63,13 @@ enum MyUserDefaults {
         }
     }
     
-    // User
-    private static let KEY_USER_ID: String = "userID"
-    static var userID: Int? = (UserDefaults.standard.integer(forKey: KEY_USER_ID) == 0 ? nil : UserDefaults.standard.integer(forKey: KEY_USER_ID)) {
-        didSet {
-            UserDefaults.standard.set(userID, forKey: KEY_USER_ID)
-        }
-    }
+//    // User
+//    private static let KEY_USER_ID: String = "userID"
+//    static var userID: Int? = (UserDefaults.standard.integer(forKey: KEY_USER_ID) == 0 ? nil : UserDefaults.standard.integer(forKey: KEY_USER_ID)) {
+//        didSet {
+//            UserDefaults.standard.set(userID, forKey: KEY_USER_ID)
+//        }
+//    }
     
     private static let KEY_USER_TOKEN: String = "userToken"
     static var userToken: String? = (UserDefaults.standard.string(forKey: KEY_USER_TOKEN) == "" ? nil : UserDefaults.standard.string(forKey: KEY_USER_TOKEN)) {

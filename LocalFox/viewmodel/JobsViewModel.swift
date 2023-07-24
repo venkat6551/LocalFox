@@ -32,35 +32,36 @@ class JobsViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self?.getJobsSuccess = success
                     self?.errorString = errorString
-                    if (self?.jobsModel != nil) {
-                        if let jobs = jobsModel?.data?.jobs {
-                            self?.jobsModel?.data?.jobs?.append(contentsOf: jobs)
-                            if let jobs = self?.jobsModel?.data?.jobs {
-                                self?.jobsModel?.data?.jobs = Array(Set(jobs))
-                                self?.sortJobs()
-                            }
-                        }
-                        if let invitations = jobsModel?.data?.jobInviations {
-                            self?.jobsModel?.data?.jobInviations?.append(contentsOf: invitations)
-                            if let jobInviations = self?.jobsModel?.data?.jobInviations {
-                                self?.jobsModel?.data?.jobInviations = Array(Set(jobInviations))
-                                self?.sortJobs()
-                            }
-                        }
-                        if (!onlyFirstPage) {
-                            if let pageNumber = jobsModel?.pageNumber {
-                                self?.jobsModel?.pageNumber = pageNumber
-                            }
-                        }
-                        if let jobsCount = jobsModel?.jobsCount {
-                            self?.jobsModel?.jobsCount = jobsCount
-                        }
-                        if let invitationsCount = jobsModel?.invitationsCount {
-                            self?.jobsModel?.invitationsCount = invitationsCount
-                        }
-                    } else {
+//                    if (self?.jobsModel != nil) {
+//                        self?.sortJobs()
+////                        if let jobs = jobsModel?.data?.jobs {
+////                            self?.jobsModel?.data?.jobs?.append(contentsOf: jobs)
+////                            if let jobs = self?.jobsModel?.data?.jobs {
+////                                self?.jobsModel?.data?.jobs = Array(Set(jobs))
+////                                self?.sortJobs()
+////                            }
+////                        }
+////                        if let invitations = jobsModel?.data?.jobInviations {
+////                            self?.jobsModel?.data?.jobInviations?.append(contentsOf: invitations)
+////                            if let jobInviations = self?.jobsModel?.data?.jobInviations {
+////                                self?.jobsModel?.data?.jobInviations = Array(Set(jobInviations))
+////                                self?.sortJobInvitations()
+////                            }
+////                        }
+//                        if (!onlyFirstPage) {
+//                            if let pageNumber = jobsModel?.pageNumber {
+//                                self?.jobsModel?.pageNumber = pageNumber
+//                            }
+//                        }
+//                        if let jobsCount = jobsModel?.jobsCount {
+//                            self?.jobsModel?.jobsCount = jobsCount
+//                        }
+//                        if let invitationsCount = jobsModel?.invitationsCount {
+//                            self?.jobsModel?.invitationsCount = invitationsCount
+//                        }
+//                    } else {
                         self?.jobsModel = jobsModel
-                    }
+                    //}
                     
                     self?.isLoading = false
                 }
