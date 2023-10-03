@@ -38,7 +38,7 @@ struct LeadDetailScreen: View {
                 }.padding(.top, 25)
                 ScrollView (showsIndicators: false){
                     if let job = job {
-                        LeadCardView(job: job, status: .active) {
+                        LeadCardView(job: job, status: LeadStatus(rawValue: job.status) ?? LeadStatus.new) {
                         }.cardify()
                     }
                     

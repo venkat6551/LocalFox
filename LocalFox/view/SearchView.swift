@@ -53,7 +53,7 @@ struct SearchView: View {
                 if(!getFilteredList().isEmpty) {
                     ScrollView (showsIndicators: false){
                         ForEach(getFilteredList()) { job in
-                            LeadCardView(job: job, isForSearch: true, status: LeadStatus.active) {
+                            LeadCardView(job: job, isForSearch: true, status: LeadStatus(rawValue: job.status) ?? LeadStatus.new) {
                                                                 selectedJob = job
                                                                 showLeadDetails = true
                             }.cardify()

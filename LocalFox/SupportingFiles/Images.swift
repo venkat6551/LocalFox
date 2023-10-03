@@ -65,6 +65,8 @@ enum Images {
     static let INFO_ICON = Image("InfoIcon")
     static let LOGOUT = Image("logout")
     static let WARNING_TRIANGLE = Image("warning_triangle")
+    static let LOCATION_NEW = Image("Location_new")
+    
    }
 
 // A place to test your images

@@ -10,48 +10,34 @@ import MessageUI
 import CoreLocation
 import MapKit
 
-enum LeadStatus: Equatable {
-    case active
-    case expired
-    case invite
-    case quoted
-    case scheduled
-    case complete
-    case new
+enum LeadStatus:String, Equatable  {
     
-    var text: String {
-        switch self {
-        case .invite: return Strings.INVITE
-        case .active: return Strings.ACTIVE
-        case .expired: return Strings.EXPIRED
-        case .quoted: return Strings.QUOTED
-        case .scheduled: return Strings.SSCHEDULED
-        case .complete: return Strings.COMPLETED
-        case .new: return Strings.EXPIRED
-        }
-    }
+    case quoted = "Quoted"
+    case scheduled = "Scheduled"
+    case complete = "Complete"
+    case new = "New"
+    case Invoiced = "Invoiced"
+    case Assigned = "Assigned"
     
     var textColor: Color {
         switch self {
-        case .invite: return Color.BLUE
-        case .active: return Color.BLUE
-        case .expired: return Color.BORDER_RED
         case .quoted: return Color.DARK_PURPLE
         case .scheduled: return Color.BLUE
         case .complete: return Color.TEXT_GREEN
-        case .new: return Color.BORDER_RED
+        case .new: return Color.NEW_STATUS_NEW
+        case .Invoiced: return Color.NEW_STATUS_INVOICED
+        case .Assigned: return Color.NEW_STATUS_ASSIGNED
         }
     }
     
     var bgColor: Color {
         switch self {
-        case .invite: return Color.LIGHT_BLUE
-        case .active: return Color.LIGHT_BLUE
-        case .expired: return Color.LIGHT_RED
         case .quoted: return Color.LIGHT_PURPLE
         case .scheduled: return Color.LIGHT_BLUE
         case .complete: return Color.LIGHT_GREEN
-        case .new: return Color.LIGHT_RED
+        case .new: return Color.NEW_STATUS_NEW_BG
+        case .Invoiced: return Color.LIGHT_RED
+        case .Assigned: return Color.NEW_STATUS_ASSIGNED_BG
         }
     }
 }
@@ -72,29 +58,47 @@ struct LeadCardView: View {
         ZStack {
             VStack(alignment: .leading) {
                 HStack (alignment: .top){
-                    VStack {
-                        HStack(alignment: .top, spacing: 10) {
+                    VStack(alignment: .leading) {
+                        HStack(alignment: .center, spacing: 3) {
+                            Text("•").applyFontRegular(color: status.textColor, size: 20).padding(.leading, 5).padding(.bottom, 2)
+                            Text(status.rawValue).applyFontRegular(color: status.textColor, size: 12)
+                                .padding(.vertical, 2)
+                                .padding(.trailing, 10)
+                        }.cardify(cardBgColor: status.bgColor)
+                        
+                        VStack(alignment: .leading,spacing: 5) {
+                            Text(job.description).applyFontBold(color: Color.DEFAULT_TEXT, size: 15)
+                            HStack (spacing: 3){
+                                Images.LOCATION_NEW
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 15,height: 15)
+                                Text(job.getFormattedLocation())
+                                    .applyFontRegular(color: Color.TEXT_LEVEL_2,size: 12)
+                            }
+                        }
+                        HStack(alignment: .center, spacing: 10) {
                             VStack {
                                 if let pic = job.customer?.profilePhoto {
                                     Color.clear.overlay(
-                                            AsyncImage(url: URL(string: pic)) { phase in
-                                                switch phase {
-                                                case .success(let image):
-                                                    image
-                                                        .resizable()
-                                                        .scaledToFill()    // << for image !!
-                                                default:
-                                                    if let name = job.customer?.fullName {
-                                                        Text(String(name.prefix(2))).applyFontBold(size: 17).textCase(.uppercase)
-                                                    } else {
-                                                        Text("Loading...").applyFontRegular(size: 10)
-                                                    }
+                                        AsyncImage(url: URL(string: pic)) { phase in
+                                            switch phase {
+                                            case .success(let image):
+                                                image
+                                                    .resizable()
+                                                    .scaledToFill()
+                                            default:
+                                                if let name = job.customer?.fullName {
+                                                    Text(String(name.prefix(2))).applyFontBold(size: 17).textCase(.uppercase)
+                                                } else {
+                                                    Text("Loading...").applyFontRegular(size: 10)
                                                 }
                                             }
-                                        )
+                                        }
+                                    )
                                     .frame(width: 100, height: 80, alignment: .center)
-                                        .aspectRatio(1, contentMode: .fit) // << for square !!
-                                        .clipped()
+                                    .aspectRatio(1, contentMode: .fit)
+                                    .clipped()
                                 } else {
                                     if let name = job.customer?.fullName {
                                         Text(String(name.prefix(2))).applyFontBold(size: 17).textCase(.uppercase)
@@ -102,84 +106,44 @@ struct LeadCardView: View {
                                         Text("Loading...").applyFontRegular(size: 10)
                                     }
                                 }
-                               
+                                
                             }.frame(width: 43, height: 43 )
-                                .background(Color.SCREEN_BG)
+                                .background(status.textColor)
                                 .cardify()
-                               
-                                                    
-                            VStack(alignment: .leading, spacing: 10) {
+                                .padding(.leading, 10)
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(job.customer?.fullName ?? "")
+                                    .applyFontBold(size: 16)
+                                
                                 HStack(alignment: .top){
-                                    Text(job.customer?.fullName ?? "")
-                                        .applyFontBold(size: 16)
-                                    Images.GREEN_CHECK
-                                        .padding(.leading, 5)
-                                }
-                               
-                                HStack(alignment: .top){
-                                    VStack{
-                                        Images.LOCATION_PIN
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 15,height: 15)
-                                    }
-                                    VStack (alignment: .leading, spacing: 5){
-                                        Text(job.getFormattedLocation())
-                                                .applyFontRegular(color: Color.TEXT_LEVEL_2,size: 13)
-                                        
-                                        if let date  = job.createdDate.convertDateFormate(sorceFormate: DateFormates.API_DATE_TIME, destinationFormate: DateFormates.LOCAL_DATE_TIME) {
-                                            Text("Posted on \(date)")
-                                                .applyFontRegular(color: Color.TEXT_LEVEL_3,size: 12)
-                                        }
+                                    if let date  = job.createdDate.convertDateFormate(sorceFormate: DateFormates.API_DATE_TIME, destinationFormate: DateFormates.LOCAL_DATE_TIME) {
+                                        Text("Posted on \(date)")
+                                            .applyFontRegular(color: Color.TEXT_LEVEL_3,size: 11)
                                     }
                                     Spacer()
                                 }
-                            }
-                            
-                        }.padding(.vertical, 5)
-                        if(!isForSearch){
-                            HStack (alignment: .center,spacing: 20){
-                                Text(status.text).applyFontRegular(color: status.textColor, size: 12)
-                                    .padding(2)
-                                    .padding(.horizontal,10).cardify(cardBgColor: status.bgColor).hidden()
-                                Spacer()
-                                Button(
-                                    action: {
-                                        openAddressInMap(address: job.getFormattedLocation())
-                                    },
-                                    label: {
-                                        Images.LOCATION_BUTTON
+                            }.padding(.vertical, 10)
+                            Button(
+                                action: {
+                                    if let mobileNum = job.customer?.mobileNumber {
+                                        let telephone = "tel://"
+                                        let formattedString = telephone + mobileNum
+                                        guard let url = URL(string: formattedString) else { return }
+                                        UIApplication.shared.open(url)
                                     }
-                                )
-                                Button(
-                                    action: {
-                                        if job.customer?.emailAddress != nil {
-                                            MFMailComposeViewController.canSendMail() ? self.isShowingMailView.toggle() : self.alertNoMail.toggle()
-                                        }
-                                     },
-                                    label: {
-                                        Images.EMAIL_BUTTON
-                                    }
-                                )
-                                Button(
-                                    action: {
-                                        if let mobileNum = job.customer?.mobileNumber {
-                                            let telephone = "tel://"
-                                            let formattedString = telephone + mobileNum
-                                                guard let url = URL(string: formattedString) else { return }
-                                                UIApplication.shared.open(url)
-                                        }
-                                    },
-                                    label: {
-                                        Images.CALL_BUTTON
-                                    }
-                                )
-                            }
-                        }
+                                },
+                                label: {
+                                    Images.CALL_BUTTON
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 43, height: 43 )
+                                }
+                            ).padding(.trailing, 10)
+                        }.background(Color.SCREEN_BG).cardify()
+                            .padding(.vertical, 5)
                     }
                 }
-            }.padding(.horizontal,20)
-                .padding(.vertical,20)
+            }.padding(15)
         }.contentShape(Rectangle())
             .frame(maxWidth: .infinity)
             .onTapGesture {
@@ -187,15 +151,15 @@ struct LeadCardView: View {
             }
             .sheet(isPresented: $isShowingMailView) {
                 MailView(result: self.$result,recipients: [job.customer?.emailAddress ?? ""])
-                       }
-                       .alert(isPresented: self.$alertNoMail) {
-                           Alert(title: Text("NO MAIL SETUP"))
-                       }
+            }
+            .alert(isPresented: self.$alertNoMail) {
+                Alert(title: Text("NO MAIL SETUP"))
+            }
     }
-
+    
     
     ///Opens text address in maps
-     func openAddressInMap(address: String?){
+    func openAddressInMap(address: String?){
         guard let address = address else {return}
         
         let geoCoder = CLGeocoder()
@@ -246,31 +210,23 @@ struct LeadCardView: View {
         return location
     }
     private func getStatusColor() -> Color {
-        if(status == LeadStatus.invite) {
-            return Color.BLUE
-        } else if(status == LeadStatus.active) {
-            return Color.BUTTON_GREEN
-        } else {
-            return Color.PRIMARY
-        }
+        //        if(status == LeadStatus.invite) {
+        //            return Color.BLUE
+        //        } else if(status == LeadStatus.active) {
+        //            return Color.BUTTON_GREEN
+        //        } else {
+        return Color.PRIMARY
+        //  }
     }
     
     private func getStatusBGColor() -> Color {
-        if(status == LeadStatus.invite) {
-            return Color.BLUE
-        } else if(status == LeadStatus.active) {
-            return Color.BUTTON_GREEN
-        } else {
-            return Color.PRIMARY
-        }
+        //        if(status == LeadStatus.invite) {
+        //            return Color.BLUE
+        //        } else if(status == LeadStatus.active) {
+        //            return Color.BUTTON_GREEN
+        //        } else {
+        return Color.PRIMARY
+        //        }
     }
     
 }
-//struct LeadCardView_Previews: PreviewProvider {
-//    
-//    static var previews: some View {
-////        LeadCardView(status: LeadStatus.active, job: Binding<Job>) {
-////            
-////        }
-//    }
-//}

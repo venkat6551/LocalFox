@@ -46,7 +46,7 @@ struct LeadsView: View {
                         }
                     }else if let jobs = jobsVM.jobsModel?.data?.jobs {
                         ForEach(jobs) { job in
-                            LeadCardView(job: job, status: LeadStatus.active) {
+                            LeadCardView(job: job, status:  LeadStatus.quoted) {
                                 selectedJob = job
                                 showLeadDetails = true
                             }.cardify()

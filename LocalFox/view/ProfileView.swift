@@ -50,7 +50,9 @@ struct ProfileView: View {
                     Button(
                         action: {
                             
-                            profileVM.logoutUser()
+                            profileVM.logoutUser {
+                               
+                            }
                             authenticationStatus.setAuthenticated(authenticated: false)
                             self.presentationMode.wrappedValue.dismiss() // Go back
                         },

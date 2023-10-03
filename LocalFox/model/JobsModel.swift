@@ -47,6 +47,23 @@ struct Job: Decodable,Identifiable,Hashable {
     let createdDate: String
     let lastUpdatedDate: String
     
+    private enum CodingKeys: String, CodingKey {
+        case customer = "contact"
+        case location
+        case _id
+        case description
+        case type
+        case category
+        case service
+        case urgency
+        case images
+        case address
+        case status
+        case createdDate
+        case lastUpdatedDate
+      }
+    
+    
     func getUpdatedDate() -> Date? {
         lastUpdatedDate.convertToDate(formate: DateFormates.API_DATE_TIME)
     }
@@ -63,7 +80,7 @@ struct Job: Decodable,Identifiable,Hashable {
         }
         
         if location.count > 0 {
-            location = "\(location) \n"
+            location = "\(location), "
         }
         
         if let suburb = self.location?.suburb {

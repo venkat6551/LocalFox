@@ -101,9 +101,9 @@ class ProfileViewModel: ObservableObject {
             }
         }
     }
-    func logoutUser() {
+    func logoutUser(completion: @escaping () -> Void) {
         apiService.logoutUser { _, _ in
-           
+            completion()
         }
     }
 }
