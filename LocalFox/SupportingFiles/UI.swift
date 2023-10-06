@@ -582,7 +582,7 @@ fileprivate struct BottomSheetView<Content: View>: View {
                             Spacer()
                         }
                     }
-                    Text(title)
+                    Text(title).applyFontBodyMedium(size: 25)
                         .applyFontBodyMedium()
                     HStack {
                         Spacer()

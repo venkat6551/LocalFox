@@ -12,33 +12,7 @@ import SwiftUI
 
 // Sets custom font and color - Inter
 extension View {
-        
-//    func applyFontRegular10(color: Color = Color.DEFAULT_TEXT) -> some View {
-//        return self.font(Font.custom("Inter-Regular", size: 10))
-//            .foregroundColor(color)
-//    }
-//    func applyFontRegular11(color: Color = Color.DEFAULT_TEXT) -> some View {
-//        return self.font(Font.custom("Inter-Regular", size: 11))
-//            .foregroundColor(color)
-//    }
-//    func applyFontRegular12(color: Color = Color.DEFAULT_TEXT) -> some View {
-//        return self.font(Font.custom("Inter-Regular", size: 12))
-//            .foregroundColor(color)
-//    }
-//    func applyFontRegular13(color: Color = Color.DEFAULT_TEXT) -> some View {
-//        return self.font(Font.custom("Inter-Regular", size: 13))
-//            .foregroundColor(color)
-//    }
-//    func applyFontRegular14(color: Color = Color.DEFAULT_TEXT) -> some View {
-//        return self.font(Font.custom("Inter-Regular", size: 14))
-//            .foregroundColor(color)
-//    }
-//
-//    func applyFontRegular16(color: Color = Color.DEFAULT_TEXT) -> some View {
-//        return self.font(Font.custom("Inter-Regular", size: 16))
-//            .foregroundColor(color)
-//    }
-    
+
     func applyFontRegular(color: Color = Color.DEFAULT_TEXT, size: CGFloat) -> some View {
         return self.font(Font.custom("Inter-Regular", size: size))
             .foregroundColor(color)
@@ -73,6 +47,12 @@ extension View {
     
     func applyFontBodyMedium(color: Color = Color.DEFAULT_TEXT) -> some View {
         return self.font(Font.custom("Inter-Medium", size: 20).bold())
+            .foregroundColor(color)
+    }
+    
+    
+    func applyFontBodyMedium(color: Color = Color.DEFAULT_TEXT, size: CGFloat) -> some View {
+        return self.font(Font.custom("Inter-Medium", size: size).bold())
             .foregroundColor(color)
     }
     

@@ -8,30 +8,24 @@
 import Foundation
 import SwiftUI
 
-enum FilterType: Equatable {
-    case active
-    case quoted
-    case completed
-    case scheduled
-    case expired
-    
-    var text: String {
-        switch self {
-        case .active: return Strings.ACTIVE
-        case .quoted: return Strings.QUOTED
-        case .completed: return Strings.COMPLETED
-        case .scheduled: return Strings.SSCHEDULED
-        case .expired: return Strings.EXPIRED
-        }
-    }
+enum FilterType:String, Equatable {
+    case none = "None"
+    case quoted = "Quoted"
+    case scheduled = "Scheduled"
+    case completed = "Complete"
+    case new = "New"
+    case Invoiced = "Invoiced"
+    case Assigned = "Assigned"
     
     var icon: Image {
         switch self {
-        case .active: return Images.ACTIVE_FILTER
         case .quoted: return Images.QUOTED_FILTER
         case .completed: return Images.COMPLETED_FILTER
         case .scheduled: return Images.SCHEDULED_FILTER
-        case .expired: return Images.EXPIRED_FILTER
+        case .new: return Images.ACTIVE_FILTER
+        case .Invoiced: return Images.INVOICED_FILTER
+        case .Assigned: return Images.ASSIGNED_FILTER
+        case .none : return Images.ASSIGNED_FILTER
         }
     }
 }
@@ -39,7 +33,7 @@ enum FilterType: Equatable {
 struct FilterModel: Identifiable, Equatable {
     
     var id: String {
-        return type.text
+        return type.rawValue
     }
     var type: FilterType
     var isAscending: Bool = true

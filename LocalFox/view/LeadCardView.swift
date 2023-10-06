@@ -12,12 +12,23 @@ import MapKit
 
 enum LeadStatus:String, Equatable  {
     
-    case quoted = "Quoted"
-    case scheduled = "Scheduled"
-    case complete = "Complete"
-    case new = "New"
-    case Invoiced = "Invoiced"
-    case Assigned = "Assigned"
+    case quoted = "QUOTED"
+    case scheduled = "SCHEDULED"
+    case complete = "COMPLETE"
+    case new = "NEW"
+    case Invoiced = "INVOICED"
+    case Assigned = "ASSIGNED"
+    
+    var text: String {
+        switch self {
+        case .quoted: return "Quoted"
+        case .scheduled: return "Scheduled"
+        case .complete: return "Complete"
+        case .new: return "New"
+        case .Invoiced: return "Invoiced"
+        case .Assigned: return "Assigned"
+        }
+    }
     
     var textColor: Color {
         switch self {
@@ -61,7 +72,7 @@ struct LeadCardView: View {
                     VStack(alignment: .leading) {
                         HStack(alignment: .center, spacing: 3) {
                             Text("•").applyFontRegular(color: status.textColor, size: 20).padding(.leading, 5).padding(.bottom, 2)
-                            Text(status.rawValue).applyFontRegular(color: status.textColor, size: 12)
+                            Text(status.text).applyFontRegular(color: status.textColor, size: 12)
                                 .padding(.vertical, 2)
                                 .padding(.trailing, 10)
                         }.cardify(cardBgColor: status.bgColor)

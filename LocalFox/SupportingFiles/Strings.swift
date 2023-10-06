@@ -108,4 +108,6 @@ struct Strings {
     static let PRIVACY_LINK = "https://localfox.com.au/partner/privacy"
     static let DELETE_ACCOUNT_LINK = "https://localfox.com.au/partner/accountDeletion"
     static let PRIVACY = "Privacy"
+    static let SUBMIT = "Submit"
+    static let CLEAR = "Clear"
 }

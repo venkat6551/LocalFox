@@ -66,6 +66,10 @@ enum Images {
     static let LOGOUT = Image("logout")
     static let WARNING_TRIANGLE = Image("warning_triangle")
     static let LOCATION_NEW = Image("Location_new")
+    static let INVOICED_FILTER = Image("Invoiced_Filter")
+    static let ASSIGNED_FILTER = Image("Assigned_Filted")
+    static let RED_CHECK = Image("Red_check")
+    
     
    }
 
