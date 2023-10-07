@@ -114,21 +114,12 @@ struct Partner: Decodable {
 struct Category: Decodable {
     let _id : String
     let categoryName : String
-//    let categoryCode : String
-//    let isActive : Bool
-//    let isPopular : Bool
-//    let createdDate : String
-//    let lastUpdatedDate : String
     let categoryImage : String?
 }
 
 struct Service: Decodable {
     let _id : String
     let serviceName : String
-//    let category : String
-//    let isActive : Bool
-//    let createdDate : String
-//    let lastUpdatedDate : String
 }
 
 struct JobInviation: Decodable,Identifiable,Hashable {

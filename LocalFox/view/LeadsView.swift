@@ -20,7 +20,6 @@ struct LeadsView: View {
     var onfilterActionClick: () -> Void
     var body: some View {
         VStack {
-            
             VStack {
                 HStack {
                     Text("Jobs").applyFontHeader()
@@ -54,8 +53,8 @@ struct LeadsView: View {
                         ProgressView {
                             Text("Loading...")
                         }
-                    }else if let jobs = jobsVM.jobsModel?.data?.jobs {
-                        ForEach(jobs) { job in
+                    }else if(!getFilteredList().isEmpty) {
+                        ForEach(getFilteredList()) { job in
                             LeadCardView(job: job, status: LeadStatus(rawValue: job.status) ?? LeadStatus.new) {
                                 selectedJob = job
                                 showLeadDetails = true
@@ -76,18 +75,6 @@ struct LeadsView: View {
         .onChange(of: jobsVM.isLoading) { isLoading in
         }
         .navigationBarHidden(true)
-        .bottomSheet(
-            show: $showBottomSheet,
-            title: "Select one",
-            doneButtonText: "Done",
-            onClickDone: {
-                filterModel = updatedFilterModel
-            }) {
-                FilterView(filterModel: $updatedFilterModel)
-                    .onAppear {
-                        updatedFilterModel = filterModel
-                    }
-            }
         .navigationDestination(isPresented: $showLeadDetails) {
             LeadDetailScreen(job: selectedJob)
         }
@@ -126,6 +113,25 @@ struct LeadsView: View {
                 .cardify(cardBgColor: Color.LIGHT_PINK, borderColor: Color.BORDER_RED)
         }        
     }
+    
+    
+    private func getFilteredList() -> [Job] {
+        var jobsList:[Job]  = []
+        if let jobs = jobsVM.jobsModel?.data?.jobs {
+            if (jobsVM.filterType != .none) {
+                for num in 0 ..< jobs.count {
+                    let job  = jobs[num]                   
+                    if( job.status.caseInsensitiveCompare(jobsVM.filterType.rawValue) == .orderedSame) {
+                        jobsList.append(job)
+                    }
+                }
+           } else {
+                jobsList = jobs
+            }
+        }
+        return jobsList
+    }
+    
 }
 
 struct LeadsView_Previews: PreviewProvider {

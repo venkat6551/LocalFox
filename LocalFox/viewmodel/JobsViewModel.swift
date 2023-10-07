@@ -14,6 +14,7 @@ class JobsViewModel: ObservableObject {
     @Published var errorString: String?
     @Published var getJobsSuccess: Bool = false
     @Published var acceptOrRejectJobSuccess: Bool = false
+    @Published var filterType: FilterType = .none
     
     private let apiService: APIServiceProtocol
     

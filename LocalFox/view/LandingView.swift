@@ -111,7 +111,13 @@ struct LandingView: View {
                 onClickDone: {
                     filterModel = updatedFilterModel
                 }) {
-                    FilterView(filterModel: $updatedFilterModel)
+                    FilterView(filterModel: $updatedFilterModel, filterType: jobsViewModel.filterType,onSelectType: { type in
+                        jobsViewModel.filterType = type
+                        showBottomSheet = false
+                    },onClearType: {
+                        jobsViewModel.filterType = .none
+                        showBottomSheet = false
+                    })
                         .onAppear {
                             updatedFilterModel = filterModel
                         }
@@ -124,56 +130,55 @@ struct LandingView: View {
 struct FilterView: View {
     
     @Binding var filterModel: FilterModel
-    var filterType = FilterType.none
+    @State var filterType:FilterType
+    
+    var onSelectType : (FilterType) -> Void
+    var onClearType : () -> Void
     var body: some View {
         VStack(spacing: 10) {
             FilterRow(
-                sortType: FilterType.new,
-                currentlySelectedType: filterModel.type,
-                isAscending: filterModel.isAscending
+                filterType: FilterType.new,
+                currentlySelectedType: filterType
             ) {
-                updateFilterModel(newFilterType: FilterType.new)
+                filterType = FilterType.new
             }
             FilterRow(
-                sortType: FilterType.Assigned,
-                currentlySelectedType: filterModel.type,
-                isAscending: filterModel.isAscending
+                filterType: FilterType.Assigned,
+                currentlySelectedType: filterType
             ) {
-                updateFilterModel(newFilterType: FilterType.Assigned)
+                filterType = FilterType.Assigned
             }
             FilterRow(
-                sortType: FilterType.quoted,
-                currentlySelectedType: filterModel.type,
-                isAscending: filterModel.isAscending
+                filterType: FilterType.quoted,
+                currentlySelectedType: filterType
             ) {
-                updateFilterModel(newFilterType: FilterType.quoted)
+                filterType = FilterType.quoted
             }
             FilterRow(
-                sortType: FilterType.completed,
-                currentlySelectedType: filterModel.type,
-                isAscending: filterModel.isAscending
+                filterType: FilterType.completed,
+                currentlySelectedType: filterType
             ) {
-                updateFilterModel(newFilterType: FilterType.completed)
+                filterType = FilterType.completed
             }
             FilterRow(
-                sortType: FilterType.scheduled,
-                currentlySelectedType: filterModel.type,
-                isAscending: filterModel.isAscending
+                filterType: FilterType.scheduled,
+                currentlySelectedType: filterType
             ) {
-                updateFilterModel(newFilterType: FilterType.scheduled)
+                filterType = FilterType.scheduled
             }
             FilterRow(
-                sortType: FilterType.Invoiced,
-                currentlySelectedType: filterModel.type,
-                isAscending: filterModel.isAscending
+                filterType: FilterType.Invoiced,
+                currentlySelectedType: filterType
             ) {
-                updateFilterModel(newFilterType: FilterType.Invoiced)
+                filterType = FilterType.Invoiced
             }
             
             HStack {
                 MyButton(
                     text: Strings.CLEAR,
                     onClickButton: {
+                        filterType = FilterType.none
+                        onClearType()
                     },
                     bgColor: Color.DEFAULT_TEXT
                 )
@@ -181,7 +186,7 @@ struct FilterView: View {
                 MyButton(
                     text: Strings.SUBMIT,
                     onClickButton: {
-
+                        onSelectType(filterType)
                     },
                     bgColor: Color.PRIMARY
                 )
@@ -200,9 +205,8 @@ struct FilterView: View {
     
     struct FilterRow: View {
         
-        var sortType: FilterType
+        var filterType: FilterType
         var currentlySelectedType: FilterType
-        var isAscending: Bool
         var onClick: () -> Void
         
         private let LEADING_ICON_SIZE: CGFloat = 20
@@ -213,14 +217,14 @@ struct FilterView: View {
                 onClick()
             }, label: {
                 HStack(spacing: ROW_INNER_SPACING) {
-                    sortType.icon
+                    filterType.icon
                         .resizable()
                         .scaledToFill()
                         .frame(width: LEADING_ICON_SIZE, height: LEADING_ICON_SIZE)
-                    Text(sortType.rawValue)
+                    Text(filterType.rawValue)
                         .applyFontText()
                     Spacer()
-                    if sortType == currentlySelectedType {
+                    if filterType == currentlySelectedType {
                         Images.RED_CHECK
                             .resizable()
                             .scaledToFit()

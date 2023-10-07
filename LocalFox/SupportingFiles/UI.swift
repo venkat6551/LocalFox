@@ -610,14 +610,13 @@ fileprivate struct BottomSheetView<Content: View>: View {
                         }
                     }
                 }
-                
                 .padding(Dimens.BOTTOM_SHEET_TITLE_SECTION_PADDING)
                 sheetContentView()
                     .padding(.horizontal, Dimens.BOTTOM_SHEET_CONTENT_SECTION_PADDING)
                 Spacer()
                     .frame(maxHeight: 20)
             }.background(Color.SCREEN_BG)
-                .cardify(cardCornerRadius: 10,corners: [UIRectCorner.topLeft, UIRectCorner.topRight])
+                .cardify(cardCornerRadius: 20,corners: [UIRectCorner.topLeft, UIRectCorner.topRight])
             
         } else {
             EmptyView()
