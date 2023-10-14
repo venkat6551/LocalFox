@@ -92,7 +92,7 @@ struct LeadCardView: View {
                         }
                         HStack(alignment: .center, spacing: 10) {
                             VStack {
-                                if let pic = job.customer?.profilePhoto {
+                                if let pic = job.getUser()?.profilePhoto {
                                     Color.clear.overlay(
                                         AsyncImage(url: URL(string: pic)) { phase in
                                             switch phase {
@@ -101,7 +101,7 @@ struct LeadCardView: View {
                                                     .resizable()
                                                     .scaledToFill()
                                             default:
-                                                if let name = job.customer?.fullName {
+                                                if let name = job.getUser()?.fullName {
                                                     Text(String(name.prefix(2))).applyFontBold(size: 17).textCase(.uppercase)
                                                 } else {
                                                     Text("Loading...").applyFontRegular(size: 10)
@@ -113,7 +113,7 @@ struct LeadCardView: View {
                                     .aspectRatio(1, contentMode: .fit)
                                     .clipped()
                                 } else {
-                                    if let name = job.customer?.fullName {
+                                    if let name = job.getUser()?.fullName {
                                         Text(String(name.prefix(2))).applyFontBold(size: 17).textCase(.uppercase)
                                     } else {
                                         Text("Loading...").applyFontRegular(size: 10)
@@ -126,7 +126,7 @@ struct LeadCardView: View {
                                 .padding(.leading, 10)
                                 .padding(.vertical, 10)
                             VStack(alignment: .leading, spacing: 3) {
-                                Text(job.customer?.fullName ?? "").applyFontMedium(size: 15)
+                                Text(job.getUser()?.fullName ?? "").applyFontMedium(size: 15)
                                 
                                 HStack(alignment: .top){
                                     if let date  = job.createdDate.convertDateFormate(sorceFormate: DateFormates.API_DATE_TIME, destinationFormate: DateFormates.LOCAL_DATE_TIME) {
@@ -138,7 +138,7 @@ struct LeadCardView: View {
                             }.padding(.vertical, 10)
                             Button(
                                 action: {
-                                    if let mobileNum = job.customer?.mobileNumber {
+                                    if let mobileNum = job.getUser()?.mobileNumber {
                                         let telephone = "tel://"
                                         let formattedString = telephone + mobileNum
                                         guard let url = URL(string: formattedString) else { return }
@@ -163,7 +163,7 @@ struct LeadCardView: View {
                 onCardClick()
             }
             .sheet(isPresented: $isShowingMailView) {
-                MailView(result: self.$result,recipients: [job.customer?.emailAddress ?? ""])
+                MailView(result: self.$result,recipients: [job.getUser()?.emailAddress ?? ""])
             }
             .alert(isPresented: self.$alertNoMail) {
                 Alert(title: Text("NO MAIL SETUP"))

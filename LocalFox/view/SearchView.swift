@@ -82,9 +82,10 @@ struct SearchView: View {
             jobsList = jobs
             if !searchText.isEmpty {
                 jobsList = jobsList.filter({ job in
-                    job.customer?.fullName?.lowercased().contains(searchText.lowercased()) == true
-                    || job.customer?.emailAddress?.lowercased().contains(searchText.lowercased()) == true
-                    ||  job.customer?.mobileNumber?.lowercased().contains(searchText.lowercased()) == true
+                    let user = job.getUser()
+                    return user?.fullName?.lowercased().contains(searchText.lowercased()) == true
+                    || user?.emailAddress?.lowercased().contains(searchText.lowercased()) == true
+                    ||  user?.mobileNumber?.lowercased().contains(searchText.lowercased()) == true
                     || job.getFormattedLocation().lowercased().contains(searchText.lowercased()) == true
                 })
             }

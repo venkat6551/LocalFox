@@ -34,6 +34,7 @@ struct Job: Decodable,Identifiable,Hashable {
     
     var location:Location?
     let _id: String?
+    let contact: Customer?
     let customer: Customer?
    // let partners: [Partner]?
     let description: String
@@ -47,21 +48,15 @@ struct Job: Decodable,Identifiable,Hashable {
     let createdDate: String
     let lastUpdatedDate: String
     
-    private enum CodingKeys: String, CodingKey {
-        case customer = "contact"
-        case location
-        case _id
-        case description
-        case type
-        case category
-        case service
-        case urgency
-        case images
-        case address
-        case status
-        case createdDate
-        case lastUpdatedDate
-      }
+    func getUser() -> Customer? {
+        if let user = self.customer {
+            return user
+        }
+        if let user = self.contact {
+            return user
+        }
+        return nil
+    }
     
     
     func getUpdatedDate() -> Date? {
