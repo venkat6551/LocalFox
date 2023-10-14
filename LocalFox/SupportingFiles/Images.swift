@@ -70,6 +70,8 @@ enum Images {
     static let INVOICED_FILTER = Image("Invoiced_Filter")
     static let ASSIGNED_FILTER = Image("Assigned_Filted")
     static let RED_CHECK = Image("Red_check")
+    static let JOB_SUMMARY = Image("jobSummaryicon")
+    
     
     
    }

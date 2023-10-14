@@ -155,18 +155,17 @@ struct FilterView: View {
                 updateFiltersArray(newFilterType: FilterType.quoted)
             }
             FilterRow(
-                filterType: FilterType.scheduled,
-                currentlySelectedTypes: filterTypes
-            ) {
-                updateFiltersArray(newFilterType: FilterType.scheduled)
-            }
-            FilterRow(
                 filterType: FilterType.completed,
                 currentlySelectedTypes: filterTypes
             ) {
                 updateFiltersArray(newFilterType: FilterType.completed)
             }
-            
+            FilterRow(
+                filterType: FilterType.scheduled,
+                currentlySelectedTypes: filterTypes
+            ) {
+                updateFiltersArray(newFilterType: FilterType.scheduled)
+            }
             FilterRow(
                 filterType: FilterType.Invoiced,
                 currentlySelectedTypes: filterTypes

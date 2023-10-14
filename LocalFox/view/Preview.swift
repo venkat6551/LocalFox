@@ -17,6 +17,7 @@ import SwiftUI
 import SwiftUI
 struct Preview: View {
     var imageName:String
+    var totalImages: [String]?
     @State private var showErrorSnackbar: Bool = false
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var body: some View {
@@ -44,6 +45,6 @@ struct Preview: View {
 
 struct Preview_Previews: PreviewProvider {
     static var previews: some View {
-        Preview(imageName: "https://localfox-job-photos.s3.ap-southeast-2.amazonaws.com/jobImage_649818509660020abae6a5b2_1687689319557.jpeg")
+        Preview(imageName: "https://localfox-job-photos.s3.ap-southeast-2.amazonaws.com/jobImage_649818509660020abae6a5b2_1687689319557.jpeg", totalImages: ["https://localfox-job-photos.s3.ap-southeast-2.amazonaws.com/jobImage_649818509660020abae6a5b2_1687689319557.jpeg"])
     }
 }

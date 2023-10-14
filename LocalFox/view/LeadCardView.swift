@@ -65,6 +65,8 @@ struct LeadCardView: View {
     @State var alertNoMail = false
     @State var result: Result<MFMailComposeResult, Error>? = nil
     
+    let colors = ["#f43f5e","#ec4899", "#d946ef", "#a855f7", "#8b5cf6","#22c55e","#84cc16", "#ef4444", "#f97316", "#6366f1", "#3b82f6", "#0ea5e9", "#06b6d4", "#14b8a6", "#10b981", "#f59e0b", "#eab308", "#64748b"]
+    
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
@@ -78,7 +80,7 @@ struct LeadCardView: View {
                         }.cardify(cardBgColor: status.bgColor)
                         
                         VStack(alignment: .leading,spacing: 5) {
-                            Text(job.description).applyFontBold(color: Color.DEFAULT_TEXT, size: 15)
+                            Text(job.description).applyFontBold(color: Color.DEFAULT_TEXT, size: 16)
                             HStack (spacing: 3){
                                 Images.LOCATION_NEW
                                     .resizable()
@@ -119,12 +121,12 @@ struct LeadCardView: View {
                                 }
                                 
                             }.frame(width: 43, height: 43 )
-                                .background(status.textColor)
+                                .background(Color(hex: colors.randomElement()!))
                                 .cardify()
                                 .padding(.leading, 10)
+                                .padding(.vertical, 10)
                             VStack(alignment: .leading, spacing: 3) {
-                                Text(job.customer?.fullName ?? "")
-                                    .applyFontBold(size: 16)
+                                Text(job.customer?.fullName ?? "").applyFontMedium(size: 15)
                                 
                                 HStack(alignment: .top){
                                     if let date  = job.createdDate.convertDateFormate(sorceFormate: DateFormates.API_DATE_TIME, destinationFormate: DateFormates.LOCAL_DATE_TIME) {
@@ -240,4 +242,32 @@ struct LeadCardView: View {
         //        }
     }
     
+}
+
+
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (1, 1, 1, 0)
+        }
+
+        self.init(
+            .sRGB,
+            red: Double(r) / 255,
+            green: Double(g) / 255,
+            blue:  Double(b) / 255,
+            opacity: Double(a) / 255
+        )
+    }
 }

@@ -582,8 +582,12 @@ fileprivate struct BottomSheetView<Content: View>: View {
                             Spacer()
                         }
                     }
-                    Text(title).applyFontBodyMedium(size: 25)
-                        .applyFontBodyMedium()
+                    HStack {
+                        Text(title).applyFontBodyMedium(size: 25)
+                            .applyFontBodyMedium()
+                        Spacer()
+                    }
+                   
                     HStack {
                         Spacer()
                         if let doneButtonText = doneButtonText {
