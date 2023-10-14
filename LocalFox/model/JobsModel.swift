@@ -102,14 +102,14 @@ struct Job: Decodable,Identifiable,Hashable {
         var location = ""
         
         if let suburb = self.location?.suburb {
-            location = "\(location)\(suburb)"
+            location = "\(location)\(suburb), "
         }
         if let state = self.location?.state {
-            location = "\(location), \(state)"
+            location = "\(location)\(state) "
         }
         
         if let postCode = self.location?.postCode {
-            location = "\(location) \(postCode)"
+            location = "\(location)\(postCode)"
         }
         
         return location
