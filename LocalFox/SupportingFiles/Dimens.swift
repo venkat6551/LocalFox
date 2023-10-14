@@ -30,7 +30,7 @@ enum Dimens {
     static let SEARCH_BAR_PADDING: CGFloat = 1.5
     static let TOP_BAR_HEIGHT: CGFloat = 80.0
     static let TAB_BAR_CORNER_RADIUS: CGFloat = 10.0
-    static let TAB_ITEM_ICON_SIZE: CGFloat = 16
+    static let TAB_ITEM_ICON_SIZE: CGFloat = 25
     static let TAB_BAR_VERTICAL_PADDING: CGFloat = 20.0
     static let SCREEN_BOTTOM_PADDING: CGFloat = 20.0
     static let BOTTOM_SHEET_TITLE_SECTION_PADDING: CGFloat = 20.0

@@ -111,11 +111,11 @@ struct LandingView: View {
                 onClickDone: {
                     filterModel = updatedFilterModel
                 }) {
-                    FilterView(filterModel: $updatedFilterModel, filterType: jobsViewModel.filterType,onSelectType: { type in
-                        jobsViewModel.filterType = type
+                    FilterView(filterModel: $updatedFilterModel, filterTypes: jobsViewModel.filterTypes,onSelectType: { types in
+                        jobsViewModel.filterTypes = types
                         showBottomSheet = false
                     },onClearType: {
-                        jobsViewModel.filterType = .none
+                        jobsViewModel.filterTypes.removeAll()
                         showBottomSheet = false
                     })
                         .onAppear {
@@ -130,54 +130,55 @@ struct LandingView: View {
 struct FilterView: View {
     
     @Binding var filterModel: FilterModel
-    @State var filterType:FilterType
+    @State var filterTypes:[FilterType]
     
-    var onSelectType : (FilterType) -> Void
+    var onSelectType : ([FilterType]) -> Void
     var onClearType : () -> Void
     var body: some View {
         VStack(spacing: 10) {
             FilterRow(
                 filterType: FilterType.new,
-                currentlySelectedType: filterType
+                currentlySelectedTypes: filterTypes
             ) {
-                filterType = FilterType.new
+                updateFiltersArray(newFilterType: FilterType.new)
             }
             FilterRow(
                 filterType: FilterType.Assigned,
-                currentlySelectedType: filterType
+                currentlySelectedTypes: filterTypes
             ) {
-                filterType = FilterType.Assigned
+                updateFiltersArray(newFilterType: FilterType.Assigned)
             }
             FilterRow(
                 filterType: FilterType.quoted,
-                currentlySelectedType: filterType
+                currentlySelectedTypes: filterTypes
             ) {
-                filterType = FilterType.quoted
-            }
-            FilterRow(
-                filterType: FilterType.completed,
-                currentlySelectedType: filterType
-            ) {
-                filterType = FilterType.completed
+                updateFiltersArray(newFilterType: FilterType.quoted)
             }
             FilterRow(
                 filterType: FilterType.scheduled,
-                currentlySelectedType: filterType
+                currentlySelectedTypes: filterTypes
             ) {
-                filterType = FilterType.scheduled
+                updateFiltersArray(newFilterType: FilterType.scheduled)
             }
             FilterRow(
-                filterType: FilterType.Invoiced,
-                currentlySelectedType: filterType
+                filterType: FilterType.completed,
+                currentlySelectedTypes: filterTypes
             ) {
-                filterType = FilterType.Invoiced
+                updateFiltersArray(newFilterType: FilterType.completed)
+            }
+            
+            FilterRow(
+                filterType: FilterType.Invoiced,
+                currentlySelectedTypes: filterTypes
+            ) {
+                updateFiltersArray(newFilterType: FilterType.Invoiced)
             }
             
             HStack {
                 MyButton(
                     text: Strings.CLEAR,
                     onClickButton: {
-                        filterType = FilterType.none
+                        filterTypes.removeAll()
                         onClearType()
                     },
                     bgColor: Color.DEFAULT_TEXT
@@ -186,13 +187,24 @@ struct FilterView: View {
                 MyButton(
                     text: Strings.SUBMIT,
                     onClickButton: {
-                        onSelectType(filterType)
+                        onSelectType(filterTypes)
                     },
                     bgColor: Color.PRIMARY
                 )
             }.padding(.vertical, 10)
         }
     }
+    
+    private func updateFiltersArray(newFilterType: FilterType) {
+        if (filterTypes.contains(newFilterType)) {
+            filterTypes.removeAll { type in
+                type == newFilterType
+            }
+        } else {
+            filterTypes.append(newFilterType)
+        }
+    }
+    
     
     private func updateFilterModel(newFilterType: FilterType) {
         if filterModel.type == newFilterType {
@@ -206,7 +218,7 @@ struct FilterView: View {
     struct FilterRow: View {
         
         var filterType: FilterType
-        var currentlySelectedType: FilterType
+        var currentlySelectedTypes: [FilterType]
         var onClick: () -> Void
         
         private let LEADING_ICON_SIZE: CGFloat = 20
@@ -224,7 +236,7 @@ struct FilterView: View {
                     Text(filterType.rawValue)
                         .applyFontText()
                     Spacer()
-                    if filterType == currentlySelectedType {
+                    if currentlySelectedTypes.contains(filterType) {
                         Images.RED_CHECK
                             .resizable()
                             .scaledToFit()

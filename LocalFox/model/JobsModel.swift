@@ -80,7 +80,7 @@ struct Job: Decodable,Identifiable,Hashable {
         }
         
         if location.count > 0 {
-            location = "\(location), "
+            location = "\(location) \n"
         }
         
         if let suburb = self.location?.suburb {
@@ -88,6 +88,24 @@ struct Job: Decodable,Identifiable,Hashable {
         }
         if let state = self.location?.state {
             location = "\(location) \(state)"
+        }
+        
+        if let postCode = self.location?.postCode {
+            location = "\(location) \(postCode)"
+        }
+        
+        return location
+    }
+    
+    func getShortFormattedLocation() -> String {
+        
+        var location = ""
+        
+        if let suburb = self.location?.suburb {
+            location = "\(location)\(suburb)"
+        }
+        if let state = self.location?.state {
+            location = "\(location), \(state)"
         }
         
         if let postCode = self.location?.postCode {

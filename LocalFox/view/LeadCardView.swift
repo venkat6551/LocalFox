@@ -84,7 +84,7 @@ struct LeadCardView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 15,height: 15)
-                                Text(job.getFormattedLocation())
+                                Text(job.getShortFormattedLocation())
                                     .applyFontRegular(color: Color.TEXT_LEVEL_2,size: 12)
                             }
                         }
@@ -150,7 +150,7 @@ struct LeadCardView: View {
                                         .frame(width: 43, height: 43 )
                                 }
                             ).padding(.trailing, 10)
-                        }.background(Color.SCREEN_BG).cardify()
+                        }.background(Color.LIGHT_GRAY_BG).cardify()
                             .padding(.vertical, 5)
                     }
                 }

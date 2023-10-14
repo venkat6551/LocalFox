@@ -83,9 +83,7 @@ struct LeadsView: View {
         }
         .background(Color.SCREEN_BG.ignoresSafeArea())
     }
-    
-   
-    
+        
     struct InvitationsWaitingView: View {
         let jobsVM: JobsViewModel
         var onCardClick: () -> Void
@@ -118,10 +116,13 @@ struct LeadsView: View {
     private func getFilteredList() -> [Job] {
         var jobsList:[Job]  = []
         if let jobs = jobsVM.jobsModel?.data?.jobs {
-            if (jobsVM.filterType != .none) {
+            if (!jobsVM.filterTypes.isEmpty) {
                 for num in 0 ..< jobs.count {
-                    let job  = jobs[num]                   
-                    if( job.status.caseInsensitiveCompare(jobsVM.filterType.rawValue) == .orderedSame) {
+                    let job  = jobs[num]
+                   let exixt = jobsVM.filterTypes.contains { type in
+                        job.status.caseInsensitiveCompare(type.rawValue) == .orderedSame
+                    }
+                    if(exixt) {
                         jobsList.append(job)
                     }
                 }

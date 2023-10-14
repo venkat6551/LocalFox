@@ -23,7 +23,7 @@ enum FilterType:String, Equatable {
         case .completed: return Images.COMPLETED_FILTER
         case .scheduled: return Images.SCHEDULED_FILTER
         case .new: return Images.ACTIVE_FILTER
-        case .Invoiced: return Images.INVOICED_FILTER
+        case .Invoiced: return Images.INVOICED_FILTER_ICON
         case .Assigned: return Images.ASSIGNED_FILTER
         case .none : return Images.ASSIGNED_FILTER
         }

@@ -24,6 +24,7 @@ extension Color {
     static let SUCCESS = Color("SuccessColor")
     static let SUCCESS_BG = Color("SuccessBgColor")
     static let SCREEN_BG = Color("ScreenBg")
+    static let LIGHT_GRAY_BG = Color("lightGrayBG")
     static let CARD_DROP_SHADOW = Color("CardDropShadowColor")
     static let BUTTON_GREEN = Color("ButtonGreen")
     static let TEXT_GREEN = Color("Greentext")

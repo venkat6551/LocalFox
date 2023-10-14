@@ -12,6 +12,7 @@ import SwiftUI
 
 enum Images {
     
+    static let INVOICED_FILTER_ICON = Image("invoicedFilterIcon")
     static let LOCAL_FOX = Image("local_fox")
     static let PARTNER = Image("partner")
     static let ERROR = Image(systemName: "xmark")
