@@ -55,7 +55,7 @@ struct LeadDetailScreen: View {
         }
         .navigationBarHidden(true)
         .navigationDestination(isPresented: $showPhotoView) {
-           Preview(imageName: selectedImage)
+            Preview(imageName: selectedImage, totalImages: job?.images)
         }
         .background(Color.SCREEN_BG.ignoresSafeArea())
     }
