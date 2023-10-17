@@ -6,19 +6,14 @@
 //
 
 import SwiftUI
+import Nuke
+import NukeUI
 
-//
-//  ProfileImageView.swift
-//  LocalFox
-//
-//  Created by venkatesh karra on 28/02/23.
-//
-
-import SwiftUI
 struct Preview: View {
     var imageName:String
     var totalImages: [String]?
     @State private var showErrorSnackbar: Bool = false
+    @State private var currentImageIndex: Int = 1
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var body: some View {
         
@@ -42,27 +37,45 @@ struct Preview: View {
                 .padding(.top,10)
             GeometryReader{ geometryReader in
                 if let images = totalImages {
-                    InfiniteCarousel(data: images, height: geometryReader.size.height, cornerRadius: 0, transition: .opacity) { element in
-                        VStack {
-                            Spacer()
-                            Color.clear.overlay(
-                                AsyncImage(url: URL(string: imageName)) { phase in
-                                    switch phase {
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .scaledToFill()
-                                    default:
-                                        ProgressView().tint(.white)
+                    
+                    ZStack (alignment: .bottom) {
+                        
+                        InfiniteCarousel(data: images, height: geometryReader.size.height, cornerRadius: 0, transition: .opacity) { element in
+                            VStack(alignment: .center) {
+                                Spacer()
+                                GeometryReader { proxy in
+                                    let frame = proxy.frame(in: .local)
+                                    LazyImage(url: URL(string: element), transaction: Transaction(animation: .linear)) { state in
+                                        if let image = state.image {
+                                            image
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: frame.width, height: frame.height)
+                                                .clipped()
+                                        } else {
+                                            VStack(alignment: .center) {
+                                                Spacer()
+                                                HStack{
+                                                    Spacer()
+                                                    ProgressView().tint(.white)
+                                                    Spacer()
+                                                }
+                                                Spacer()
+                                            }
+                                        }
                                     }
+                                    .priority(.high)
+                                    .pipeline(pipeline)
                                 }
-                            )
-                            .frame(maxWidth: .infinity)
-                            .aspectRatio(1, contentMode: .fit)
-                            .clipped()
-                            Spacer()
-                            let index = (images.firstIndex(of: element) ?? 0) + 1
-                            Text("\(index)/\(images.count) images").padding(.bottom, 10).applyFontNotes(color: .white)
+                                Spacer()
+                                let index = (images.firstIndex(of: element) ?? 0) + 1
+                                Text("\(index)/\(images.count)")
+                                    .padding(.bottom, 10)
+                                    .applyFontMedium(color: .white, size: 14)
+                                    .onAppear{
+                                        currentImageIndex = index
+                                    }
+                            }
                         }
                     }
                 }
@@ -76,4 +89,13 @@ struct Preview_Previews: PreviewProvider {
     static var previews: some View {
         Preview(imageName: "https://localfox-job-photos.s3.ap-southeast-2.amazonaws.com/jobImage_649818509660020abae6a5b2_1687689319557.jpeg", totalImages: ["https://localfox-job-photos.s3.ap-southeast-2.amazonaws.com/jobImage_649818509660020abae6a5b2_1687689319557.jpeg"])
     }
+}
+
+public let pipeline = ImagePipeline {
+    $0.dataLoader = DataLoader(configuration: {
+        let conf = DataLoader.defaultConfiguration
+        conf.urlCache = nil
+        return conf
+    }())
+    $0.dataCache = try? DataCache(name: "app.wheretogo")
 }

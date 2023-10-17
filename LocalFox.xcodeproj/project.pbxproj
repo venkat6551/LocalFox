@@ -14,6 +14,12 @@
 		CC1AE67F29AE666F005FC846 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1AE67E29AE666F005FC846 /* ProfileImageView.swift */; };
 		CC1AE68929B65091005FC846 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1AE68829B65091005FC846 /* ImagePicker.swift */; };
 		CC1CA0982A0915600058EA96 /* NotApprovedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1CA0972A0915600058EA96 /* NotApprovedScreen.swift */; };
+		CC4606762ADDB9CD008EF8F7 /* ViewLifeCycleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4606742ADDB9CD008EF8F7 /* ViewLifeCycleHandler.swift */; };
+		CC4606772ADDB9CD008EF8F7 /* InfiniteCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4606752ADDB9CD008EF8F7 /* InfiniteCarousel.swift */; };
+		CC4A8B552ADF038A003859C1 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = CC4A8B542ADF038A003859C1 /* Nuke */; };
+		CC4A8B572ADF038A003859C1 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = CC4A8B562ADF038A003859C1 /* NukeExtensions */; };
+		CC4A8B592ADF038A003859C1 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = CC4A8B582ADF038A003859C1 /* NukeUI */; };
+		CC4A8B5B2ADF038A003859C1 /* NukeVideo in Frameworks */ = {isa = PBXBuildFile; productRef = CC4A8B5A2ADF038A003859C1 /* NukeVideo */; };
 		CC56571529C0DEFE0098D16F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56571429C0DEFE0098D16F /* AppDelegate.swift */; };
 		CC56571A29C0E4190098D16F /* GoogleApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56571929C0E4190098D16F /* GoogleApiHelper.swift */; };
 		CC56571C29C0E4200098D16F /* GoogleApiHelper+Nearby.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56571B29C0E4200098D16F /* GoogleApiHelper+Nearby.swift */; };
@@ -98,6 +104,8 @@
 		CC1AE67E29AE666F005FC846 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		CC1AE68829B65091005FC846 /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		CC1CA0972A0915600058EA96 /* NotApprovedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotApprovedScreen.swift; sourceTree = "<group>"; };
+		CC4606742ADDB9CD008EF8F7 /* ViewLifeCycleHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewLifeCycleHandler.swift; sourceTree = "<group>"; };
+		CC4606752ADDB9CD008EF8F7 /* InfiniteCarousel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteCarousel.swift; sourceTree = "<group>"; };
 		CC56571429C0DEFE0098D16F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CC56571929C0E4190098D16F /* GoogleApiHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleApiHelper.swift; sourceTree = "<group>"; };
 		CC56571B29C0E4200098D16F /* GoogleApiHelper+Nearby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GoogleApiHelper+Nearby.swift"; sourceTree = "<group>"; };
@@ -181,7 +189,11 @@
 			files = (
 				CC8CD30929F65EBE00D9A0E3 /* FirebaseMessaging in Frameworks */,
 				CC8CD30729F65EBE00D9A0E3 /* FirebaseAnalytics in Frameworks */,
+				CC4A8B5B2ADF038A003859C1 /* NukeVideo in Frameworks */,
 				CCF81ABA298D6D5700A6E2A5 /* Alamofire in Frameworks */,
+				CC4A8B592ADF038A003859C1 /* NukeUI in Frameworks */,
+				CC4A8B552ADF038A003859C1 /* Nuke in Frameworks */,
+				CC4A8B572ADF038A003859C1 /* NukeExtensions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,6 +203,8 @@
 		CC56571829C0E3FF0098D16F /* ThirdPartyLibs */ = {
 			isa = PBXGroup;
 			children = (
+				CC4606752ADDB9CD008EF8F7 /* InfiniteCarousel.swift */,
+				CC4606742ADDB9CD008EF8F7 /* ViewLifeCycleHandler.swift */,
 				CC11CC292A4D902D0096065B /* WrappingHStack.swift */,
 				CC56571D29C0E4260098D16F /* NearByEnum.swift */,
 				CC56571B29C0E4200098D16F /* GoogleApiHelper+Nearby.swift */,
@@ -391,6 +405,10 @@
 				CCF81AB9298D6D5700A6E2A5 /* Alamofire */,
 				CC8CD30629F65EBE00D9A0E3 /* FirebaseAnalytics */,
 				CC8CD30829F65EBE00D9A0E3 /* FirebaseMessaging */,
+				CC4A8B542ADF038A003859C1 /* Nuke */,
+				CC4A8B562ADF038A003859C1 /* NukeExtensions */,
+				CC4A8B582ADF038A003859C1 /* NukeUI */,
+				CC4A8B5A2ADF038A003859C1 /* NukeVideo */,
 			);
 			productName = LocalFox;
 			productReference = CDF2B0292941D8AF00CF2B28 /* Local Fox.app */;
@@ -423,6 +441,7 @@
 			packageReferences = (
 				CCF81AB8298D6D5700A6E2A5 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				CC8CD30529F65EBE00D9A0E3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				CC4A8B532ADF038A003859C1 /* XCRemoteSwiftPackageReference "Nuke" */,
 			);
 			productRefGroup = CDF2B02A2941D8AF00CF2B28 /* Products */;
 			projectDirPath = "";
@@ -507,6 +526,7 @@
 				CD07689B2972C68800CB7075 /* NameView.swift in Sources */,
 				CD006F822943879A004BBF4A /* Extensions.swift in Sources */,
 				CD07688F2972A61B00CB7075 /* SecuritySettingsView.swift in Sources */,
+				CC4606772ADDB9CD008EF8F7 /* InfiniteCarousel.swift in Sources */,
 				CD1F4F60294592DC0053F81D /* LeadDetailScreen.swift in Sources */,
 				CD5066232971CC9A00FC4804 /* FilterType.swift in Sources */,
 				CD0768952972B3A600CB7075 /* EmailCodeView.swift in Sources */,
@@ -525,6 +545,7 @@
 				CD1D0BBE2941EA43000CB2D1 /* LoginViewModel.swift in Sources */,
 				CC56574229CF31BD0098D16F /* JobsModel.swift in Sources */,
 				CCF81AC2298FEDE200A6E2A5 /* EncodableDecodables.swift in Sources */,
+				CC4606762ADDB9CD008EF8F7 /* ViewLifeCycleHandler.swift in Sources */,
 				CC56571529C0DEFE0098D16F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -744,6 +765,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CC4A8B532ADF038A003859C1 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.0.0;
+			};
+		};
 		CC8CD30529F65EBE00D9A0E3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -763,6 +792,26 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CC4A8B542ADF038A003859C1 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC4A8B532ADF038A003859C1 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		CC4A8B562ADF038A003859C1 /* NukeExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC4A8B532ADF038A003859C1 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeExtensions;
+		};
+		CC4A8B582ADF038A003859C1 /* NukeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC4A8B532ADF038A003859C1 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeUI;
+		};
+		CC4A8B5A2ADF038A003859C1 /* NukeVideo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC4A8B532ADF038A003859C1 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeVideo;
+		};
 		CC8CD30629F65EBE00D9A0E3 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CC8CD30529F65EBE00D9A0E3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

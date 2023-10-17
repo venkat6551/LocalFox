@@ -80,7 +80,7 @@ struct LeadCardView: View {
                         }.cardify(cardBgColor: status.bgColor)
                         
                         VStack(alignment: .leading,spacing: 5) {
-                            Text(job.description).applyFontBold(color: Color.DEFAULT_TEXT, size: 16)
+                            Text(job.jobTitle).applyFontBold(color: Color.DEFAULT_TEXT, size: 16)
                             HStack (spacing: 3){
                                 Images.LOCATION_NEW
                                     .resizable()

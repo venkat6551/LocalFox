@@ -45,6 +45,7 @@ struct Job: Decodable,Identifiable,Hashable {
     var images: [String]
     var address: String?
     let status: String
+    let jobTitle: String
     let createdDate: String
     let lastUpdatedDate: String
     
