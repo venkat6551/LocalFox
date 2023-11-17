@@ -24,6 +24,8 @@ extension Color {
     static let SUCCESS = Color("SuccessColor")
     static let SUCCESS_BG = Color("SuccessBgColor")
     static let SCREEN_BG = Color("ScreenBg")
+    static let SLIDING_TAG_BG = Color("SlidingNarBG")
+    
     static let LIGHT_GRAY_BG = Color("lightGrayBG")
     static let CARD_DROP_SHADOW = Color("CardDropShadowColor")
     static let BUTTON_GREEN = Color("ButtonGreen")
@@ -47,7 +49,10 @@ extension Color {
     static let NEW_STATUS_ASSIGNED = Color("Status_assigned")
     static let NEW_STATUS_ASSIGNED_BG = Color("Status_assigned_bg")
     static let NEW_STATUS_NEW_BG = Color("Status_new_bg")
+    static let ACTIVITY_LINE_BG = Color("activityLineBG")
+    static let DARK_BLUE = Color("DarkBlue")
+    static let EXPIRED_RED = Color("ExpiredRed")
     
-    
+    static let BG_COLOR_1 = Color("BGColor1")
     
 }

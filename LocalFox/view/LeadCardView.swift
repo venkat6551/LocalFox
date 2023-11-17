@@ -102,9 +102,9 @@ struct LeadCardView: View {
                                                     .scaledToFill()
                                             default:
                                                 if let name = job.getUser()?.fullName {
-                                                    Text(String(name.prefix(2))).applyFontBold(size: 17).textCase(.uppercase)
+                                                    Text(String(name.prefix(2))).applyFontBold(color: .white, size: 17).textCase(.uppercase)
                                                 } else {
-                                                    Text("Loading...").applyFontRegular(size: 10)
+                                                    Text("Loading...").applyFontRegular(color: .white, size: 10)
                                                 }
                                             }
                                         }
@@ -114,9 +114,9 @@ struct LeadCardView: View {
                                     .clipped()
                                 } else {
                                     if let name = job.getUser()?.fullName {
-                                        Text(String(name.prefix(2))).applyFontBold(size: 17).textCase(.uppercase)
+                                        Text(String(name.prefix(2))).applyFontBold(color: .white, size: 17).textCase(.uppercase)
                                     } else {
-                                        Text("Loading...").applyFontRegular(size: 10)
+                                        Text("Loading...").applyFontRegular(color: .white, size: 10)
                                     }
                                 }
                                 

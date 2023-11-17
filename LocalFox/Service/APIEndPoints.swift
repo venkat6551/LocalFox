@@ -42,6 +42,7 @@ enum APIEndpoints {
     //JOBS
     static var GET_JOBS = BASE_URL + "/v1/partner/jobs/getJobs"
     static var ASSIGN_JOB_TO_EMPLOYEE = BASE_URL + "/v1/customer/authenticate"
+    static var GET_JOB_DETAILS = BASE_URL + "/v1/partner/jobs/getJobDetails"
     
     //JOB INVITATION
     static var ACCEPT_INVITATION = BASE_URL + "/v1/partner/jobs/acceptJob/"

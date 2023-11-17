@@ -163,7 +163,7 @@ struct NewJob: Decodable {
     var service: Service?
     let urgency: String
     var images: [String]
-    //var address:String
+    let jobTitle: String
     let status: String
     let markedAsCompleteByPartner:Bool?
     let createdDate: String

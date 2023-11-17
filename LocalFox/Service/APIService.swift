@@ -29,6 +29,7 @@ protocol APIServiceProtocol {
     func deleteProfilePic(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func logoutUser(completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func getJobs(_pagenumber:Int, completion: @escaping (_ success: Bool, _ jobsModel : JobsModel?, _ errorString: String?)-> Void)
+    func getJobDetails(_jobID:String, completion: @escaping (_ success: Bool, _ jobDetailsModel : JobDetailsModel?, _ errorString: String?)-> Void)
     func updateAddress(address:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func acceptJob(accepted:Bool, id:String, completion: @escaping (_ success: Bool, _ errorString : String?,_ errorCode: Int) -> Void)
     func registerFCMToken(token:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
@@ -311,7 +312,7 @@ final class MockAPIService: APIServiceProtocol {
     }
     
     func formattMobileNumber(mobileNumber: String) -> String {
-       return mobileNumber.hasPrefix("0") ? mobileNumber : "0\(mobileNumber)"
+        return mobileNumber.hasPrefix("0") ? mobileNumber : "0\(mobileNumber)"
     }
     
     func updateMobileNumber(mobileNumber:String, referanceNumber:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
@@ -509,9 +510,45 @@ final class MockAPIService: APIServiceProtocol {
             }
     }
     
+    func getJobDetails(_jobID: String, completion: @escaping (_ success: Bool, _ jobDetailsModel : JobDetailsModel?, _ errorString: String?)-> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let request = AF.request(
+            "\(APIEndpoints.GET_JOB_DETAILS)/\(_jobID)",
+            method: HTTPMethod.get,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: JobDetailsModel.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(true,data,"")
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,nil,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.getJobDetails(_jobID: _jobID, completion: completion)
+                        }
+                    }
+                    else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,nil,errorObj.error)
+                        } catch{
+                            completion(false,nil,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
+    
     func refreshLogin(completion: @escaping () -> Void) {
         self.login(credentials: LoginCredentialsModel(email: MyUserDefaults.userEmail ?? "",password: MyUserDefaults.userPwd ?? "")) { success, errorString in
-           completion()
+            completion()
         }
     }
     
@@ -703,7 +740,7 @@ final class MockAPIService: APIServiceProtocol {
     
     
     func registerFCMToken(token:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
-       
+        
         let parameters: Parameters = [
             "fcmToken": token,
             "deviceOS":"iOS",
@@ -742,7 +779,7 @@ final class MockAPIService: APIServiceProtocol {
     func linkPartner(id:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
         let urlString = "\(APIEndpoints.LINK_USER_TO_FCM_TOKEN)/\(id)"
-       
+        
         let request = AF.request(
             urlString,
             method: HTTPMethod.put,
@@ -771,7 +808,7 @@ final class MockAPIService: APIServiceProtocol {
                         } catch{
                             completion(false,error.localizedDescription)
                         }
-                }
+                    }
                 }
             }
     }

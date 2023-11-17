@@ -71,9 +71,15 @@ enum Images {
     static let ASSIGNED_FILTER = Image("Assigned_Filted")
     static let RED_CHECK = Image("Red_check")
     static let JOB_SUMMARY = Image("jobSummaryicon")
+    static let NOTES_ICON = Image("NotesIcon")
+    static let SCHEDULE_ICON = Image("scheduleIcon")
     
-    
-    
+    static let CALL_ACT_ICON = Image("call_activity")
+    static let COMPLETE_ACT_ICON = Image("complete_activity")
+    static let PAYMENT_ACT_ICON = Image("payment_activity")
+    static let NOTES_ACT_ICON = Image("notes_activity")
+    static let QUOTE_ACT_ICON = Image("quote_activity")
+    static let SCHEDULE_ACT_ICON = Image("schedule_activity")
    }
 
 // A place to test your images

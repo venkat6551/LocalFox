@@ -34,31 +34,7 @@ struct ProfileData: Decodable {
     let lastUpdatedDate: String
     
     func getFormattedLocation() -> String {
-        
-        var location = ""
-        
-        if let streenNum = self.location?.streetNumber {
-            location = streenNum
-        }
-        if let streenName = self.location?.streetName {
-            location = "\(location) \(streenName)"
-        }
-        
-        if location.count > 0 {
-            location = "\(location) \n"
-        }
-        
-        if let suburb = self.location?.suburb {
-            location = "\(location)\(suburb)"
-        }
-        if let state = self.location?.state {
-            location = "\(location) \(state)"
-        }
-        
-        if let postCode = self.location?.postCode {
-            location = "\(location) \(postCode)"
-        }
-        return location
+        return self.location?.getFormattedLocation() ?? ""
     }
 }
 
@@ -72,6 +48,53 @@ struct Location: Decodable {
     var postCode: String?
     var country: String?
     var googlePlaceId: String?
+    
+    
+    func getShortFormattedLocation() -> String {
+        
+        var location = ""
+        
+        if let suburb = self.suburb {
+            location = "\(location)\(suburb), "
+        }
+        if let state = self.state {
+            location = "\(location)\(state) "
+        }
+        
+        if let postCode = self.postCode {
+            location = "\(location)\(postCode)"
+        }
+        
+        return location
+    }
+    
+    func getFormattedLocation() -> String {
+        
+        var location = ""
+        
+        if let streenNum = self.streetNumber {
+            location = streenNum
+        }
+        if let streenName = self.streetName {
+            location = "\(location) \(streenName)"
+        }
+        
+        if location.count > 0 {
+            location = "\(location) \n"
+        }
+        
+        if let suburb = self.suburb {
+            location = "\(location)\(suburb)"
+        }
+        if let state = self.state {
+            location = "\(location) \(state)"
+        }
+        
+        if let postCode = self.postCode {
+            location = "\(location) \(postCode)"
+        }
+        return location
+    }
 }
 
 struct NotificationSettings: Decodable {

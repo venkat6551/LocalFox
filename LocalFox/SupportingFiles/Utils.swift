@@ -56,6 +56,14 @@ extension String {
         let myStringDate = dateFormatter.string(from: yourDate!)
         return myStringDate
     }
+    
+    var detailedDate: String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateFormates.API_DATE_TIME
+        let date =  dateFormatter.date(from: self)
+        return date?.detailedDate
+    }
+    
 }
 
 // Checks if camera hardware available or not. [Note: This is NOT a permission check]
@@ -97,6 +105,8 @@ enum DateFormates {
     
     //"2023-03-28T13:39:34.124Z",
     static let API_DATE_TIME: String = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    //"10-Aug-2024"
+    static let SHORT_DATE_TIME: String = "dd-MMM-yyyy"
     //21 Jan 2022 11:45 PM"
     static let LOCAL_DATE_TIME: String = "dd MMM yyyy HH:mm a"
     //static let API_DATE_TIME: String = "yyyy-MM-dd'T'HH:mm:ssZ"
@@ -135,6 +145,21 @@ extension Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = DateFormates.TIME
         return dateFormatter.string(from: self)
+    }
+    
+    var detailedDate: String {
+        if (Calendar.current.isDateInToday(self) || Calendar.current.isDateInYesterday(self) || Calendar.current.isDateInTomorrow(self)) {
+            if(Calendar.current.isDateInToday(self)) {
+                return "Today at \(self.timeString)"
+            } else if(Calendar.current.isDateInYesterday(self)) {
+                return "Yesterday at \(self.timeString)"
+            } else {
+                return "Tomorrow at \(self.timeString)"
+            }
+        }
+        else {
+            return "on \(self.dateString)"
+        }
     }
     
 }
