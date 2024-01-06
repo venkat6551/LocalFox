@@ -80,6 +80,11 @@ enum Images {
     static let NOTES_ACT_ICON = Image("notes_activity")
     static let QUOTE_ACT_ICON = Image("quote_activity")
     static let SCHEDULE_ACT_ICON = Image("schedule_activity")
+    static let INVOICE_ADD_ICON = Image("invoice_add")
+    static let NOTES_ADD_ICON = Image("notes_add")
+    static let QUOTE_ADD_ICON = Image("quote_add")
+    static let SCHEDULE_ADD_ICON = Image("schedule_add")
+    static let PLUS_ICON = Image("plus")
    }
 
 // A place to test your images

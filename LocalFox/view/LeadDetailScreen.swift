@@ -14,66 +14,89 @@ struct LeadDetailScreen: View {
     @State var selectedImage = ""
     @State private var selectedTabIndex = 0
     @StateObject var jobDetailsVM: JobDetailsViewModel =  JobDetailsViewModel()
-    
+    @State private var showActivitySheet = false
+    @State private var showAddQuote = false
+    @State private var showAddSchedule = false
+    @State private var showAddNotes = false
+    @State private var showAddInvoice = false
     var body: some View {
-        VStack {
+        ZStack (alignment: .bottomTrailing){
             VStack {
-                HStack {
-                    Text(Strings.JOB_DETAILS).applyFontHeader()
-                    Spacer()
-                    Button(
-                        action: {
-                            self.presentationMode.wrappedValue.dismiss()
-                        },
-                        label: {
-                            VStack {
-                                Images.CLOSE
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 12,height: 12)
-                            } .frame(width: 34,height: 34)
-                                .cardify(cardCornerRadius: 15)
-                                .background(Color.SCREEN_BG)
-                        }
-                    )
-                }.padding(.top, 25)
-                
-                if (jobDetailsVM.isLoading) {
-                    VStack(alignment: .center) {
+                VStack {
+                    HStack {
+                        Text(Strings.JOB_DETAILS).applyFontHeader()
                         Spacer()
-                        HStack {
+                        Button(
+                            action: {
+                                self.presentationMode.wrappedValue.dismiss()
+                            },
+                            label: {
+                                VStack {
+                                    Images.CLOSE
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 12,height: 12)
+                                } .frame(width: 34,height: 34)
+                                    .cardify(cardCornerRadius: 15)
+                                    .background(Color.SCREEN_BG)
+                            }
+                        )
+                    }.padding(.top, 25)
+                    
+                    if (jobDetailsVM.isLoading) {
+                        VStack(alignment: .center) {
                             Spacer()
-                            ProgressView()
+                            HStack {
+                                Spacer()
+                                ProgressView()
+                                Spacer()
+                            }
                             Spacer()
                         }
-                        Spacer()
-                    }
-                   
-                } else {
-                    ScrollView (showsIndicators: false){
-                        if let job = job {
-                            LeadCardView(job: job, status: LeadStatus(rawValue: job.status) ?? LeadStatus.new) {
-                            }.cardify()
+                       
+                    } else {
+                        ScrollView (showsIndicators: false){
+                            if let job = job {
+                                LeadCardView(job: job, status: LeadStatus(rawValue: job.status) ?? LeadStatus.new) {
+                                    showActivitySheet = true
+                                }.cardify()
+                            }
+                            SlidingTabView(selection: self.$selectedTabIndex, tabs: [Strings.DETAILS,Strings.QUOTES,Strings.INVOICES,Strings.SCHEDULES],selectionBarColor:.clear ,activeTabColor: .white,selectionBarBackgroundColor:.clear)
+                            
+                            switch selectedTabIndex {
+                           
+                            case 0 :
+                                DetailsView(job: jobDetailsVM.jobDetailsModel?.data?.job)
+                            case 1 :
+                                QuoteView(quotes: jobDetailsVM.jobDetailsModel?.data?.quotes)
+                            case 2 :
+                                InvoiceView(invoices: jobDetailsVM.jobDetailsModel?.data?.invoices)
+                            case 3 :
+                                SchedulesView()
+                            default:
+                                DetailsView(job: job)
+                            }
                         }
-                        SlidingTabView(selection: self.$selectedTabIndex, tabs: [Strings.ACTIVITY, Strings.DETAILS,Strings.QUOTES,Strings.INVOICES],selectionBarColor:.clear ,activeTabColor: .white,selectionBarBackgroundColor:.clear)
-                        
-                        switch selectedTabIndex {
-                        case 0 :
-                            ActivityView(activities: jobDetailsVM.jobDetailsModel?.data?.jobActivities)
-                        case 1 :
-                            DetailsView(job: jobDetailsVM.jobDetailsModel?.data?.job)
-                        case 2 :
-                            QuoteView(quotes: jobDetailsVM.jobDetailsModel?.data?.quotes)
-                        case 3 :
-                            InvoiceView(invoices: jobDetailsVM.jobDetailsModel?.data?.invoices)
-                        default:
-                            DetailsView(job: job)
-                        }
                     }
+                }.padding(.horizontal,20)
+                Spacer()
+            }
+            ScreenIconsAndText(onButtonClick: { index in
+                switch index {
+                case 0:
+                    self.showAddInvoice = true
+                case 1:
+                    self.showAddQuote = true
+                case 2:
+                    self.showAddSchedule = true
+                case 3:
+                    self.showAddNotes = true
+                default:print("")
                 }
-            }.padding(.horizontal,20)
-            Spacer()
+                
+            }).frame(width: 80, height: 50)
         }
+       
         .onAppear {
             if (!jobDetailsVM.getJobDetailsSuccess) {
                 if let jobID = job?.id {
@@ -81,6 +104,21 @@ struct LeadDetailScreen: View {
                     jobDetailsVM.getJobDetails(jobID: jobID)
                 }
             }
+        }
+        .sheet(isPresented: $showActivitySheet){
+            ActivityView(activities: jobDetailsVM.jobDetailsModel?.data?.jobActivities)
+        }
+        .sheet(isPresented:  $showAddInvoice) {
+           AddInvoiceView()
+        }
+        .sheet(isPresented: $showAddSchedule) {
+            AddScheduleView()
+        }
+        .sheet(isPresented: $showAddQuote) {
+            AddQuoteView()
+        }
+        .sheet(isPresented: $showAddNotes) {
+            AddNotesView()
         }
         .navigationBarHidden(true)
         .background(Color.SCREEN_BG.ignoresSafeArea())
@@ -109,48 +147,41 @@ struct DetailsView: View {
 
 struct ActivityView: View {
     var activities:[ActivityModel]?
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var body: some View {
-        ZStack {
-            HStack{
-                Divider().background(Color.ACTIVITY_LINE_BG)
-                    .padding(.leading, 30)
+        VStack {
+            HStack {
+                Text("Activities").applyFontHeader()
                 Spacer()
-            }
-            VStack(spacing: 20){
-                HStack {
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }) {
+                    VStack {
+                        Images.CLOSE
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 12,height: 12)
+                    } .frame(width: 30,height: 30)
+                        .cardify(cardCornerRadius: 15)
+                }
+            }.padding(.top, 35).padding(.bottom, 25)
+                .padding(.horizontal, 25)
+            ZStack {
+                HStack{
+                    Divider().background(Color.ACTIVITY_LINE_BG)
+                        .padding(.leading, 30)
                     Spacer()
-                    Button(action: {}, label: {
-                        HStack {
-                            Images.NOTES_ICON
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width:20,height: 20)
-                            Text(Strings.NOTES)
-                                .applyFontRegular(color: Color.NEW_STATUS_NEW, size: 14)
+                }
+                VStack(spacing: 20){
+                    if let activities = activities {
+                        ForEach(0 ..< activities.count, id: \.self) {index in
+                            let activity = activities[index]
+                            ActivityRowView(activity: activity, activityType: ActivityType(rawValue: activity.activityType) ?? .none)
                         }
-                        .padding(.vertical,10).padding(.horizontal,25).background(Color.PRIMARY_BG)
-                    }).cardify()
-                    Button(action: {}, label: {
-                        HStack {
-                            Images.SCHEDULE_ICON
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width:20,height: 20)
-                            Text(Strings.SCHEDULE)
-                                .applyFontRegular(color: Color.TEXT_GREEN, size: 14)
-                        }
-                        .padding(.vertical,10).padding(.horizontal,25).background(Color.LIGHT_GREEN)
-                    }).cardify()
-                    
-                }.padding(.vertical, 10)
-                if let activities = activities {
-                    ForEach(0 ..< activities.count, id: \.self) {index in
-                        let activity = activities[index]
-                        ActivityRowView(activity: activity, activityType: ActivityType(rawValue: activity.activityType) ?? .none)
                     }
                 }
             }
-        }
+        }.background(Color.SCREEN_BG)
     }
 }
 
@@ -196,6 +227,14 @@ struct InvoiceView: View {
             else {
                 NoInvoicesView()
             }
+        }
+    }
+}
+
+struct SchedulesView: View {
+    var body: some View {
+        VStack {
+            
         }
     }
 }
@@ -252,6 +291,95 @@ struct NoInvoicesView: View {
                 
             }
         }.frame(height: 400)
+    }
+}
+
+struct ScreenIconsAndText: View {
+    
+    @State var isOpen = false
+    var onButtonClick: (Int)->Void
+    let iconAndTextImageNames = [
+        Images.NOTES_ADD_ICON,
+        Images.SCHEDULE_ADD_ICON,
+        Images.QUOTE_ADD_ICON,
+        Images.INVOICE_ADD_ICON
+    ]
+    
+    let iconAndTextTitles = ["Create Invoice",
+                             "Create Quote",
+                             "Create Schedule",
+                             "Create Note" ]
+    
+    var body: some View {
+        let mainButton2 = MainButton()
+        let textButtons = iconAndTextTitles.enumerated().map { index, value in
+            IconAndTextButton(imageName: iconAndTextImageNames[index], buttonText: value)
+                .onTapGesture {
+                    print(index)
+                    onButtonClick(index)
+                    isOpen.toggle()
+                }
+        }
+        
+        
+        let menu2 = FloatingButton(mainButtonView: mainButton2, buttons: textButtons, isOpen: $isOpen)
+            .straight()
+            .direction(.top)
+            .alignment(.right)
+            .spacing(10)
+            .initialOpacity(0)
+        
+        return VStack {
+            HStack {
+                Spacer()
+                menu2
+            }
+        }
+        
+    }
+}
+struct MainButton: View {
+
+    var width: CGFloat = 60
+
+    var body: some View {
+        ZStack {
+            Color.PRIMARY
+                .frame(width: width, height: width)
+                .cornerRadius(width / 2)
+                .shadow(color: Color.black.opacity(0.3), radius: 15, x: 0, y: 15)
+            Images.PLUS_ICON
+                .foregroundColor(.white)
+        }
+    }
+}
+struct IconAndTextButton: View {
+
+    var imageName: Image
+    var buttonText: String
+    let imageWidth: CGFloat = 22
+
+    var body: some View {
+        ZStack {
+            Color.white
+            HStack {
+                imageName
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fill)
+                    .frame(width: imageWidth, height: imageWidth)
+                    .clipped()
+                Text(buttonText).applyFontRegular(color: .DEFAULT_TEXT,size: 16)
+                Spacer()
+            }
+            .padding(.horizontal, 15)
+        }
+        .frame(width: 200, height: 45)
+        .cornerRadius(8)
+        .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 1)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.DEFAULT_TEXT, lineWidth: 1)
+        )
     }
 }
 

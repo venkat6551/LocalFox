@@ -139,6 +139,7 @@ struct Strings {
     static let HOW_SOON = "How soon"
     static let JOB_DESCRIPTION = "Job description"
     static let ACTIVITY = "Activity"
+    static let SCHEDULES = "Schedules"
     static let QUOTES = "Quotes"
     static let INVOICES = "Invoices"
     static let JOB_DETAILS = "Job Details"
@@ -146,5 +147,12 @@ struct Strings {
     static let REF = "Ref:"
     static let PAID_ON = "Paid on:"
     static let DUE_ON = "Due on"
+    
+    static let ADD_JOB_NOTES = "Add job notes"
+    static let ADD_LINE_ITEM = "Add line item"
+    static let DESCRIPTION = "Description"
+    static let PRICE = "Price"
+    static let TAX_TYPE = "Tax Type"
+    static let TITLE =  "Title"
 }
 
