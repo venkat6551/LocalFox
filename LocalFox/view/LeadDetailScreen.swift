@@ -70,9 +70,13 @@ struct LeadDetailScreen: View {
                                 case 0 :
                                     DetailsView(job: jobDetailsVM.jobDetailsModel?.data?.job)
                                 case 1 :
-                                    QuoteView(quotes: jobDetailsVM.jobDetailsModel?.data?.quotes)
+                                    QuoteView(quotes: jobDetailsVM.jobDetailsModel?.data?.quotes) {
+                                        self.newQuoteViewModel.createJobQuote(jobID: self.job?.id)
+                                    }
                                 case 2 :
-                                    InvoiceView(invoices: jobDetailsVM.jobDetailsModel?.data?.invoices)
+                                    InvoiceView(invoices: jobDetailsVM.jobDetailsModel?.data?.invoices){
+                                        
+                                    }
                                 case 3 :
                                     SchedulesView()
                                 default:
@@ -204,7 +208,9 @@ struct ActivityView: View {
 }
 
 struct QuoteView: View {
+    
     var quotes:[QuoteModel]?
+    let onClickBtn:()->Void
     @StateObject var newQuoteViewModel:QuoteViewModel  =  QuoteViewModel()
     var body: some View {
         VStack {
@@ -220,7 +226,9 @@ struct QuoteView: View {
                     }
                 }
             } else {
-                NoQuotesView()
+                NoQuotesView {
+                    onClickBtn()
+                }
             }
         }
     }
@@ -228,6 +236,7 @@ struct QuoteView: View {
 
 struct InvoiceView: View {
     var invoices:[InvoiceModel]?
+    let onClickBtn:()->Void
     var body: some View {
         VStack {
             if(invoices != nil && !(invoices?.isEmpty ?? true)) {
@@ -243,7 +252,9 @@ struct InvoiceView: View {
                 }
             }
             else {
-                NoInvoicesView()
+                NoInvoicesView {
+                    onClickBtn()
+                }
             }
         }
     }
@@ -285,6 +296,8 @@ struct RowView: View {
 }
 
 struct NoQuotesView: View {
+    
+    let onClickBtn:()->Void
     var body: some View {
         VStack(spacing: 10) {
             Spacer()
@@ -292,13 +305,14 @@ struct NoQuotesView: View {
             Text(Strings.NO_QUOTES_MESSAGE).applyFontRegular(color:Color.DEFAULT_TEXT,size: 14).multilineTextAlignment(.center).padding(.horizontal, 70)
             Spacer()
             MyButton(text: Strings.CREATE_NEW_QUOTE) {
-                
+                onClickBtn()
             }
         }.frame(height: 400)
     }
 }
 
 struct NoInvoicesView: View {
+    let onClickBtn:()->Void
     var body: some View {
         VStack(spacing: 10) {
             Spacer()
@@ -306,7 +320,7 @@ struct NoInvoicesView: View {
             Text(Strings.NO_INVOICE_MESSAGE).applyFontRegular(color:Color.DEFAULT_TEXT,size: 14).multilineTextAlignment(.center).padding(.horizontal, 70)
             Spacer()
             MyButton(text: Strings.CREATE_NEW_INVOICE) {
-                
+                onClickBtn()
             }
         }.frame(height: 400)
     }
