@@ -17,7 +17,7 @@ struct JobDataModel: Decodable {
     var jobActivities: [ActivityModel]?
     var quotes: [QuoteModel]?
     var invoices: [InvoiceModel]?
-    var schedules: [Schedule]?
+//    var schedules: [Schedule]?
 }
 
 struct ActivityModel: Decodable {
@@ -99,9 +99,9 @@ struct InvoiceModel: Decodable {
     let contact: Customer
     let job: String
     let items: [QuoteItemModel]
-    let subTotal: Float
-    let totalPrice: Float
-    let totalTax: Float
+    var subTotal: Float?
+    var totalPrice: Float?
+    var totalTax: Float? 
     let invoiceDueDate: String
     let paymentStatus: String
     let quote: String?

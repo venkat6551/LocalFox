@@ -16,10 +16,13 @@
 		CC1CA0982A0915600058EA96 /* NotApprovedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1CA0972A0915600058EA96 /* NotApprovedScreen.swift */; };
 		CC241E562B4720C900A34957 /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E552B4720C900A34957 /* FloatingButton.swift */; };
 		CC241E582B48008600A34957 /* AddNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E572B48008600A34957 /* AddNotesView.swift */; };
-		CC241E5A2B48009600A34957 /* AddQuoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E592B48009600A34957 /* AddQuoteView.swift */; };
+		CC241E5A2B48009600A34957 /* AddQuoteLineItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E592B48009600A34957 /* AddQuoteLineItemView.swift */; };
 		CC241E5C2B48009F00A34957 /* AddScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E5B2B48009F00A34957 /* AddScheduleView.swift */; };
 		CC241E5E2B4800AA00A34957 /* AddInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E5D2B4800AA00A34957 /* AddInvoiceView.swift */; };
-		CC3AEAAA2B0539A1008D9AB6 /* QuoteDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3AEAA92B0539A1008D9AB6 /* QuoteDetailsView.swift */; };
+		CC241E602B4AF39000A34957 /* QuoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E5F2B4AF39000A34957 /* QuoteViewModel.swift */; };
+		CC241E652B4C39AC00A34957 /* DropDownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E642B4C39AC00A34957 /* DropDownPicker.swift */; };
+		CC241E672B4FC8D500A34957 /* ViewQuoteDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E662B4FC8D500A34957 /* ViewQuoteDetailsView.swift */; };
+		CC3AEAAA2B0539A1008D9AB6 /* CreateQuoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3AEAA92B0539A1008D9AB6 /* CreateQuoteView.swift */; };
 		CC3AEAAC2B067032008D9AB6 /* JobDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3AEAAB2B067032008D9AB6 /* JobDetailsModel.swift */; };
 		CC3AEAAE2B067FC8008D9AB6 /* JobDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3AEAAD2B067FC8008D9AB6 /* JobDetailsViewModel.swift */; };
 		CC3AEAB02B0760CC008D9AB6 /* ActivityRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3AEAAF2B0760CC008D9AB6 /* ActivityRowView.swift */; };
@@ -119,10 +122,13 @@
 		CC1CA0972A0915600058EA96 /* NotApprovedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotApprovedScreen.swift; sourceTree = "<group>"; };
 		CC241E552B4720C900A34957 /* FloatingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		CC241E572B48008600A34957 /* AddNotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNotesView.swift; sourceTree = "<group>"; };
-		CC241E592B48009600A34957 /* AddQuoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuoteView.swift; sourceTree = "<group>"; };
+		CC241E592B48009600A34957 /* AddQuoteLineItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuoteLineItemView.swift; sourceTree = "<group>"; };
 		CC241E5B2B48009F00A34957 /* AddScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleView.swift; sourceTree = "<group>"; };
 		CC241E5D2B4800AA00A34957 /* AddInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInvoiceView.swift; sourceTree = "<group>"; };
-		CC3AEAA92B0539A1008D9AB6 /* QuoteDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteDetailsView.swift; sourceTree = "<group>"; };
+		CC241E5F2B4AF39000A34957 /* QuoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteViewModel.swift; sourceTree = "<group>"; };
+		CC241E642B4C39AC00A34957 /* DropDownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownPicker.swift; sourceTree = "<group>"; };
+		CC241E662B4FC8D500A34957 /* ViewQuoteDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewQuoteDetailsView.swift; sourceTree = "<group>"; };
+		CC3AEAA92B0539A1008D9AB6 /* CreateQuoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQuoteView.swift; sourceTree = "<group>"; };
 		CC3AEAAB2B067032008D9AB6 /* JobDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobDetailsModel.swift; sourceTree = "<group>"; };
 		CC3AEAAD2B067FC8008D9AB6 /* JobDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobDetailsViewModel.swift; sourceTree = "<group>"; };
 		CC3AEAAF2B0760CC008D9AB6 /* ActivityRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRowView.swift; sourceTree = "<group>"; };
@@ -226,9 +232,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CC241E632B4C398100A34957 /* DropDownPicker */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DropDownPicker;
+			sourceTree = "<group>";
+		};
 		CC56571829C0E3FF0098D16F /* ThirdPartyLibs */ = {
 			isa = PBXGroup;
 			children = (
+				CC241E632B4C398100A34957 /* DropDownPicker */,
 				CC241E552B4720C900A34957 /* FloatingButton.swift */,
 				CCF2022F2AFF653B00789DA0 /* SlidingTabView.swift */,
 				CC4606752ADDB9CD008EF8F7 /* InfiniteCarousel.swift */,
@@ -237,6 +251,7 @@
 				CC56571D29C0E4260098D16F /* NearByEnum.swift */,
 				CC56571B29C0E4200098D16F /* GoogleApiHelper+Nearby.swift */,
 				CC56571929C0E4190098D16F /* GoogleApiHelper.swift */,
+				CC241E642B4C39AC00A34957 /* DropDownPicker.swift */,
 			);
 			path = ThirdPartyLibs;
 			sourceTree = "<group>";
@@ -366,14 +381,15 @@
 				CC1CA0972A0915600058EA96 /* NotApprovedScreen.swift */,
 				CC845CE02A503E6600E28402 /* Preview.swift */,
 				CCF202312B052CAE00789DA0 /* QuoteCardView.swift */,
-				CC3AEAA92B0539A1008D9AB6 /* QuoteDetailsView.swift */,
+				CC3AEAA92B0539A1008D9AB6 /* CreateQuoteView.swift */,
 				CC3AEAAF2B0760CC008D9AB6 /* ActivityRowView.swift */,
 				CC3AEAB12B07613A008D9AB6 /* InvoiceCardView.swift */,
 				CC3AEAB32B0774A4008D9AB6 /* InvoiceDetailsView.swift */,
 				CC241E572B48008600A34957 /* AddNotesView.swift */,
-				CC241E592B48009600A34957 /* AddQuoteView.swift */,
+				CC241E592B48009600A34957 /* AddQuoteLineItemView.swift */,
 				CC241E5B2B48009F00A34957 /* AddScheduleView.swift */,
 				CC241E5D2B4800AA00A34957 /* AddInvoiceView.swift */,
+				CC241E662B4FC8D500A34957 /* ViewQuoteDetailsView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -403,6 +419,7 @@
 				CCE59803299E01D00055AC9B /* ProfileViewModel.swift */,
 				CC56573F29CF31470098D16F /* JobsViewModel.swift */,
 				CC3AEAAD2B067FC8008D9AB6 /* JobDetailsViewModel.swift */,
+				CC241E5F2B4AF39000A34957 /* QuoteViewModel.swift */,
 			);
 			path = viewmodel;
 			sourceTree = "<group>";
@@ -526,12 +543,13 @@
 				CC845CE12A503E6600E28402 /* Preview.swift in Sources */,
 				CCE59802299DEC230055AC9B /* ProfileModel.swift in Sources */,
 				CD006F8429438DBA004BBF4A /* LeadViewModel.swift in Sources */,
+				CC241E672B4FC8D500A34957 /* ViewQuoteDetailsView.swift in Sources */,
 				CDDDD1DD295DF78600E92D33 /* LeadImagesView.swift in Sources */,
 				CD0768992972B74600CB7075 /* AccountCreatedView.swift in Sources */,
 				CC1AE67F29AE666F005FC846 /* ProfileImageView.swift in Sources */,
 				CD0768932972AEC700CB7075 /* EmailAddressView.swift in Sources */,
 				CD051AFE29435AB7009C054F /* LeadCardView.swift in Sources */,
-				CC3AEAAA2B0539A1008D9AB6 /* QuoteDetailsView.swift in Sources */,
+				CC3AEAAA2B0539A1008D9AB6 /* CreateQuoteView.swift in Sources */,
 				CD07689D2972C97D00CB7075 /* MobileNumberView.swift in Sources */,
 				CDF2B02F2941D8AF00CF2B28 /* LoginView.swift in Sources */,
 				CC3AEAAC2B067032008D9AB6 /* JobDetailsModel.swift in Sources */,
@@ -548,7 +566,7 @@
 				CD0768972972B48500CB7075 /* SetPasswordView.swift in Sources */,
 				CC241E5C2B48009F00A34957 /* AddScheduleView.swift in Sources */,
 				CC241E5E2B4800AA00A34957 /* AddInvoiceView.swift in Sources */,
-				CC241E5A2B48009600A34957 /* AddQuoteView.swift in Sources */,
+				CC241E5A2B48009600A34957 /* AddQuoteLineItemView.swift in Sources */,
 				CD6A945829439B56003A8368 /* LandingView.swift in Sources */,
 				CC1CA0982A0915600058EA96 /* NotApprovedScreen.swift in Sources */,
 				CD076889297287EB00CB7075 /* ProfileSettingsView.swift in Sources */,
@@ -585,6 +603,8 @@
 				CC1AE67129ABBF12005FC846 /* ImageLoader.swift in Sources */,
 				CC1AE68929B65091005FC846 /* ImagePicker.swift in Sources */,
 				CC56571A29C0E4190098D16F /* GoogleApiHelper.swift in Sources */,
+				CC241E652B4C39AC00A34957 /* DropDownPicker.swift in Sources */,
+				CC241E602B4AF39000A34957 /* QuoteViewModel.swift in Sources */,
 				CCE597F9299161AE0055AC9B /* ResetPasswordModel.swift in Sources */,
 				CCE59804299E01D00055AC9B /* ProfileViewModel.swift in Sources */,
 				CDF2B02D2941D8AF00CF2B28 /* LocalFoxApp.swift in Sources */,

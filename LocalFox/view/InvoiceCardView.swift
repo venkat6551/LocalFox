@@ -74,7 +74,7 @@ struct InvoiceCardView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading,spacing: 5) {
-                Text ("$\(invoice.totalPrice, specifier: "%.0f")").applyFontBold(color:Color.DEFAULT_TEXT,size: 20)
+                Text ("$\(invoice.totalPrice ?? 0, specifier: "%.0f")").applyFontBold(color:Color.DEFAULT_TEXT,size: 20)
                 Text (Strings.INC_GST).applyFontBold(size: 9)
             }
             .frame(width: 97, height: 76)

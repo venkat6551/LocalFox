@@ -74,9 +74,9 @@ struct InvoiceDetailsView: View {
                                 Text(Strings.TOTAL).applyFontBold(color: Color.DEFAULT_TEXT, size: 16).padding(.top, 20)
                             }
                             VStack(alignment: .trailing, spacing: 10){
-                                Text("$\(invoice.subTotal, specifier: "%.2f")").applyFontBold(color: Color.DEFAULT_TEXT, size: 16)
-                                Text("$\(invoice.totalTax, specifier: "%.2f")").applyFontMedium(color: Color.DEFAULT_TEXT, size: 16)
-                                Text("$\(invoice.totalPrice, specifier: "%.2f")").applyFontBold(color: Color.DEFAULT_TEXT, size: 18).padding(.top, 20)
+                                Text("$\(invoice.subTotal ?? 0, specifier: "%.2f")").applyFontBold(color: Color.DEFAULT_TEXT, size: 16)
+                                Text("$\(invoice.totalTax ?? 0, specifier: "%.2f")").applyFontMedium(color: Color.DEFAULT_TEXT, size: 16)
+                                Text("$\(invoice.totalPrice ?? 0, specifier: "%.2f")").applyFontBold(color: Color.DEFAULT_TEXT, size: 18).padding(.top, 20)
                             }
                         }
                     }.padding(.top,20)

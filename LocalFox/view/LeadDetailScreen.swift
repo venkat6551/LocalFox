@@ -120,7 +120,7 @@ struct LeadDetailScreen: View {
             ActivityView(activities: jobDetailsVM.jobDetailsModel?.data?.jobActivities)
         }
                 .navigationDestination(isPresented: $showAddQuote) {
-                    if let quote = newQuoteViewModel.quoteModel?.data {
+                    if let model = newQuoteViewModel.quoteModel {
                         CreateQuoteView(quoteViewModel: newQuoteViewModel)
                     }
                 }
@@ -163,6 +163,7 @@ struct ActivityView: View {
     var activities:[ActivityModel]?
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var body: some View {
+        
         VStack {
             HStack {
                 Text("Activities").applyFontHeader()
@@ -180,21 +181,24 @@ struct ActivityView: View {
                 }
             }.padding(.top, 35).padding(.bottom, 25)
                 .padding(.horizontal, 25)
-            ZStack {
-                HStack{
-                    Divider().background(Color.ACTIVITY_LINE_BG)
-                        .padding(.leading, 30)
-                    Spacer()
-                }
-                VStack(spacing: 20){
-                    if let activities = activities {
-                        ForEach(0 ..< activities.count, id: \.self) {index in
-                            let activity = activities[index]
-                            ActivityRowView(activity: activity, activityType: ActivityType(rawValue: activity.activityType) ?? .none)
+            ScrollView {
+                ZStack {
+                    HStack{
+                        Divider().background(Color.ACTIVITY_LINE_BG)
+                            .padding(.leading, 30)
+                        Spacer()
+                    }
+                    VStack(spacing: 20){
+                        if let activities = activities {
+                            ForEach(0 ..< activities.count, id: \.self) {index in
+                                let activity = activities[index]
+                                ActivityRowView(activity: activity, activityType: ActivityType(rawValue: activity.activityType) ?? .none)
+                            }
                         }
                     }
                 }
             }
+           
         }.background(Color.SCREEN_BG)
     }
 }
