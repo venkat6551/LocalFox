@@ -147,7 +147,7 @@ struct Strings {
     static let REF = "Ref:"
     static let PAID_ON = "Paid on:"
     static let DUE_ON = "Due on"
-    
+    static let SAVE = "Save"
     static let ADD_JOB_NOTES = "Add job notes"
     static let ADD_LINE_ITEM = "Add line item"
     static let DESCRIPTION = "Description"

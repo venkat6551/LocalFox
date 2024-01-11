@@ -85,6 +85,7 @@ enum Images {
     static let QUOTE_ADD_ICON = Image("quote_add")
     static let SCHEDULE_ADD_ICON = Image("schedule_add")
     static let PLUS_ICON = Image("plus")
+    static let DOLLAR = Image("dollar")
    }
 
 // A place to test your images

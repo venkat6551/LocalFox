@@ -25,6 +25,13 @@ struct FCMRegistrationResponseDecodable: Decodable {
     let data: FCMRegistrationResponseData
 }
 
+
+struct OptionalErrorResponseDecodable: Decodable {
+    let success: Bool
+    let error: String?
+}
+
+
 struct FCMRegistrationResponseData: Decodable {
     let _id:String
 }

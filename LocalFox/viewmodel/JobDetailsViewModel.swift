@@ -13,6 +13,8 @@ class JobDetailsViewModel: ObservableObject {
     @Published var errorString: String?
     @Published var getJobDetailsSuccess: Bool = false
     
+    @Published var createJobquoteSuccess: Bool = false
+    
     private let apiService: APIServiceProtocol
     
     init(apiService: APIServiceProtocol = MockAPIService()) {
@@ -30,6 +32,25 @@ class JobDetailsViewModel: ObservableObject {
                     self?.errorString = errorString
                     self?.jobDetailsModel = jobDetails
                     self?.isLoading = false
+                }
+            }
+        }
+    }
+    
+    func createJobQuote(jobID: String) {
+        createJobquoteSuccess = false
+        errorString = nil
+        isLoading = true
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            
+            if let jobID  = self.jobDetailsModel?.data?.job.id {
+                self.apiService.createJobQuote(_jobID: jobID) { [weak self] success, jobDetailsModel, errorString in
+                    DispatchQueue.main.async {
+                        self?.createJobquoteSuccess = success
+                        self?.errorString = errorString
+                        self?.isLoading = false
+                    }
                 }
             }
         }

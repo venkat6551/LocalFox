@@ -81,9 +81,6 @@ class JobsViewModel: ObservableObject {
     func sortJobInvitations() {
         if let jobs = self.jobsModel?.data?.jobInviations {
             self.jobsModel?.data?.jobInviations = jobs.sorted(by: {
-                
-                
-                
                 $0.job?.getUpdatedDate()!.compare(($1.job?.getUpdatedDate())!) == .orderedAscending
             })
         }

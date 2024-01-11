@@ -19,74 +19,81 @@ struct LeadDetailScreen: View {
     @State private var showAddSchedule = false
     @State private var showAddNotes = false
     @State private var showAddInvoice = false
+    @StateObject var newQuoteViewModel:QuoteViewModel  =  QuoteViewModel()
     var body: some View {
         ZStack (alignment: .bottomTrailing){
-            VStack {
+            ZStack {
                 VStack {
-                    HStack {
-                        Text(Strings.JOB_DETAILS).applyFontHeader()
-                        Spacer()
-                        Button(
-                            action: {
-                                self.presentationMode.wrappedValue.dismiss()
-                            },
-                            label: {
-                                VStack {
-                                    Images.CLOSE
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 12,height: 12)
-                                } .frame(width: 34,height: 34)
-                                    .cardify(cardCornerRadius: 15)
-                                    .background(Color.SCREEN_BG)
-                            }
-                        )
-                    }.padding(.top, 25)
-                    
-                    if (jobDetailsVM.isLoading) {
-                        VStack(alignment: .center) {
+                    VStack {
+                        HStack {
+                            Text(Strings.JOB_DETAILS).applyFontHeader()
                             Spacer()
-                            HStack {
+                            Button(
+                                action: {
+                                    self.presentationMode.wrappedValue.dismiss()
+                                },
+                                label: {
+                                    VStack {
+                                        Images.CLOSE
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 12,height: 12)
+                                    } .frame(width: 30,height: 30)
+                                        .cardify(cardCornerRadius: 15)
+                                        .background(Color.SCREEN_BG)
+                                }
+                            )
+                        }.padding(.top, 25)
+                        
+                        if (jobDetailsVM.isLoading) {
+                            VStack(alignment: .center) {
                                 Spacer()
-                                ProgressView()
+                                HStack {
+                                    Spacer()
+                                    ProgressView()
+                                    Spacer()
+                                }
                                 Spacer()
                             }
-                            Spacer()
-                        }
-                       
-                    } else {
-                        ScrollView (showsIndicators: false){
-                            if let job = job {
-                                LeadCardView(job: job, status: LeadStatus(rawValue: job.status) ?? LeadStatus.new) {
-                                    showActivitySheet = true
-                                }.cardify()
-                            }
-                            SlidingTabView(selection: self.$selectedTabIndex, tabs: [Strings.DETAILS,Strings.QUOTES,Strings.INVOICES,Strings.SCHEDULES],selectionBarColor:.clear ,activeTabColor: .white,selectionBarBackgroundColor:.clear)
-                            
-                            switch selectedTabIndex {
                            
-                            case 0 :
-                                DetailsView(job: jobDetailsVM.jobDetailsModel?.data?.job)
-                            case 1 :
-                                QuoteView(quotes: jobDetailsVM.jobDetailsModel?.data?.quotes)
-                            case 2 :
-                                InvoiceView(invoices: jobDetailsVM.jobDetailsModel?.data?.invoices)
-                            case 3 :
-                                SchedulesView()
-                            default:
-                                DetailsView(job: job)
+                        } else {
+                            ScrollView (showsIndicators: false){
+                                if let job = job {
+                                    LeadCardView(job: job, status: LeadStatus(rawValue: job.status) ?? LeadStatus.new) {
+                                        showActivitySheet = true
+                                    }.cardify()
+                                }
+                                SlidingTabView(selection: self.$selectedTabIndex, tabs: [Strings.DETAILS,Strings.QUOTES,Strings.INVOICES,Strings.SCHEDULES],selectionBarColor:.clear ,activeTabColor: .white,selectionBarBackgroundColor:.clear)
+                                
+                                switch selectedTabIndex {
+                               
+                                case 0 :
+                                    DetailsView(job: jobDetailsVM.jobDetailsModel?.data?.job)
+                                case 1 :
+                                    QuoteView(quotes: jobDetailsVM.jobDetailsModel?.data?.quotes)
+                                case 2 :
+                                    InvoiceView(invoices: jobDetailsVM.jobDetailsModel?.data?.invoices)
+                                case 3 :
+                                    SchedulesView()
+                                default:
+                                    DetailsView(job: job)
+                                }
                             }
                         }
-                    }
-                }.padding(.horizontal,20)
-                Spacer()
+                    }.padding(.horizontal,20)
+                    Spacer()
+                }.disabled(newQuoteViewModel.isLoading)
+                if (newQuoteViewModel.isLoading){
+                  ProgressView()
+                }
             }
+           
             ScreenIconsAndText(onButtonClick: { index in
                 switch index {
                 case 0:
                     self.showAddInvoice = true
                 case 1:
-                    self.showAddQuote = true
+                    self.newQuoteViewModel.createJobQuote(jobID: self.job?.id)
                 case 2:
                     self.showAddSchedule = true
                 case 3:
@@ -96,7 +103,11 @@ struct LeadDetailScreen: View {
                 
             }).frame(width: 80, height: 50)
         }
-       
+                .onChange(of: newQuoteViewModel.isLoading) { isloading in
+                    if (isloading == false && newQuoteViewModel.quoteModel != nil) {
+                        showAddQuote = true
+                    }
+                }
         .onAppear {
             if (!jobDetailsVM.getJobDetailsSuccess) {
                 if let jobID = job?.id {
@@ -108,14 +119,17 @@ struct LeadDetailScreen: View {
         .sheet(isPresented: $showActivitySheet){
             ActivityView(activities: jobDetailsVM.jobDetailsModel?.data?.jobActivities)
         }
+                .navigationDestination(isPresented: $showAddQuote) {
+                    if let quote = newQuoteViewModel.quoteModel?.data {
+                        CreateQuoteView(quoteViewModel: newQuoteViewModel)
+                    }
+                }
+           
         .sheet(isPresented:  $showAddInvoice) {
            AddInvoiceView()
         }
         .sheet(isPresented: $showAddSchedule) {
             AddScheduleView()
-        }
-        .sheet(isPresented: $showAddQuote) {
-            AddQuoteView()
         }
         .sheet(isPresented: $showAddNotes) {
             AddNotesView()
@@ -187,7 +201,7 @@ struct ActivityView: View {
 
 struct QuoteView: View {
     var quotes:[QuoteModel]?
-    
+    @StateObject var newQuoteViewModel:QuoteViewModel  =  QuoteViewModel()
     var body: some View {
         VStack {
             if(quotes != nil && !(quotes?.isEmpty ?? true)) {
@@ -195,7 +209,7 @@ struct QuoteView: View {
                     ForEach(0 ..< quotes.count, id: \.self) {index in
                         let quote = quotes[index]
                         NavigationLink {
-                            QuoteDetailsView(quote: quote)
+                            ViewQuoteDetailsView(quote: quote)
                         } label: {
                             QuoteCardView(quote: quote, status: QuoteStatus(rawValue: quote.quoteStatus) ?? .Draft)
                         }

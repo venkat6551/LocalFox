@@ -48,20 +48,26 @@ struct ActivityQuoteeModel: Decodable {
     let totalPrice: Float
 }
 
+struct NewQuoteModel: Decodable {
+    var success: Bool?
+    var data: QuoteModel
+}
+
 struct QuoteModel: Decodable {
     let _id: String
     let quoteReference: String
     let quoteStatus: String
     let partner: QuotePartnerModel
-    let contact: Customer
+    let contact: Customer?
+    let customer: Customer?
     let job: String
     let quoteExpiry: String
     let createdDate: String
     let lastUpdatedDate: String
-    let subTotal: Float
-    let totalPrice: Float
-    let totalTax: Float
-    let items: [QuoteItemModel]
+    let subTotal: Float?
+    let totalPrice: Float?
+    let totalTax: Float?
+    var items: [QuoteItemModel]
 }
 
 struct QuotePartnerModel: Decodable {
@@ -76,11 +82,11 @@ struct QuotePartnerModel: Decodable {
 }
 
 struct QuoteItemModel: Decodable {
-    let _id: String
+    let _id: String?
     let serviceName: String
     let serviceDescription: String
     let price: Float
-    let tax: Float
+    var tax: Float = 0
     let taxType: String
     let totalItemPrice: Float
 }

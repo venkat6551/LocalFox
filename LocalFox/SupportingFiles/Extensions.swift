@@ -27,7 +27,13 @@ extension Bundle {
         return infoDictionary?["CFBundleVersion"] as? String
     }
 }
-
+extension Double {
+    /// Rounds the double to decimal places value
+    func rounded(toPlaces places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+}
 public extension UIDevice {
 
     static let modelName: String = {

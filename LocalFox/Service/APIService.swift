@@ -34,6 +34,9 @@ protocol APIServiceProtocol {
     func acceptJob(accepted:Bool, id:String, completion: @escaping (_ success: Bool, _ errorString : String?,_ errorCode: Int) -> Void)
     func registerFCMToken(token:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func linkPartner(id:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func createJobQuote(_jobID: String, completion: @escaping (_ success: Bool, _ jobDetailsModel : NewQuoteModel?, _ errorString: String?)-> Void)
+    func saveQuote(_quoteID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void)
+    func sendQuote(_quoteID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void)
 }
 
 
@@ -504,6 +507,124 @@ final class MockAPIService: APIServiceProtocol {
                             completion(false,nil,errorObj.error)
                         } catch{
                             completion(false,nil,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
+    
+    
+    func createJobQuote(_jobID: String, completion: @escaping (_ success: Bool, _ jobDetailsModel : NewQuoteModel?, _ errorString: String?)-> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        
+        let parameters: Parameters = [
+            "job": _jobID
+        ]
+        let request = AF.request(
+            APIEndpoints.CREATE_QUOTE,
+            method: HTTPMethod.post,
+            parameters: parameters,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: NewQuoteModel.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(true,data,"")
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,nil,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.createJobQuote(_jobID: _jobID, completion: completion)
+                        }
+                    }
+                    else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,nil,errorObj.error)
+                        } catch{
+                            completion(false,nil,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
+    
+    func saveQuote(_quoteID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let urlString = "\(APIEndpoints.SAVE_QUOTE)/\(_quoteID)"
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        var apiRequest = URLRequest(url: url)
+        apiRequest.httpMethod = "PUT"
+        apiRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        apiRequest.httpBody = try! JSONSerialization.data(withJSONObject: params)
+        apiRequest.headers =  headers
+        AF.request(apiRequest)
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: OptionalErrorResponseDecodable.self) { response in
+                switch response.result {
+                case .success(_):
+                    completion(true,nil)
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.saveQuote(_quoteID: _quoteID, params: params, completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(OptionalErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
+    
+    func sendQuote(_quoteID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let urlString = "\(APIEndpoints.SAVE_QUOTE)/\(_quoteID)"
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        var apiRequest = URLRequest(url: url)
+        apiRequest.httpMethod = "PUT"
+        apiRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        apiRequest.httpBody = try! JSONSerialization.data(withJSONObject: params)
+        apiRequest.headers =  headers
+        AF.request(apiRequest)
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: OptionalErrorResponseDecodable.self) { response in
+                switch response.result {
+                case .success(_):
+                    completion(true,nil )
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.saveQuote(_quoteID: _quoteID, params: params, completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(OptionalErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
                         }
                     }
                 }

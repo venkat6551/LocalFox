@@ -53,7 +53,7 @@ struct QuoteCardView: View {
         
         HStack {
             VStack(alignment: .leading,spacing: 5) {
-                Text ("$\(quote.totalPrice, specifier: "%.0f")").applyFontBold(color:Color.DEFAULT_TEXT,size: 20)
+//                Text ("$\(quote.totalPrice ?? 0, specifier: "%.0f")").applyFontBold(color:Color.DEFAULT_TEXT,size: 20)
                 Text (Strings.INC_GST).applyFontBold(size: 9)
             }
             .frame(width: 97, height: 86)
@@ -67,9 +67,9 @@ struct QuoteCardView: View {
                         .padding(.trailing, 10)
                 }.cardify(cardBgColor: status.bgColor)
                 Text ("\(Strings.QUOTE) \(quote.quoteReference)").applyFontRegular(color: Color.HINT_TEXT_COLLOR,size: 11)
-                if let createdDate = quote.createdDate.detailedDate {
-                    Text ("\(Strings.CREATED) \(createdDate)").applyFontRegular(color: Color.HINT_TEXT_COLLOR,size: 11)
-                }
+//                if let createdDate = quote.createdDate.detailedDate {
+//                    Text ("\(Strings.CREATED) \(createdDate)").applyFontRegular(color: Color.HINT_TEXT_COLLOR,size: 11)
+//                }
                 
             }.padding(.trailing, 10)
             Spacer()
