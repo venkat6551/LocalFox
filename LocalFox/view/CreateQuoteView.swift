@@ -16,7 +16,7 @@ struct CreateQuoteView: View {
     var body: some View {
         VStack {
             HStack {
-                Text(Strings.QUOTE_DETAILS).applyFontHeader()
+                Text(Strings.CREATE_DETAILS).applyFontHeader()
                 Spacer()
                 Button(
                     action: {
@@ -34,7 +34,7 @@ struct CreateQuoteView: View {
                     }
                 )
             }.padding(.top, 25)
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 if let data = quoteViewModel.quoteModel?.data {
                     VStack (alignment: .leading){
                             HStack(alignment: .center, spacing: 3) {

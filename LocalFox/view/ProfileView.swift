@@ -31,7 +31,7 @@ struct ProfileView: View {
                         self.shouldPresentActionScheet = true
                     }
                 }.cardify()
-                ScrollView {
+                ScrollView (showsIndicators: false) {
                     HStack {
                         Text(Strings.SETTINGS).applyFontBold(size: 20)
                         Spacer()

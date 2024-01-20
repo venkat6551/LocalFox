@@ -32,7 +32,7 @@ struct ViewQuoteDetailsView: View {
                     }
                 )
             }.padding(.top, 25)
-            ScrollView {
+            ScrollView (showsIndicators: false){
                 VStack (alignment: .leading){
                         HStack(alignment: .center, spacing: 3) {
                         Text("•").applyFontRegular(color: Color.TEXT_GREEN, size: 20)

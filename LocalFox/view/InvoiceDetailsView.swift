@@ -31,7 +31,7 @@ struct InvoiceDetailsView: View {
                     }
                 )
             }.padding(.top, 25)
-            ScrollView {
+            ScrollView (showsIndicators: false){
                 VStack (alignment: .leading){                    
                     HStack(alignment: .center, spacing: 3) {
                         let status = InvoiceStatus(rawValue: invoice.invoiceStatus) ?? .Draft

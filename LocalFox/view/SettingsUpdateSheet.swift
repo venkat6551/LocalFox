@@ -226,7 +226,7 @@ struct SettingsUpdateSheet: View {
         var body: some View {
             VStack(spacing: 0) {
                 if addressList.count > 0 {
-                    ScrollView {
+                    ScrollView (showsIndicators: false){
                         LazyVStack(spacing: 15) {
                             ForEach(addressList, id: \.self) { address in
                                 AddressRow(address: address) {
