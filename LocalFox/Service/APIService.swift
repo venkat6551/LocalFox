@@ -41,6 +41,7 @@ protocol APIServiceProtocol {
     func createJobInvoice(_jobID: String, completion: @escaping (_ success: Bool, _ jobDetailsModel : NewInvoiceModel?, _ errorString: String?)-> Void)
     func saveInvoice(_invoiceID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void)
     func sendInvoice(_invoiceID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void)
+    func convertToInvoiceFromQuote(_quoteID: String, completion: @escaping (_ success: Bool, _ invoiceModel : NewInvoiceModel?, _ errorString: String?)-> Void)
 }
 
 
@@ -635,6 +636,47 @@ final class MockAPIService: APIServiceProtocol {
             }
     }
     
+    
+    func convertToInvoiceFromQuote(_quoteID: String, completion: @escaping (_ success: Bool, _ invoiceModel : NewInvoiceModel?, _ errorString: String?)-> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        
+        let parameters: Parameters = [
+            "quote": _quoteID
+        ]
+        let request = AF.request(
+            APIEndpoints.CONVERT_TO_INVOICE,
+            method: HTTPMethod.post,
+            parameters: parameters,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: NewInvoiceModel.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(true,data,nil)
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,nil,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.convertToInvoiceFromQuote(_quoteID: _quoteID, completion: completion)
+                        }
+                    }
+                    else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,nil,errorObj.error)
+                        } catch{
+                            completion(false,nil,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
     func createJobInvoice(_jobID: String, completion: @escaping (_ success: Bool, _ jobDetailsModel : NewInvoiceModel?, _ errorString: String?)-> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
         
@@ -716,7 +758,7 @@ final class MockAPIService: APIServiceProtocol {
     
     func saveInvoice(_invoiceID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
-        let urlString = "\(APIEndpoints.SEND_INVOICE)/\(_invoiceID)"
+        let urlString = "\(APIEndpoints.SAVE_INVOICE)/\(_invoiceID)"
         guard let url = URL(string: urlString) else {
             return
         }

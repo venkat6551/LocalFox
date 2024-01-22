@@ -34,6 +34,14 @@ extension Double {
         return (self * divisor).rounded() / divisor
     }
 }
+
+
+extension NSNotification {
+    static let CLOSE_QUOTE_DETAILS = Notification.Name.init("CloseQuoteDetails")
+    static let RELOAD_JOB_DETAILS = Notification.Name.init("ReloadJobDetails")
+}
+
+
 public extension UIDevice {
 
     static let modelName: String = {

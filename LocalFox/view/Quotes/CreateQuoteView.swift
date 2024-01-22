@@ -145,7 +145,12 @@ struct CreateQuoteView: View {
             title: "Success",
             message: "Quote Saved/Emailed SuccessFully",
             secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
-            onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss() },
+            onSnackbarDismissed: {
+                self.presentationMode.wrappedValue.dismiss()
+                NotificationCenter.default.post(name: NSNotification.RELOAD_JOB_DETAILS,
+                                                object: nil, userInfo: nil)
+            }
+            ,
             isAlignToBottom: true
         )
         .snackbar(

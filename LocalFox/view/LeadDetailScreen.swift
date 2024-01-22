@@ -126,6 +126,12 @@ struct LeadDetailScreen: View {
                 }
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.RELOAD_JOB_DETAILS))
+                { obj in
+                    if let jobID = job?.id {
+                        jobDetailsVM.getJobDetails(jobID: jobID)
+                    }
+                }
         .sheet(isPresented: $showActivitySheet){
             ActivityView(activities: jobDetailsVM.jobDetailsModel?.data?.jobActivities)
         }

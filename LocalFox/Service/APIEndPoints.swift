@@ -52,6 +52,7 @@ enum APIEndpoints {
     static var CREATE_INVOICE = BASE_URL + "/v1/partner/invoices/createJobInvoice"
     static var SEND_INVOICE = BASE_URL + "/v1/partner/invoices/sendInvoice"
     static var SAVE_INVOICE = BASE_URL + "/v1/partner/invoices/saveInvoice"
+    static var CONVERT_TO_INVOICE = BASE_URL + "/v1/partner/invoices/createInvoiceFromQuote"
     
     //JOB INVITATION
     static var ACCEPT_INVITATION = BASE_URL + "/v1/partner/jobs/acceptJob/"

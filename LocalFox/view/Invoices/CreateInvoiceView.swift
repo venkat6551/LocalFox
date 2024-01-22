@@ -13,6 +13,8 @@ struct CreateInvoiceView: View {
     @State private var showAddLineItem = false
     @State private var showErrorSneakBar = false
     @State private var showsuccessSneakBar = false
+    
+    @State var isFromQuote = false
     var body: some View {
         VStack {
             HStack {
@@ -145,7 +147,14 @@ struct CreateInvoiceView: View {
             title: "Success",
             message: "Invoice Saved/Emailed SuccessFully",
             secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
-            onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss() },
+            onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss()
+                if (isFromQuote) {
+                    NotificationCenter.default.post(name: NSNotification.CLOSE_QUOTE_DETAILS,
+                                                    object: nil, userInfo: nil)
+                }
+                NotificationCenter.default.post(name: NSNotification.RELOAD_JOB_DETAILS,
+                                                object: nil, userInfo: nil)
+            },
             isAlignToBottom: true
         )
         .snackbar(

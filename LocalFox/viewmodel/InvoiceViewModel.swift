@@ -20,7 +20,7 @@ class InvoiceViewModel: ObservableObject {
     
     @Published private(set) var isSaveInvoiceLoading: Bool = false
     @Published private(set) var isSendInvoiceLoading: Bool = false
-    
+    @Published var convertToInvoiceSuccess: Bool = false
 
     
     init(apiService: APIServiceProtocol = MockAPIService()) {
@@ -140,6 +140,23 @@ class InvoiceViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self?.invoiceModel = invoiceModel
                     self?.createJobInvoiceSuccess = success
+                    self?.errorString = errorString
+                    self?.isLoading = false
+                }
+            }
+        }
+    }
+    
+    func convertToInvoice(quoteID: String) {
+        convertToInvoiceSuccess = false
+        errorString = nil
+        isLoading = true
+        DispatchQueue.global(qos: .userInitiated).async {
+            
+            self.apiService.convertToInvoiceFromQuote(_quoteID: quoteID) { [weak self] success, invoiceModel, errorString in
+                DispatchQueue.main.async {
+                    self?.invoiceModel = invoiceModel
+                    self?.convertToInvoiceSuccess = success
                     self?.errorString = errorString
                     self?.isLoading = false
                 }

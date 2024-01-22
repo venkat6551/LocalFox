@@ -10,7 +10,16 @@ import SwiftUI
 struct ViewQuoteDetailsView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var quote: QuoteModel
+    var quoteViewModel: QuoteViewModel = QuoteViewModel()
+    
+    @StateObject var invoiceViewModel: InvoiceViewModel  = InvoiceViewModel()
     @State private var showAddLineItem = false
+    @State private var showErrorSneakBar = false
+    @State private var showInvoiceErrorSneakBar = false
+    @State private var showsuccessSneakBar = false
+    @State private var showCreateInvoicePage = false
+    let pub = NotificationCenter.default
+                .publisher(for: NSNotification.Name("YourNameHere"))
     var body: some View {
         VStack {
             HStack {
@@ -70,7 +79,7 @@ struct ViewQuoteDetailsView: View {
                         ForEach(0 ..< quote.items.count, id: \.self) {index in
                             let item = quote.items[index]
                             QuoteLineItemView(item: item){
-                                
+                                //do nothing
                             }
                         }
                         HStack() {
@@ -92,21 +101,74 @@ struct ViewQuoteDetailsView: View {
                         VStack {
                             HStack(spacing: 15) {
                                 MyButton(text: Strings.SEND_EMAIL,onClickButton: {
-                                    
-                                } ,bgColor: Color.TEXT_GREEN)
+                                    quoteViewModel.sendQuote()
+                                }, showLoading: quoteViewModel.isSendQuoteLoading ,bgColor: Color.TEXT_GREEN)
                                 MyButton(text: Strings.DELETE,onClickButton: {
                                     
                                 } ,bgColor: Color.PRIMARY)
                             }.padding(.top,15)
                             MyButton(text: Strings.CONVERT_TO_INVOICE,onClickButton: {
-                                
-                            } ).padding(.top,5)
+                                invoiceViewModel.convertToInvoice(quoteID: quote._id)
+                            }, showLoading: invoiceViewModel.isLoading ).padding(.top,5)
                         }
                     }
                 }
             }
+        }.disabled(invoiceViewModel.isLoading || quoteViewModel.isSendQuoteLoading)
+        .onAppear{
+                       quoteViewModel.quoteModel = NewQuoteModel(success: true, data: quote)
         }
-        
+        .onChange(of: invoiceViewModel.isLoading) { isloading in
+            if (invoiceViewModel.convertToInvoiceSuccess == true && invoiceViewModel.errorString == nil && invoiceViewModel.invoiceModel != nil) {
+                self.showCreateInvoicePage = true
+            } else if(invoiceViewModel.isLoading != true && invoiceViewModel.errorString != nil) {
+                self.showInvoiceErrorSneakBar = true
+            }
+        }
+        .onChange(of: quoteViewModel.isSendQuoteLoading) { isloading in
+            if (quoteViewModel.saveOrSendQuoteSuccess == true && quoteViewModel.errorString == nil ) {
+                self.showsuccessSneakBar = true
+            } else if(quoteViewModel.errorString != nil) {
+                self.showErrorSneakBar = true
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.CLOSE_QUOTE_DETAILS))
+                { obj in
+                    self.presentationMode.wrappedValue.dismiss()
+                }
+       
+        .snackbar(
+            show: $showsuccessSneakBar,
+            snackbarType: SnackBarType.success,
+            title: "Success",
+            message: "Quote Emailed SuccessFully",
+            secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+            onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss()},
+            isAlignToBottom: true
+        )
+        .snackbar(
+            show: $showErrorSneakBar,
+            snackbarType: SnackBarType.error,
+            title: "Error",
+            message: quoteViewModel.errorString,
+            secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+            onSnackbarDismissed: { },
+            isAlignToBottom: true
+        )
+        .snackbar(
+            show: $showInvoiceErrorSneakBar,
+            snackbarType: SnackBarType.error,
+            title: "Error",
+            message: invoiceViewModel.errorString,
+            secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+            onSnackbarDismissed: { },
+            isAlignToBottom: true
+        )
+        .navigationDestination(isPresented: $showCreateInvoicePage) {
+            if invoiceViewModel.invoiceModel != nil {
+                CreateInvoiceView(invoiceViewModel: invoiceViewModel, isFromQuote:true)
+            }
+        }
         .navigationBarHidden(true)
         .padding(.horizontal, 15)
         .background(Color.SCREEN_BG.ignoresSafeArea())

@@ -140,6 +140,5 @@ class QuoteViewModel: ObservableObject {
             }
         }
     }
-  
 }
 
