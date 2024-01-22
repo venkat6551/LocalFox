@@ -1,22 +1,22 @@
 //
-//  QuoteDetailsView.swift
+//  CreateInvoiceView.swift
 //  Local Fox
 //
-//  Created by venkatesh karra on 15/11/23.
+//  Created by venkatesh karra on 20/01/24.
 //
 
 import SwiftUI
 
-struct CreateQuoteView: View {
+struct CreateInvoiceView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
-    @StateObject var quoteViewModel: QuoteViewModel
+    @StateObject var invoiceViewModel: InvoiceViewModel
     @State private var showAddLineItem = false
     @State private var showErrorSneakBar = false
     @State private var showsuccessSneakBar = false
     var body: some View {
         VStack {
             HStack {
-                Text(Strings.CREATE_DETAILS).applyFontHeader()
+                Text(Strings.CREATE_INVOICE).applyFontHeader()
                 Spacer()
                 Button(
                     action: {
@@ -35,11 +35,11 @@ struct CreateQuoteView: View {
                 )
             }.padding(.top, 25)
             ScrollView(showsIndicators: false) {
-                if let data = quoteViewModel.quoteModel?.data {
+                if let data = invoiceViewModel.invoiceModel?.data {
                     VStack (alignment: .leading){
                             HStack(alignment: .center, spacing: 3) {
-                                Text("•").applyFontRegular(color: Color.TEXT_GREEN, size: 20)
-                                let status = QuoteStatus(rawValue: data.quoteStatus) ?? .Draft
+                                Text("•").applyFontRegular(color: Color.TEXT_GREEN, size: 20).padding(.bottom, 2)
+                                let status = InvoiceStatus(rawValue: data.invoiceStatus) ?? .Draft
                                 Text(status.text).applyFontRegular(color: Color.DEFAULT_TEXT, size: 10)
                             }
                         
@@ -56,8 +56,8 @@ struct CreateQuoteView: View {
                             Spacer()
                             VStack(alignment: .trailing, spacing: 3) {
                                 Text(Strings.DETAILS).applyFontBold(color: Color.DEFAULT_TEXT, size: 13)
-                                Text("\(Strings.QUOTE) \(data.quoteReference)").applyFontRegular(color: Color.DEFAULT_TEXT, size: 11)
-                                if let date  = data.quoteExpiry.convertDateFormate(sorceFormate: DateFormates.API_DATE_TIME, destinationFormate: DateFormates.SHORT_DATE_TIME) {
+                                Text("\(Strings.QUOTE) \(data.invoiceReference)").applyFontRegular(color: Color.DEFAULT_TEXT, size: 11)
+                                if let date  = data.invoiceDueDate.convertDateFormate(sorceFormate: DateFormates.API_DATE_TIME, destinationFormate: DateFormates.SHORT_DATE_TIME) {
                                     Text("\(Strings.EXPIRY) \(date)").applyFontRegular(color: Color.DEFAULT_TEXT, size: 11)
                                 }
                             }
@@ -83,7 +83,9 @@ struct CreateQuoteView: View {
                         if (!data.items.isEmpty) {
                             ForEach(0 ..< data.items.count, id: \.self) {index in
                                 let item = data.items[index]
-                                QuoteLineItemView(item: item)
+                                QuoteLineItemView(item: item, editEnabled: true){
+                                    invoiceViewModel.deleteLineItem(item: item)
+                                }
                             }
                             HStack() {
                                 Spacer()
@@ -94,9 +96,9 @@ struct CreateQuoteView: View {
                                         Text(Strings.TOTAL).applyFontBold(color: Color.DEFAULT_TEXT, size: 16).padding(.top, 20)
                                     }
                                     VStack(alignment: .trailing, spacing: 10){
-                                        Text("$\(quoteViewModel.getSubtotal(), specifier: "%.2f")").applyFontBold(color: Color.DEFAULT_TEXT , size: 16)
-                                        Text("$\(quoteViewModel.getTotalTax(), specifier: "%.2f")").applyFontMedium(color: Color.DEFAULT_TEXT, size: 16)
-                                        Text("$\(quoteViewModel.getTotalPrice(), specifier: "%.2f")").applyFontBold(color: Color.DEFAULT_TEXT, size: 18).padding(.top, 20)
+                                        Text("$\(invoiceViewModel.getSubtotal(), specifier: "%.2f")").applyFontBold(color: Color.DEFAULT_TEXT , size: 16)
+                                        Text("$\(invoiceViewModel.getTotalTax(), specifier: "%.2f")").applyFontMedium(color: Color.DEFAULT_TEXT, size: 16)
+                                        Text("$\(invoiceViewModel.getTotalPrice(), specifier: "%.2f")").applyFontBold(color: Color.DEFAULT_TEXT, size: 18).padding(.top, 20)
                                     }
                                 }
                             }.padding(.top,20)
@@ -104,36 +106,36 @@ struct CreateQuoteView: View {
                             VStack {
                                 HStack(spacing: 15) {
                                     MyButton(text: Strings.SEND_EMAIL,onClickButton: {
-                                        quoteViewModel.sendQuote()
-                                    } ,showLoading: quoteViewModel.isSendQuoteLoading, bgColor: Color.TEXT_GREEN)
+                                        invoiceViewModel.sendInvoice()
+                                    } ,showLoading: invoiceViewModel.isSendInvoiceLoading, bgColor: Color.TEXT_GREEN)
                                     MyButton(text: Strings.SAVE,onClickButton: {
-                                        quoteViewModel.saveQuote()
-                                    }, showLoading: quoteViewModel.isSaveQuoteLoading, bgColor: Color.SECONDARY)
+                                        invoiceViewModel.saveInvoice()
+                                    }, showLoading: invoiceViewModel.isSaveInvoiceLoading, bgColor: Color.SECONDARY)
                                 }.padding(.top,15)
                             }
                         }
                     }
                 }
             }
-        }.disabled(quoteViewModel.isSaveQuoteLoading || quoteViewModel.isSendQuoteLoading)
+        }.disabled(invoiceViewModel.isSaveInvoiceLoading || invoiceViewModel.isSendInvoiceLoading)
         .navigationBarHidden(true)
         .padding(.horizontal, 15)
         .background(Color.SCREEN_BG.ignoresSafeArea())
         .sheet(isPresented:  $showAddLineItem) {
-            AddQuoteLineItemView(quoteViewModel: quoteViewModel)
+            AddInvoiceLineItemView(invoiceViewModel: invoiceViewModel)
         }
-        .onChange(of: quoteViewModel.isSendQuoteLoading) { isloading in
-            if (quoteViewModel.saveOrSendQuoteSuccess == true && quoteViewModel.errorString == nil) {
+        .onChange(of: invoiceViewModel.isSendInvoiceLoading) { isloading in
+            if (invoiceViewModel.saveOrSendInvoiceSuccess == true && invoiceViewModel.errorString == nil) {
                 self.showsuccessSneakBar = true
-            } else if(quoteViewModel.errorString != nil) {
+            } else if(invoiceViewModel.errorString != nil) {
                 self.showErrorSneakBar = true
             }
         }
         
-        .onChange(of: quoteViewModel.isSaveQuoteLoading) { isloading in
-            if (quoteViewModel.saveOrSendQuoteSuccess == true && quoteViewModel.errorString == nil) {
+        .onChange(of: invoiceViewModel.isSaveInvoiceLoading) { isloading in
+            if (invoiceViewModel.saveOrSendInvoiceSuccess == true && invoiceViewModel.errorString == nil) {
                 self.showsuccessSneakBar = true
-            } else if(quoteViewModel.errorString != nil) {
+            } else if(invoiceViewModel.errorString != nil) {
                 self.showErrorSneakBar = true
             }
         }
@@ -141,7 +143,7 @@ struct CreateQuoteView: View {
             show: $showsuccessSneakBar,
             snackbarType: SnackBarType.success,
             title: "Success",
-            message: "Quote Saved/Emailed SuccessFully",
+            message: "Invoice Saved/Emailed SuccessFully",
             secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
             onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss() },
             isAlignToBottom: true
@@ -150,46 +152,11 @@ struct CreateQuoteView: View {
             show: $showErrorSneakBar,
             snackbarType: SnackBarType.error,
             title: "Error",
-            message: quoteViewModel.errorString,
+            message: invoiceViewModel.errorString,
             secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
             onSnackbarDismissed: { },
             isAlignToBottom: true
         )
-    }
-}
-
-
-struct QuoteLineItemView: View {
-    let item: QuoteItemModel
-    var body: some View {
-        
-        HStack {
-            VStack(alignment: .leading, spacing: 5)  {
-                Text (getTaxTypeName()).applyFontRegular(color: Color.TEXT_GREEN,size: 11).padding(.horizontal,8).cardify(contentPadding: 4,borderColor: Color.TEXT_GREEN)
-                    .padding(.bottom, 5)
-                    .padding(.top, 15)
-                Text ("\(item.serviceName)").applyFontMedium(size: 14)
-                Text ("\(item.serviceDescription)").applyFontRegular(color: Color.HINT_TEXT_COLLOR,size: 12)
-                    .padding(.bottom, 15)
-            }.padding(.leading, 10)
-            Spacer()
-            VStack(alignment: .trailing,spacing: 5) {
-                Text ("$\(item.price, specifier: "%.0f")").applyFontBold(color:Color.DEFAULT_TEXT,size: 20)
-                Text (Strings.INC_GST).applyFontBold(size: 9)
-            }
-            .frame(width: 96, height: 71)
-            .cardify(cardBgColor: Color.BG_COLOR_1)
-            .padding(10)
-        }.frame(maxWidth: .infinity).cardify()
-    }
-    
-    
-    func getTaxTypeName() -> String {
-        switch item.taxType {
-        case "TAX_EXCLUSIVE": return "Tax Exclusive"
-        case "TAX_INCLUSIVE": return "Tax Inclusive"
-        default: return "No Tax"
-        }
     }
 }
 

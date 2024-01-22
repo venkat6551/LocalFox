@@ -69,7 +69,9 @@ struct ViewQuoteDetailsView: View {
                        
                         ForEach(0 ..< quote.items.count, id: \.self) {index in
                             let item = quote.items[index]
-                            QuoteLineItemView(item: item)
+                            QuoteLineItemView(item: item){
+                                
+                            }
                         }
                         HStack() {
                             Spacer()

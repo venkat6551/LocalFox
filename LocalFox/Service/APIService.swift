@@ -37,6 +37,10 @@ protocol APIServiceProtocol {
     func createJobQuote(_jobID: String, completion: @escaping (_ success: Bool, _ jobDetailsModel : NewQuoteModel?, _ errorString: String?)-> Void)
     func saveQuote(_quoteID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void)
     func sendQuote(_quoteID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void)
+    
+    func createJobInvoice(_jobID: String, completion: @escaping (_ success: Bool, _ jobDetailsModel : NewInvoiceModel?, _ errorString: String?)-> Void)
+    func saveInvoice(_invoiceID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void)
+    func sendInvoice(_invoiceID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void)
 }
 
 
@@ -595,7 +599,7 @@ final class MockAPIService: APIServiceProtocol {
     
     func sendQuote(_quoteID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
-        let urlString = "\(APIEndpoints.SAVE_QUOTE)/\(_quoteID)"
+        let urlString = "\(APIEndpoints.SEND_QUOTE)/\(_quoteID)"
         guard let url = URL(string: urlString) else {
             return
         }
@@ -618,6 +622,123 @@ final class MockAPIService: APIServiceProtocol {
                     if (response.response?.statusCode == 401) {
                         self.refreshLogin {
                             self.saveQuote(_quoteID: _quoteID, params: params, completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(OptionalErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
+    
+    func createJobInvoice(_jobID: String, completion: @escaping (_ success: Bool, _ jobDetailsModel : NewInvoiceModel?, _ errorString: String?)-> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        
+        let parameters: Parameters = [
+            "job": _jobID
+        ]
+        let request = AF.request(
+            APIEndpoints.CREATE_INVOICE,
+            method: HTTPMethod.post,
+            parameters: parameters,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: NewInvoiceModel.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(true,data,"")
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,nil,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.createJobInvoice(_jobID: _jobID, completion: completion)
+                        }
+                    }
+                    else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,nil,errorObj.error)
+                        } catch{
+                            completion(false,nil,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
+    
+    func sendInvoice(_invoiceID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let urlString = "\(APIEndpoints.SEND_INVOICE)/\(_invoiceID)"
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        var apiRequest = URLRequest(url: url)
+        apiRequest.httpMethod = "PUT"
+        apiRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        apiRequest.httpBody = try! JSONSerialization.data(withJSONObject: params)
+        apiRequest.headers =  headers
+        AF.request(apiRequest)
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: OptionalErrorResponseDecodable.self) { response in
+                switch response.result {
+                case .success(_):
+                    completion(true,nil )
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.sendInvoice(_invoiceID: _invoiceID, params: params, completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(OptionalErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
+    
+    func saveInvoice(_invoiceID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let urlString = "\(APIEndpoints.SEND_INVOICE)/\(_invoiceID)"
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        var apiRequest = URLRequest(url: url)
+        apiRequest.httpMethod = "PUT"
+        apiRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        apiRequest.httpBody = try! JSONSerialization.data(withJSONObject: params)
+        apiRequest.headers =  headers
+        AF.request(apiRequest)
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: OptionalErrorResponseDecodable.self) { response in
+                switch response.result {
+                case .success(_):
+                    completion(true,nil )
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.saveInvoice(_invoiceID: _invoiceID, params: params, completion: completion)
                         }
                     } else {
                         do{

@@ -116,12 +116,16 @@ struct Strings {
     static let NO_QUOTES_TITLE = "No quotes created yet"
     static let CREATE_NEW_QUOTE = "Create a new quote"
     static let QUOTE_DETAILS = "Quote Details"
-    static let CREATE_DETAILS = "Create Details"
+    static let CREATE_QUOTE = "Create Quote"
+    
+    
+    
     
     static let NO_INVOICE_MESSAGE = "There are no invoices created on this job yet. Click the button below to create a new invoice."
     static let NO_INVOICE_TITLE = "No invoices created"
     static let CREATE_NEW_INVOICE = "Create a new invoice"
     static let INVOICE_DETAILS = "Invoice Details"
+    static let CREATE_INVOICE = "Create Invoice"
     
     static let LINE_ITEMS = "Line Items"
     static let SUB_TOTAL = "Subtotal"

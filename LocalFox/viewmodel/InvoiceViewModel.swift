@@ -1,71 +1,45 @@
 //
-//  QuoteViewModel.swift
+//  InvoiceViewModel.swift
 //  Local Fox
 //
-//  Created by venkatesh karra on 07/01/24.
+//  Created by venkatesh karra on 20/01/24.
 //
 
 import Foundation
+import Foundation
 import SwiftUI
 
-class QuoteViewModel: ObservableObject {
-    @Published var quoteModel: NewQuoteModel?
+class InvoiceViewModel: ObservableObject {
+    @Published var invoiceModel: NewInvoiceModel?
     @Published private(set) var isLoading: Bool = false
     @Published var errorString: String?
-    @Published var createJobQuoteSuccess: Bool = false
-    @Published var saveOrSendQuoteSuccess: Bool = false
     private let apiService: APIServiceProtocol
-    @Published private(set) var isSaveQuoteLoading: Bool = false
-    @Published private(set) var isSendQuoteLoading: Bool = false
+    
+    @Published var createJobInvoiceSuccess: Bool = false
+    @Published var saveOrSendInvoiceSuccess: Bool = false
+    
+    @Published private(set) var isSaveInvoiceLoading: Bool = false
+    @Published private(set) var isSendInvoiceLoading: Bool = false
+    
+
     
     init(apiService: APIServiceProtocol = MockAPIService()) {
         self.apiService = apiService
     }
     func addLineItem(title: String,descriptiom: String,price: String, taxType: String ) {
         let priceFloat = Float(price) ?? 0
-        self.quoteModel?.data.items.append(QuoteItemModel(_id: nil, serviceName: title, serviceDescription: descriptiom, price: priceFloat, tax: getTax(price: priceFloat, taxType: taxType), taxType: taxType, totalItemPrice: getTotalPrice(price: priceFloat, taxType: taxType)))
+        self.invoiceModel?.data.items.append(QuoteItemModel(_id: nil, serviceName: title, serviceDescription: descriptiom, price: priceFloat, tax: getTax(price: priceFloat, taxType: taxType), taxType: taxType, totalItemPrice: getTotalPrice(price: priceFloat, taxType: taxType)))
     }
     
-    
-    
-    func saveQuote() {
-        guard let data = quoteModel?.data else {
-            return
-        }
-        saveOrSendQuoteSuccess = false
-        errorString = nil
-        isSaveQuoteLoading = true
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.apiService.saveQuote(_quoteID: data._id, params: self.getItemsParams()) {[weak self] success, errorString in
-                self?.saveOrSendQuoteSuccess = success
-                self?.errorString = errorString
-                self?.isSaveQuoteLoading = false
-            }
-        }
-    }
-    func sendQuote() {
-        guard let data = quoteModel?.data else {
-            return
-        }
-        saveOrSendQuoteSuccess = false
-        errorString = nil
-        isSendQuoteLoading = true
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.apiService.sendQuote(_quoteID: data._id, params: self.getItemsParams()) {[weak self] success, errorString in
-                self?.saveOrSendQuoteSuccess = success
-                self?.errorString = errorString
-                self?.isSendQuoteLoading = false
-            }
-        }
-    }
     func deleteLineItem(item: QuoteItemModel) {
-        self.quoteModel?.data.items.removeAll(where: { model in
+        self.invoiceModel?.data.items.removeAll(where: { model in
             model.serviceName == item.serviceName && model.serviceDescription == item.serviceDescription && model.price == item.price && model.taxType == item.taxType
         })
     }
+    
     func getItemsParams() -> [[String : Any]] {
         var items = [[String: Any]]()
-        if let data = quoteModel?.data {
+        if let data = invoiceModel?.data {
             for index in 0 ..< data.items.count {
                 let item = data.items[index]
                 let itemData: [String: Any] = ["serviceName":item.serviceName, "serviceDescription":item.serviceDescription,"price":item.price, "taxType":item.taxType]
@@ -77,7 +51,7 @@ class QuoteViewModel: ObservableObject {
     
     func getTotalTax() -> Float {
         var totalTax:Float = 0.0
-        if let items = quoteModel?.data.items {
+        if let items = invoiceModel?.data.items {
             totalTax = items.map({$0.tax }).reduce(0, +)
         }
         return totalTax
@@ -85,7 +59,7 @@ class QuoteViewModel: ObservableObject {
    
     func getSubtotal() -> Float {
         var totalSum:Float = 0.0
-        if let items = quoteModel?.data.items {
+        if let items = invoiceModel?.data.items {
             totalSum = items.map({$0.price}).reduce(0, +)
         }
         return totalSum
@@ -93,7 +67,7 @@ class QuoteViewModel: ObservableObject {
     
     func getTotalPrice() -> Float {
         var totalSum:Float = 0.0
-        if let items = quoteModel?.data.items {
+        if let items = invoiceModel?.data.items {
             totalSum = items.map({$0.totalItemPrice}).reduce(0, +)
         }
         return totalSum
@@ -121,25 +95,56 @@ class QuoteViewModel: ObservableObject {
         return price
     }
     
-    func createJobQuote(jobID: String?) {
-        
+    func saveInvoice() {
+        guard let data = invoiceModel?.data else {
+            return
+        }
+        saveOrSendInvoiceSuccess = false
+        errorString = nil
+        isSaveInvoiceLoading = true
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.apiService.saveInvoice(_invoiceID: data._id, params: self.getItemsParams()) {[weak self] success, errorString in
+                self?.saveOrSendInvoiceSuccess = success
+                self?.errorString = errorString
+                self?.isSaveInvoiceLoading = false
+            }
+        }
+    }
+    
+    func sendInvoice() {
+        guard let data = invoiceModel?.data else {
+            return
+        }
+        saveOrSendInvoiceSuccess = false
+        errorString = nil
+        isSendInvoiceLoading = true
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.apiService.sendInvoice(_invoiceID: data._id, params: self.getItemsParams()) {[weak self] success, errorString in
+                self?.saveOrSendInvoiceSuccess = success
+                self?.errorString = errorString
+                self?.isSendInvoiceLoading = false
+            }
+        }
+    }
+    
+    
+    func createJobInvoice(jobID: String?) {
         guard let jobID = jobID else {
             return
         }
-        createJobQuoteSuccess = false
+        createJobInvoiceSuccess = false
         errorString = nil
         isLoading = true
         DispatchQueue.global(qos: .userInitiated).async {
-            self.apiService.createJobQuote(_jobID: jobID) { [weak self] success, quoteModel, errorString in
+            self.apiService.createJobInvoice(_jobID: jobID) { [weak self] success, invoiceModel, errorString in
                 DispatchQueue.main.async {
-                    self?.quoteModel = quoteModel
-                    self?.createJobQuoteSuccess = success
+                    self?.invoiceModel = invoiceModel
+                    self?.createJobInvoiceSuccess = success
                     self?.errorString = errorString
                     self?.isLoading = false
                 }
             }
         }
     }
-  
 }
 

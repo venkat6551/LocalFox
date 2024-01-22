@@ -20,6 +20,7 @@ struct LeadDetailScreen: View {
     @State private var showAddNotes = false
     @State private var showAddInvoice = false
     @StateObject var newQuoteViewModel:QuoteViewModel  =  QuoteViewModel()
+    @StateObject var newInvoiceViewModel:InvoiceViewModel  =  InvoiceViewModel()
     var body: some View {
         ZStack (alignment: .bottomTrailing){
             ZStack {
@@ -55,7 +56,7 @@ struct LeadDetailScreen: View {
                                 }
                                 Spacer()
                             }
-                           
+                            
                         } else {
                             ScrollView (showsIndicators: false){
                                 if let job = job {
@@ -66,7 +67,7 @@ struct LeadDetailScreen: View {
                                 SlidingTabView(selection: self.$selectedTabIndex, tabs: [Strings.DETAILS,Strings.QUOTES,Strings.INVOICES,Strings.SCHEDULES],selectionBarColor:.clear ,activeTabColor: .white,selectionBarBackgroundColor:.clear)
                                 
                                 switch selectedTabIndex {
-                               
+                                    
                                 case 0 :
                                     DetailsView(job: jobDetailsVM.jobDetailsModel?.data?.job)
                                 case 1 :
@@ -75,7 +76,7 @@ struct LeadDetailScreen: View {
                                     }
                                 case 2 :
                                     InvoiceView(invoices: jobDetailsVM.jobDetailsModel?.data?.invoices){
-                                        
+                                        self.newInvoiceViewModel.createJobInvoice(jobID: self.job?.id)
                                     }
                                 case 3 :
                                     SchedulesView()
@@ -86,16 +87,16 @@ struct LeadDetailScreen: View {
                         }
                     }.padding(.horizontal,20)
                     Spacer()
-                }.disabled(newQuoteViewModel.isLoading)
-                if (newQuoteViewModel.isLoading){
-                  ProgressView()
+                }.disabled(newQuoteViewModel.isLoading || newInvoiceViewModel.isLoading)
+                if (newQuoteViewModel.isLoading || newInvoiceViewModel.isLoading){
+                    ProgressView()
                 }
             }
-           
+            
             ScreenIconsAndText(onButtonClick: { index in
                 switch index {
                 case 0:
-                    self.showAddInvoice = true
+                    self.newInvoiceViewModel.createJobInvoice(jobID: self.job?.id)
                 case 1:
                     self.newQuoteViewModel.createJobQuote(jobID: self.job?.id)
                 case 2:
@@ -107,11 +108,16 @@ struct LeadDetailScreen: View {
                 
             }).frame(width: 80, height: 50)
         }
-                .onChange(of: newQuoteViewModel.isLoading) { isloading in
-                    if (isloading == false && newQuoteViewModel.quoteModel != nil) {
-                        showAddQuote = true
-                    }
-                }
+        .onChange(of: newQuoteViewModel.isLoading) { isloading in
+            if (isloading == false && newQuoteViewModel.quoteModel != nil) {
+                showAddQuote = true
+            }
+        }
+        .onChange(of: newInvoiceViewModel.isLoading) { isloading in
+            if (isloading == false && newInvoiceViewModel.invoiceModel != nil) {
+                showAddInvoice = true
+            }
+        }
         .onAppear {
             if (!jobDetailsVM.getJobDetailsSuccess) {
                 if let jobID = job?.id {
@@ -123,14 +129,15 @@ struct LeadDetailScreen: View {
         .sheet(isPresented: $showActivitySheet){
             ActivityView(activities: jobDetailsVM.jobDetailsModel?.data?.jobActivities)
         }
-                .navigationDestination(isPresented: $showAddQuote) {
-                    if let model = newQuoteViewModel.quoteModel {
-                        CreateQuoteView(quoteViewModel: newQuoteViewModel)
-                    }
-                }
-           
-        .sheet(isPresented:  $showAddInvoice) {
-           AddInvoiceView()
+        .navigationDestination(isPresented: $showAddQuote) {
+            if newQuoteViewModel.quoteModel != nil {
+                CreateQuoteView(quoteViewModel: newQuoteViewModel)
+            }
+        }
+        .navigationDestination(isPresented: $showAddInvoice) {
+            if newInvoiceViewModel.invoiceModel != nil {
+                CreateInvoiceView(invoiceViewModel: newInvoiceViewModel)
+            }
         }
         .sheet(isPresented: $showAddSchedule) {
             AddScheduleView()
@@ -202,7 +209,6 @@ struct ActivityView: View {
                     }
                 }
             }
-           
         }.background(Color.SCREEN_BG)
     }
 }
@@ -242,7 +248,7 @@ struct InvoiceView: View {
             if(invoices != nil && !(invoices?.isEmpty ?? true)) {
                 if let invoices = invoices {
                     ForEach(0 ..< invoices.count, id: \.self) {index in
-                    let invoice = invoices[index]
+                        let invoice = invoices[index]
                         NavigationLink {
                             InvoiceDetailsView(invoice: invoice)
                         } label: {
@@ -371,9 +377,9 @@ struct ScreenIconsAndText: View {
     }
 }
 struct MainButton: View {
-
+    
     var width: CGFloat = 60
-
+    
     var body: some View {
         ZStack {
             Color.PRIMARY
@@ -386,11 +392,11 @@ struct MainButton: View {
     }
 }
 struct IconAndTextButton: View {
-
+    
     var imageName: Image
     var buttonText: String
     let imageWidth: CGFloat = 22
-
+    
     var body: some View {
         ZStack {
             Color.white

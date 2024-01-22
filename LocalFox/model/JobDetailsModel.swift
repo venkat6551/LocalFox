@@ -53,6 +53,11 @@ struct NewQuoteModel: Decodable {
     var data: QuoteModel
 }
 
+struct NewInvoiceModel: Decodable {
+    var success: Bool?
+    var data: InvoiceModel
+}
+
 struct QuoteModel: Decodable {
     let _id: String
     let quoteReference: String
@@ -98,7 +103,7 @@ struct InvoiceModel: Decodable {
     let partner: QuotePartnerModel
     let contact: Customer
     let job: String
-    let items: [QuoteItemModel]
+    var items: [QuoteItemModel]
     var subTotal: Float?
     var totalPrice: Float?
     var totalTax: Float? 

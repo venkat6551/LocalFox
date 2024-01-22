@@ -63,7 +63,9 @@ struct InvoiceDetailsView: View {
                     Text(Strings.LINE_ITEMS).applyFontBold(color: Color.DEFAULT_TEXT, size: 14)
                     ForEach(0 ..< invoice.items.count, id: \.self) {index in
                         let item = invoice.items[index]
-                        QuoteLineItemView(item: item)
+                        QuoteLineItemView(item: item){
+                            
+                        }
                     }
                     HStack() {
                         Spacer()
