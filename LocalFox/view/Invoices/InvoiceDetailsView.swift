@@ -10,6 +10,9 @@ import SwiftUI
 struct InvoiceDetailsView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var invoice: InvoiceModel
+    @StateObject var invoiceViewModel: InvoiceViewModel = InvoiceViewModel()
+    @State private var showErrorSneakBar = false
+    @State private var showsuccessSneakBar = false
     var body: some View {
         VStack {
             HStack {
@@ -90,8 +93,8 @@ struct InvoiceDetailsView: View {
             VStack {
                 HStack(spacing: 15) {
                     MyButton(text: Strings.SEND_EMAIL,onClickButton: {
-                        
-                    } ,bgColor: Color.TEXT_GREEN)
+                        invoiceViewModel.sendInvoice()
+                    }, showLoading: invoiceViewModel.isSendInvoiceLoading ,bgColor: Color.TEXT_GREEN)
                     MyButton(text: Strings.DELETE,onClickButton: {
                         
                     } ,bgColor: Color.PRIMARY)
@@ -100,7 +103,39 @@ struct InvoiceDetailsView: View {
                     
                 } ).padding(.top,5)
             }
-        }
+        }.disabled(invoiceViewModel.isSendInvoiceLoading)
+            .onAppear{
+                invoiceViewModel.invoiceModel =  NewInvoiceModel(success: true, data: invoice)
+            }
+        
+            .onChange(of: invoiceViewModel.isSendInvoiceLoading) { isloading in
+                if (invoiceViewModel.saveOrSendInvoiceSuccess == true && invoiceViewModel.errorString == nil ) {
+                    self.showsuccessSneakBar = true
+                } else if(invoiceViewModel.errorString != nil) {
+                    self.showErrorSneakBar = true
+                }
+            }
+        
+            .snackbar(
+                show: $showsuccessSneakBar,
+                snackbarType: SnackBarType.success,
+                title: "Success",
+                message: "Invoice Emailed SuccessFully",
+                secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+                onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss()
+                    NotificationCenter.default.post(name: NSNotification.RELOAD_JOB_DETAILS,
+                                                    object: nil, userInfo: nil)},
+                isAlignToBottom: true
+            )
+            .snackbar(
+                show: $showErrorSneakBar,
+                snackbarType: SnackBarType.error,
+                title: "Error",
+                message: invoiceViewModel.errorString,
+                secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+                onSnackbarDismissed: { },
+                isAlignToBottom: true
+            )
     .navigationBarHidden(true)
     .padding(.horizontal, 15)
     .background(Color.SCREEN_BG.ignoresSafeArea())

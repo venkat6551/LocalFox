@@ -10,7 +10,7 @@ import SwiftUI
 struct ViewQuoteDetailsView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var quote: QuoteModel
-    var quoteViewModel: QuoteViewModel = QuoteViewModel()
+    @StateObject var quoteViewModel: QuoteViewModel = QuoteViewModel()
     
     @StateObject var invoiceViewModel: InvoiceViewModel  = InvoiceViewModel()
     @State private var showAddLineItem = false
@@ -143,7 +143,9 @@ struct ViewQuoteDetailsView: View {
             title: "Success",
             message: "Quote Emailed SuccessFully",
             secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
-            onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss()},
+            onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss()
+                NotificationCenter.default.post(name: NSNotification.RELOAD_JOB_DETAILS,
+                                                object: nil, userInfo: nil)},
             isAlignToBottom: true
         )
         .snackbar(
