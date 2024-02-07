@@ -134,6 +134,7 @@ struct Strings {
     static let SEND_EMAIL = "Send Email"
     static let CONVERT_TO_INVOICE = "Convert to Invoice"
     static let DELETE = "Delete"
+    static let VOID = "Void"
     static let DETAILS = "Details"
     static let QUOTE = "quote:"
     static let EXPIRY = "Expiry:"
@@ -159,5 +160,6 @@ struct Strings {
     static let PRICE = "Price"
     static let TAX_TYPE = "Tax Type"
     static let TITLE =  "Title"
+    static let MARK_INVOICE_AS_PAID = "Mark as invoice paid"
 }
 

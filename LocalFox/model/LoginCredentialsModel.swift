@@ -9,7 +9,7 @@ import Foundation
 
 struct LoginCredentialsModel: Codable {
     
-    var email: String = "admin@localfox.com.au"
+    var email: String = "partner@localfox.com.au"
     var password: String = "Ricky@123"
     
     var isValid: Bool {

@@ -13,10 +13,12 @@ class QuoteViewModel: ObservableObject {
     @Published private(set) var isLoading: Bool = false
     @Published var errorString: String?
     @Published var createJobQuoteSuccess: Bool = false
+    @Published var deleteQuoteSuccess: Bool = false
     @Published var saveOrSendQuoteSuccess: Bool = false
     private let apiService: APIServiceProtocol
     @Published private(set) var isSaveQuoteLoading: Bool = false
     @Published private(set) var isSendQuoteLoading: Bool = false
+    @Published private(set) var isDeleteQuoteLoading: Bool = false
     
     init(apiService: APIServiceProtocol = MockAPIService()) {
         self.apiService = apiService
@@ -136,6 +138,24 @@ class QuoteViewModel: ObservableObject {
                     self?.createJobQuoteSuccess = success
                     self?.errorString = errorString
                     self?.isLoading = false
+                }
+            }
+        }
+    }
+    
+    func deleteQuote() {
+        guard let quoteModel = self.quoteModel else {
+            return
+        }
+        createJobQuoteSuccess = false
+        errorString = nil
+        isDeleteQuoteLoading = true
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.apiService.deleteQuote(quoteID: quoteModel.data._id) { [weak self]  success, errorString in
+                DispatchQueue.main.async {
+                    self?.deleteQuoteSuccess = success
+                    self?.errorString = errorString
+                    self?.isDeleteQuoteLoading = false
                 }
             }
         }

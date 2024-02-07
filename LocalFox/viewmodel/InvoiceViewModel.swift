@@ -21,6 +21,8 @@ class InvoiceViewModel: ObservableObject {
     @Published private(set) var isSaveInvoiceLoading: Bool = false
     @Published private(set) var isSendInvoiceLoading: Bool = false
     @Published var convertToInvoiceSuccess: Bool = false
+    @Published var voidInvoiceSuccess: Bool = false
+    @Published private(set) var isVoidInvoiceLoading: Bool = false
 
     
     init(apiService: APIServiceProtocol = MockAPIService()) {
@@ -159,6 +161,24 @@ class InvoiceViewModel: ObservableObject {
                     self?.convertToInvoiceSuccess = success
                     self?.errorString = errorString
                     self?.isLoading = false
+                }
+            }
+        }
+    }
+    
+    func voidInvoice() {
+        guard let invoiceModel = self.invoiceModel else {
+            return
+        }
+        convertToInvoiceSuccess = false
+        errorString = nil
+        isVoidInvoiceLoading = true
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.apiService.cancelInvoice(invoiceID: invoiceModel.data._id) { [weak self] success, errorString in
+                DispatchQueue.main.async {
+                    self?.voidInvoiceSuccess = success
+                    self?.errorString = errorString
+                    self?.isVoidInvoiceLoading = false
                 }
             }
         }

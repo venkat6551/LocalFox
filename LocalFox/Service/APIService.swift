@@ -43,6 +43,7 @@ protocol APIServiceProtocol {
     func sendInvoice(_invoiceID: String,params: [[String:Any]], completion: @escaping (_ success: Bool, _ errorString: String?)-> Void)
     func convertToInvoiceFromQuote(_quoteID: String, completion: @escaping (_ success: Bool, _ invoiceModel : NewInvoiceModel?, _ errorString: String?)-> Void)
     func cancelInvoice(invoiceID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func deleteQuote(quoteID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
 }
 
 
@@ -462,7 +463,7 @@ final class MockAPIService: APIServiceProtocol {
             .responseDecodable(of: SuccessResponseDecodable.self) { response in
                 switch response.result {
                 case .success(let data):
-                    completion(true,data.data)
+                    completion(true,nil)
                 case .failure(let err):
                     guard let data = response.data else {
                         completion(false,err.localizedDescription)
@@ -484,6 +485,41 @@ final class MockAPIService: APIServiceProtocol {
             }
     }
     
+    func deleteQuote(quoteID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let url = "\(APIEndpoints.CANCEL_QUOTE)\(quoteID)"
+        let request = AF.request(
+            url,
+            method: HTTPMethod.put,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: SuccessResponseDecodable.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(true,nil)
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.deleteQuote(quoteID: quoteID, completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
     
     func getProfile(completion: @escaping (_ success: Bool, _ profileModel : ProfileModel?, _ errorString: String?) -> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]

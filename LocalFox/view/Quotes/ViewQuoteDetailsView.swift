@@ -16,6 +16,7 @@ struct ViewQuoteDetailsView: View {
     @State private var showAddLineItem = false
     @State private var showErrorSneakBar = false
     @State private var showInvoiceErrorSneakBar = false
+    @State private var showDeletesuccessSneakBar = false
     @State private var showsuccessSneakBar = false
     @State private var showCreateInvoicePage = false
     let pub = NotificationCenter.default
@@ -104,8 +105,8 @@ struct ViewQuoteDetailsView: View {
                                     quoteViewModel.sendQuote()
                                 }, showLoading: quoteViewModel.isSendQuoteLoading ,bgColor: Color.TEXT_GREEN)
                                 MyButton(text: Strings.DELETE,onClickButton: {
-                                    
-                                } ,bgColor: Color.PRIMARY)
+                                    quoteViewModel.deleteQuote()
+                                }, showLoading: quoteViewModel.isDeleteQuoteLoading ,bgColor: Color.PRIMARY)
                             }.padding(.top,15)
                             MyButton(text: Strings.CONVERT_TO_INVOICE,onClickButton: {
                                 invoiceViewModel.convertToInvoice(quoteID: quote._id)
@@ -114,7 +115,7 @@ struct ViewQuoteDetailsView: View {
                     }
                 }
             }
-        }.disabled(invoiceViewModel.isLoading || quoteViewModel.isSendQuoteLoading)
+        }.disabled(invoiceViewModel.isLoading || quoteViewModel.isSendQuoteLoading || quoteViewModel.isDeleteQuoteLoading)
         .onAppear{
                        quoteViewModel.quoteModel = NewQuoteModel(success: true, data: quote)
         }
@@ -125,6 +126,15 @@ struct ViewQuoteDetailsView: View {
                 self.showInvoiceErrorSneakBar = true
             }
         }
+        
+        .onChange(of: quoteViewModel.isDeleteQuoteLoading) { isloading in
+            if (quoteViewModel.deleteQuoteSuccess == true && quoteViewModel.errorString == nil) {
+                self.showDeletesuccessSneakBar = true
+            } else if(quoteViewModel.isDeleteQuoteLoading != true && quoteViewModel.errorString != nil) {
+                self.showErrorSneakBar = true
+            }
+        }
+        
         .onChange(of: quoteViewModel.isSendQuoteLoading) { isloading in
             if (quoteViewModel.saveOrSendQuoteSuccess == true && quoteViewModel.errorString == nil ) {
                 self.showsuccessSneakBar = true
@@ -141,7 +151,18 @@ struct ViewQuoteDetailsView: View {
             show: $showsuccessSneakBar,
             snackbarType: SnackBarType.success,
             title: "Success",
-            message: "Quote Emailed SuccessFully",
+            message: "Your quote has been cancelled successfully",
+            secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+            onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss()
+                NotificationCenter.default.post(name: NSNotification.RELOAD_JOB_DETAILS,
+                                                object: nil, userInfo: nil)},
+            isAlignToBottom: true
+        )
+        .snackbar(
+            show: $showDeletesuccessSneakBar,
+            snackbarType: SnackBarType.success,
+            title: "Success",
+            message: "Quote Deleted SuccessFully",
             secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
             onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss()
                 NotificationCenter.default.post(name: NSNotification.RELOAD_JOB_DETAILS,

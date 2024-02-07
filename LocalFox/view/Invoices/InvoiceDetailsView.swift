@@ -13,6 +13,7 @@ struct InvoiceDetailsView: View {
     @StateObject var invoiceViewModel: InvoiceViewModel = InvoiceViewModel()
     @State private var showErrorSneakBar = false
     @State private var showsuccessSneakBar = false
+    @State private var showVoidSuccessSneakBar = false
     var body: some View {
         VStack {
             HStack {
@@ -95,15 +96,15 @@ struct InvoiceDetailsView: View {
                     MyButton(text: Strings.SEND_EMAIL,onClickButton: {
                         invoiceViewModel.sendInvoice()
                     }, showLoading: invoiceViewModel.isSendInvoiceLoading ,bgColor: Color.TEXT_GREEN)
-                    MyButton(text: Strings.DELETE,onClickButton: {
-                        
-                    } ,bgColor: Color.PRIMARY)
+                    MyButton(text: Strings.VOID,onClickButton: {
+                        invoiceViewModel.voidInvoice()
+                    }, showLoading: invoiceViewModel.isVoidInvoiceLoading ,bgColor: Color.PRIMARY)
                 }.padding(.top,15)
-                MyButton(text: Strings.CONVERT_TO_INVOICE,onClickButton: {
+                MyButton(text: Strings.MARK_INVOICE_AS_PAID,onClickButton: {
                     
                 } ).padding(.top,5)
             }
-        }.disabled(invoiceViewModel.isSendInvoiceLoading)
+        }.disabled(invoiceViewModel.isSendInvoiceLoading || invoiceViewModel.isVoidInvoiceLoading)
             .onAppear{
                 invoiceViewModel.invoiceModel =  NewInvoiceModel(success: true, data: invoice)
             }
@@ -116,11 +117,32 @@ struct InvoiceDetailsView: View {
                 }
             }
         
+            .onChange(of: invoiceViewModel.isVoidInvoiceLoading) { isloading in
+                if (invoiceViewModel.voidInvoiceSuccess == true && invoiceViewModel.errorString == nil ) {
+                    self.showVoidSuccessSneakBar = true
+                } else if(invoiceViewModel.errorString != nil) {
+                    self.showErrorSneakBar = true
+                }
+            }
+        
+        
             .snackbar(
                 show: $showsuccessSneakBar,
                 snackbarType: SnackBarType.success,
                 title: "Success",
                 message: "Invoice Emailed SuccessFully",
+                secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+                onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss()
+                    NotificationCenter.default.post(name: NSNotification.RELOAD_JOB_DETAILS,
+                                                    object: nil, userInfo: nil)},
+                isAlignToBottom: true
+            )
+        
+            .snackbar(
+                show: $showVoidSuccessSneakBar,
+                snackbarType: SnackBarType.success,
+                title: "Success",
+                message: "Invoice has been cancelled successfully",
                 secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
                 onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss()
                     NotificationCenter.default.post(name: NSNotification.RELOAD_JOB_DETAILS,

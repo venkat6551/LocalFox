@@ -48,12 +48,13 @@ enum APIEndpoints {
     static var CREATE_QUOTE = BASE_URL + "/v1/partner/quotes/createJobQuote"
     static var SAVE_QUOTE = BASE_URL + "/v1/partner/quotes/saveQuote"
     static var SEND_QUOTE = BASE_URL + "/v1/partner/quotes/sendQuote"
+    static var CANCEL_QUOTE = BASE_URL + "/v1/partner/quotes/cancelQuote/"
     
     static var CREATE_INVOICE = BASE_URL + "/v1/partner/invoices/createJobInvoice"
     static var SEND_INVOICE = BASE_URL + "/v1/partner/invoices/sendInvoice"
     static var SAVE_INVOICE = BASE_URL + "/v1/partner/invoices/saveInvoice"
     static var CONVERT_TO_INVOICE = BASE_URL + "/v1/partner/invoices/createInvoiceFromQuote"
-    static var CANCEL_INVOICE = BASE_URL + "/v1/partner/invoices/cancelInvoice"
+    static var CANCEL_INVOICE = BASE_URL + "/v1/partner/invoices/cancelInvoice/"
     
     //JOB INVITATION
     static var ACCEPT_INVITATION = BASE_URL + "/v1/partner/jobs/acceptJob/"
