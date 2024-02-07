@@ -44,6 +44,7 @@ protocol APIServiceProtocol {
     func convertToInvoiceFromQuote(_quoteID: String, completion: @escaping (_ success: Bool, _ invoiceModel : NewInvoiceModel?, _ errorString: String?)-> Void)
     func cancelInvoice(invoiceID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func deleteQuote(quoteID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func addJobNotes(jobID: String, notes: String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
 }
 
 
@@ -448,7 +449,6 @@ final class MockAPIService: APIServiceProtocol {
             }
     }
     
-    
     func cancelInvoice(invoiceID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
         let url = "\(APIEndpoints.CANCEL_INVOICE)\(invoiceID)"
@@ -462,7 +462,7 @@ final class MockAPIService: APIServiceProtocol {
             .validate(statusCode: 200..<300)
             .responseDecodable(of: SuccessResponseDecodable.self) { response in
                 switch response.result {
-                case .success(let data):
+                case .success(_):
                     completion(true,nil)
                 case .failure(let err):
                     guard let data = response.data else {
@@ -498,7 +498,7 @@ final class MockAPIService: APIServiceProtocol {
             .validate(statusCode: 200..<300)
             .responseDecodable(of: SuccessResponseDecodable.self) { response in
                 switch response.result {
-                case .success(let data):
+                case .success(_):
                     completion(true,nil)
                 case .failure(let err):
                     guard let data = response.data else {
@@ -514,6 +514,43 @@ final class MockAPIService: APIServiceProtocol {
                             let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
                             completion(false,errorObj.error)
                         } catch{
+                            completion(false,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
+    
+    func addJobNotes(jobID: String, notes: String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let parameters: Parameters = ["job" :jobID, "notes":notes]
+        let request = AF.request(
+            APIEndpoints.ADD_JOB_NOTES,
+            method: HTTPMethod.post,
+            parameters: parameters,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: AddJobNotesDataResponseDecodable.self) { response in
+                switch response.result {
+                case .success(_):
+                    completion(true,nil)
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.addJobNotes(jobID: jobID, notes: notes, completion: completion)
+                        }
+                    } else {
+                        do {
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch {
                             completion(false,error.localizedDescription)
                         }
                     }

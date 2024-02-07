@@ -31,6 +31,21 @@ struct OptionalErrorResponseDecodable: Decodable {
     let error: String?
 }
 
+struct AddJobNotesDataResponseDecodable: Decodable {
+    let success: Bool
+    let data: NotesDataResponse
+}
+
+struct NotesDataResponse: Decodable {
+    var job: String
+    var partner: String
+    var activityType: String
+    var activityDescription: String
+    var _id: String
+    var notes: String
+    var createdDate: String
+    var lastUpdatedDate: String
+}
 
 struct FCMRegistrationResponseData: Decodable {
     let _id:String
@@ -70,13 +85,11 @@ struct LoginResponseDecodable: Decodable {
 
 
 struct AuthenticateResponseDecodable: Decodable {
-    
     let id: Int?
     let parentUserId: Int?
     let createdByUserId: Int?
     let userStatus: String?
     let token: String?
-    
 }
 
 struct GetUsersResponseDecodable: Decodable {

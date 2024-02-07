@@ -149,9 +149,7 @@ struct CreateQuoteView: View {
                 self.presentationMode.wrappedValue.dismiss()
                 NotificationCenter.default.post(name: NSNotification.RELOAD_JOB_DETAILS,
                                                 object: nil, userInfo: nil)
-                
-            }
-            ,
+            },
             isAlignToBottom: true
         )
         .snackbar(

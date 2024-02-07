@@ -9,6 +9,9 @@ import SwiftUI
 
 struct AddNotesView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
+    @StateObject var jobDetailsVM: JobDetailsViewModel
+    @State private var showsuccessSneakBar = false
+    @State private var showErrorSneakBar = false
     @State var notes = ""
     var body: some View {
         VStack {
@@ -36,15 +39,45 @@ struct AddNotesView: View {
                                 .frame(height: 162)
                 
                 MyButton(text: Strings.SUBMIT, onClickButton: {
-                    
-                },  bgColor: Color.PRIMARY).padding(.top, 25)
+                    jobDetailsVM.addJobNotes(notes: notes)
+                }, showLoading: jobDetailsVM.isLoading, bgColor: Color.PRIMARY).padding(.top, 25)
                
                 Spacer()
             } .padding(.horizontal,25)
         }.background(Color.SCREEN_BG)
+            .disabled(jobDetailsVM.isLoading)
+            .onChange(of: jobDetailsVM.isLoading) { isloading in
+                if (jobDetailsVM.addJobNotesSuccess == true && jobDetailsVM.errorString == nil) {
+                    self.showsuccessSneakBar = true
+                } else if(jobDetailsVM.errorString != nil) {
+                    self.showErrorSneakBar = true
+                }
+            }
+            .snackbar(
+                show: $showsuccessSneakBar,
+                snackbarType: SnackBarType.success,
+                title: "Success",
+                message: "Noted Added SuccessFully",
+                secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+                onSnackbarDismissed: {
+                    self.presentationMode.wrappedValue.dismiss()
+                    NotificationCenter.default.post(name: NSNotification.RELOAD_JOB_DETAILS,
+                                                    object: nil, userInfo: nil)
+                },
+                isAlignToBottom: true
+            )
+            .snackbar(
+                show: $showErrorSneakBar,
+                snackbarType: SnackBarType.error,
+                title: "Error",
+                message: jobDetailsVM.errorString,
+                secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+                onSnackbarDismissed: { },
+                isAlignToBottom: true
+            )
     }
 }
 
-#Preview {
-    AddNotesView()
-}
+//#Preview {
+//    AddNotesView()
+//}

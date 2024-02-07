@@ -153,7 +153,6 @@ struct JobInviation: Decodable,Identifiable,Hashable {
     }
 }
 
-
 struct NewJob: Decodable {
     let location: Location?
     let _id: String?

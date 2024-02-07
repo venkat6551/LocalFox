@@ -149,7 +149,7 @@ struct LeadDetailScreen: View {
             AddScheduleView()
         }
         .sheet(isPresented: $showAddNotes) {
-            AddNotesView()
+            AddNotesView(jobDetailsVM: jobDetailsVM)
         }
         .navigationBarHidden(true)
         .background(Color.SCREEN_BG.ignoresSafeArea())

@@ -12,7 +12,7 @@ class JobDetailsViewModel: ObservableObject {
     @Published private(set) var isLoading: Bool = false
     @Published var errorString: String?
     @Published var getJobDetailsSuccess: Bool = false
-    
+    @Published var addJobNotesSuccess: Bool = false
     @Published var createJobquoteSuccess: Bool = false
     
     private let apiService: APIServiceProtocol
@@ -52,6 +52,22 @@ class JobDetailsViewModel: ObservableObject {
                         self?.isLoading = false
                     }
                 }
+            }
+        }
+    }
+    
+    func addJobNotes(notes: String) {
+        guard let data = self.jobDetailsModel?.data else {
+            return
+        }
+        addJobNotesSuccess = false
+        errorString = nil
+        isLoading = true
+        apiService.addJobNotes(jobID: data.job.id, notes: notes) {[weak self] success, errorString in
+            DispatchQueue.main.async {
+                self?.addJobNotesSuccess = success
+                self?.errorString = errorString
+                self?.isLoading = false
             }
         }
     }

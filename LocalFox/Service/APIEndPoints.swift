@@ -59,5 +59,6 @@ enum APIEndpoints {
     //JOB INVITATION
     static var ACCEPT_INVITATION = BASE_URL + "/v1/partner/jobs/acceptJob/"
     static var REJECT_INVITATION = BASE_URL + "/v1/partner/jobs/declineJob/"
+    static var ADD_JOB_NOTES = BASE_URL + "/v1/partner/jobActivity/addJobNotes"
 
 }
