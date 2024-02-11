@@ -162,5 +162,6 @@ struct Strings {
     static let TAX_TYPE = "Tax Type"
     static let TITLE =  "Title"
     static let MARK_INVOICE_AS_PAID = "Mark as invoice paid"
+    static let ADD_BOOKING = "Add booking"
 }
 

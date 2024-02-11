@@ -68,6 +68,9 @@ struct ScheduleCardView: View {
             }
             Spacer()
         }.frame(maxWidth: .infinity).cardify()
+            .onTapGesture {
+                onCardClick()
+            }
     }
     
     
@@ -87,7 +90,7 @@ struct ScheduleCardView: View {
         let startdate = dateFormatter.date(from: schedule.startTime) ?? Date()
         let enddate = dateFormatter.date(from: schedule.endTime) ?? Date()
         let difference = Calendar.current.dateComponents([.hour, .minute], from: startdate, to: enddate)
-        var formattedString = "";// String(format: "%02ld%02ld", difference.hour!, difference.minute!)
+        var formattedString = ""
         if (schedule.startTime == "05:40" && schedule.endTime == "02:39"){
             print("its time")
         }

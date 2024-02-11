@@ -13,6 +13,9 @@ class SchedulesViewModel: ObservableObject {
     @Published private(set) var isLoading: Bool = false
     @Published var errorString: String?
     @Published var getSchedulesSuccess: Bool = false
+    @Published var deleteSchedulesSuccess: Bool = false
+    
+    
     private let apiService: APIServiceProtocol
     init(apiService: APIServiceProtocol = MockAPIService()) {
         self.apiService = apiService
@@ -29,6 +32,22 @@ class SchedulesViewModel: ObservableObject {
                     self?.getSchedulesSuccess = success
                     self?.errorString = errorString
                     self?.schedulesModel = schedulesModel
+                    self?.isLoading = false
+                }
+            }
+        }
+    }
+    
+    func deleteSchedule(scheduleID: String) {
+        deleteSchedulesSuccess = false
+        errorString = nil
+        isLoading = true
+        
+        DispatchQueue.global(qos: .userInitiated).async {            
+            self.apiService.deleteSchedule(scheduleID: scheduleID) {[weak self] success, errorString in
+                DispatchQueue.main.async {
+                    self?.deleteSchedulesSuccess = success
+                    self?.errorString = errorString
                     self?.isLoading = false
                 }
             }

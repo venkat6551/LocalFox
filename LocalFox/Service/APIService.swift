@@ -46,6 +46,7 @@ protocol APIServiceProtocol {
     func deleteQuote(quoteID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func addJobNotes(jobID: String, notes: String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func getSchedules(completion: @escaping (_ success: Bool, _ schedulesModel : SchedulesModel?, _ errorString: String?)-> Void)
+    func deleteSchedule(scheduleID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
 }
 
 
@@ -667,6 +668,41 @@ final class MockAPIService: APIServiceProtocol {
             }
     }
     
+    func deleteSchedule(scheduleID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let url = "\(APIEndpoints.DELETE_SCHEDULE)/\(scheduleID)"
+        let request = AF.request(
+            url,
+            method: HTTPMethod.delete,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: SuccessResponseDecodable.self) { response in
+                switch response.result {
+                case .success(_):
+                    completion(true,nil)
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.deleteSchedule(scheduleID: scheduleID, completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
     
     func createJobQuote(_jobID: String, completion: @escaping (_ success: Bool, _ jobDetailsModel : NewQuoteModel?, _ errorString: String?)-> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]

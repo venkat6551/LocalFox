@@ -39,6 +39,7 @@ extension Double {
 extension NSNotification {
     static let CLOSE_QUOTE_DETAILS = Notification.Name.init("CloseQuoteDetails")
     static let RELOAD_JOB_DETAILS = Notification.Name.init("ReloadJobDetails")
+    static let RELOAD_SCHEDULES = Notification.Name.init("ReloadSchedules")
 }
 
 

@@ -79,7 +79,7 @@ struct LeadDetailScreen: View {
                                         self.newInvoiceViewModel.createJobInvoice(jobID: self.job?.id)
                                     }
                                 case 3 :
-                                    SchedulesView()
+                                    DetailsView(job: job)
                                 default:
                                     DetailsView(job: job)
                                 }
@@ -272,13 +272,7 @@ struct InvoiceView: View {
     }
 }
 
-struct SchedulesView: View {
-    var body: some View {
-        VStack {
-            
-        }
-    }
-}
+
 
 struct RowView: View {
     var title: String

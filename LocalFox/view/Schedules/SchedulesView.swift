@@ -9,7 +9,9 @@ import SwiftUI
 
 struct SchedulesView: View {
     @ObservedObject var schedulesVM: SchedulesViewModel
+    @State private var showScheduleDetails = false
     @State var selectedDateTypeIndex = 0
+    @State private var selectedSchedule:ScheduleModel?
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -52,7 +54,8 @@ struct SchedulesView: View {
                     if let schedules = schedulesVM.schedulesModel?.data {
                         ForEach(schedules) { schedule in
                             ScheduleCardView(schedule: schedule) {
-                                
+                                selectedSchedule = schedule
+                                showScheduleDetails = true
                             }
                         }
                     }
@@ -68,6 +71,16 @@ struct SchedulesView: View {
                 schedulesVM.getSchedules()
             }
             .background(Color.SCREEN_BG.ignoresSafeArea())
+            .navigationBarHidden(true)
+            .navigationDestination(isPresented: $showScheduleDetails) {
+                if let selectedSchedule = selectedSchedule {
+                    ScheduleDetailView(schedulesVM: schedulesVM, selectedSchedule: selectedSchedule)
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: NSNotification.RELOAD_SCHEDULES))
+                    { obj in
+                        schedulesVM.getSchedules()
+                    }
     }
 }
 

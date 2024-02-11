@@ -14,6 +14,8 @@
 		CC056F802B73F2830073C911 /* ScheduleCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC056F7F2B73F2830073C911 /* ScheduleCardView.swift */; };
 		CC056F822B7405E80073C911 /* SchedulesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC056F812B7405E80073C911 /* SchedulesModel.swift */; };
 		CC056F842B7408850073C911 /* SchedulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC056F832B7408850073C911 /* SchedulesViewModel.swift */; };
+		CC056F862B78CFA30073C911 /* ScheduleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC056F852B78CFA30073C911 /* ScheduleDetailView.swift */; };
+		CC056F8C2B78D2AD0073C911 /* ScheduleJobCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC056F8B2B78D2AD0073C911 /* ScheduleJobCardView.swift */; };
 		CC11CC2A2A4D902D0096065B /* WrappingHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC11CC292A4D902D0096065B /* WrappingHStack.swift */; };
 		CC1AE67129ABBF12005FC846 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1AE67029ABBF12005FC846 /* ImageLoader.swift */; };
 		CC1AE67329ABBF28005FC846 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1AE67229ABBF28005FC846 /* ImageCache.swift */; };
@@ -127,6 +129,8 @@
 		CC056F7F2B73F2830073C911 /* ScheduleCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCardView.swift; sourceTree = "<group>"; };
 		CC056F812B7405E80073C911 /* SchedulesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulesModel.swift; sourceTree = "<group>"; };
 		CC056F832B7408850073C911 /* SchedulesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulesViewModel.swift; sourceTree = "<group>"; };
+		CC056F852B78CFA30073C911 /* ScheduleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailView.swift; sourceTree = "<group>"; };
+		CC056F8B2B78D2AD0073C911 /* ScheduleJobCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleJobCardView.swift; sourceTree = "<group>"; };
 		CC11CC292A4D902D0096065B /* WrappingHStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrappingHStack.swift; sourceTree = "<group>"; };
 		CC1AE67029ABBF12005FC846 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		CC1AE67229ABBF28005FC846 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
@@ -273,6 +277,8 @@
 			children = (
 				CC056F7D2B73F0200073C911 /* SchedulesView.swift */,
 				CC056F7F2B73F2830073C911 /* ScheduleCardView.swift */,
+				CC056F852B78CFA30073C911 /* ScheduleDetailView.swift */,
+				CC056F8B2B78D2AD0073C911 /* ScheduleJobCardView.swift */,
 			);
 			path = Schedules;
 			sourceTree = "<group>";
@@ -599,6 +605,7 @@
 				CD07689D2972C97D00CB7075 /* MobileNumberView.swift in Sources */,
 				CC056F822B7405E80073C911 /* SchedulesModel.swift in Sources */,
 				CDF2B02F2941D8AF00CF2B28 /* LoginView.swift in Sources */,
+				CC056F8C2B78D2AD0073C911 /* ScheduleJobCardView.swift in Sources */,
 				CC3AEAAC2B067032008D9AB6 /* JobDetailsModel.swift in Sources */,
 				CC3AEAB02B0760CC008D9AB6 /* ActivityRowView.swift in Sources */,
 				CC56571E29C0E4260098D16F /* NearByEnum.swift in Sources */,
@@ -614,6 +621,7 @@
 				CC241E5C2B48009F00A34957 /* AddScheduleView.swift in Sources */,
 				CC241E5E2B4800AA00A34957 /* AddInvoiceView.swift in Sources */,
 				CC241E5A2B48009600A34957 /* AddQuoteLineItemView.swift in Sources */,
+				CC056F862B78CFA30073C911 /* ScheduleDetailView.swift in Sources */,
 				CD6A945829439B56003A8368 /* LandingView.swift in Sources */,
 				CC1CA0982A0915600058EA96 /* NotApprovedScreen.swift in Sources */,
 				CD076889297287EB00CB7075 /* ProfileSettingsView.swift in Sources */,
