@@ -12,6 +12,7 @@ struct SchedulesView: View {
     @State private var showScheduleDetails = false
     @State var selectedDateTypeIndex = 0
     @State private var selectedSchedule:ScheduleModel?
+    @State private var selectedDate = Date()
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -34,11 +35,20 @@ struct SchedulesView: View {
                 Button {
                     selectedDateTypeIndex = 2
                 } label: {
-                    Text("Select date").applyFontMedium(color: selectedDateTypeIndex == 2 ? Color.white :Color.DEFAULT_TEXT, size: 13).padding(.horizontal, 10)
+                    Text(selectedDateTypeIndex == 2 ? getselectedDateStr() : "Select date").applyFontMedium(color: selectedDateTypeIndex == 2 ? Color.white :Color.DEFAULT_TEXT, size: 13).padding(.horizontal, 10)
                 }.frame(height: 32)
                     .background(selectedDateTypeIndex == 2 ? Color.PRIMARY :Color.BG_COLOR_2).cardify()
+                    .overlay{DatePicker(
+                                     "",
+                                     selection: $selectedDate,
+                                     displayedComponents: [.date]
+                                 )
+                                  .blendMode(.destinationOver) //MARK: use this extension to keep the clickable functionality
+                                  .onChange(of: selectedDate, perform: { value in
+                                      selectedDateTypeIndex = 2
+                                   })
+                              }
             }
-            
             HStack {
                 Text(Strings.BOOKINGS).applyFontBold(size: 20)
                 Spacer()
@@ -50,16 +60,15 @@ struct SchedulesView: View {
                         Text("Loading...")
                     }
                 }
-                else {
-                    if let schedules = schedulesVM.schedulesModel?.data {
-                        ForEach(schedules) { schedule in
-                            ScheduleCardView(schedule: schedule) {
-                                selectedSchedule = schedule
-                                showScheduleDetails = true
-                            }
+                else  if(!getFilteredList().isEmpty){
+                    ForEach(getFilteredList()) { schedule in
+                        ScheduleCardView(schedule: schedule) {
+                            selectedSchedule = schedule
+                            showScheduleDetails = true
                         }
                     }
-                    
+                } else {
+                    Text("No Schedules")
                 }
                 Spacer()
             } .refreshable {
@@ -81,6 +90,33 @@ struct SchedulesView: View {
                     { obj in
                         schedulesVM.getSchedules()
                     }
+    }
+
+    private func getFilteredList() -> [ScheduleModel] {
+        var schedulesList:[ScheduleModel]  = []
+        if let schedules = schedulesVM.schedulesModel?.data {
+            var filterDateStr =  getDateFromFilter()
+            schedulesList = schedules.filter { model in
+                model.date == filterDateStr
+            }
+        }
+        return schedulesList;
+    }
+    func getDateFromFilter() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateFormates.SHORT_DATE_TIME_2
+        if selectedDateTypeIndex == 0 {
+            return dateFormatter.string(from: Date.today)
+        } else if (selectedDateTypeIndex == 1){
+            return dateFormatter.string(from: Date.tomorrow)
+        } else {
+            return dateFormatter.string(from:selectedDate)
+        }
+    }
+    func getselectedDateStr() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateFormates.SHORT_DATE_TIME_2
+        return dateFormatter.string(from:selectedDate)
     }
 }
 
