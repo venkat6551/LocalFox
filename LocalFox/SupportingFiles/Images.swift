@@ -27,6 +27,7 @@ enum Images {
     static let CHECKMARK = Image("CheckMark")
     static let LEADS_TAB = Image("leadsTabIcon")
     static let PROFILE_TAB = Image("profileTabIcon")
+    static let SCHEDULE_TAB = Image("Beaker")
     static let CLOSE = Image("Close")
     static let CALL = Image("call")
     static let PROFILE = Image("profile")

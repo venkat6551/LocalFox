@@ -45,6 +45,7 @@ protocol APIServiceProtocol {
     func cancelInvoice(invoiceID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func deleteQuote(quoteID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func addJobNotes(jobID: String, notes: String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func getSchedules(completion: @escaping (_ success: Bool, _ schedulesModel : SchedulesModel?, _ errorString: String?)-> Void)
 }
 
 
@@ -616,6 +617,42 @@ final class MockAPIService: APIServiceProtocol {
                     if (response.response?.statusCode == 401) {
                         self.refreshLogin {
                             self.getJobs(_pagenumber: _pagenumber, completion: completion)
+                        }
+                    }
+                    else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,nil,errorObj.error)
+                        } catch{
+                            completion(false,nil,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
+    
+    func getSchedules(completion: @escaping (_ success: Bool, _ schedulesModel: SchedulesModel?, _ errorString: String?)-> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let request = AF.request(
+            APIEndpoints.GET_SCHEDULES,
+            method: HTTPMethod.get,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: SchedulesModel.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(true,data,"")
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,nil,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.getSchedules(completion: completion)
                         }
                     }
                     else {

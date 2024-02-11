@@ -54,5 +54,6 @@ extension Color {
     static let EXPIRED_RED = Color("ExpiredRed")
     
     static let BG_COLOR_1 = Color("BGColor1")
+    static let BG_COLOR_2 = Color("BGColor2")
     
 }

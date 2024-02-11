@@ -10,6 +10,7 @@ import SwiftUI
 struct LandingView: View {
     @StateObject var profileVM: ProfileViewModel
     @StateObject var jobsViewModel: JobsViewModel = JobsViewModel()
+    @StateObject var schedulesViewModel: SchedulesViewModel = SchedulesViewModel()
     @EnvironmentObject var authenticationStatus: AuthenticationStatus
     @State private var showBottomSheet: Bool = false
     @State private var filterModel: FilterModel = FilterModel(type: FilterType.new, isAscending: true)
@@ -20,12 +21,14 @@ struct LandingView: View {
         case leads
         case search
         case profile
+        case schedule
         
         var icon: Image {
             switch self {
             case .leads: return Images.LEADS_TAB
             case .search: return Images.SEARCH_TAB
             case .profile: return Images.PROFILE_TAB
+            case .schedule: return Images.SCHEDULE_TAB
             }
         }
         
@@ -34,12 +37,14 @@ struct LandingView: View {
             case .leads: return Strings.LEADS
             case .search: return Strings.SEARCH
             case .profile: return Strings.PROFILE
+            case .schedule: return Strings.SCHEDULE
             }
         }
     }
     
     private let tabs: [TabItem] = [
         TabItem.leads,
+        TabItem.schedule,
         TabItem.search,
         TabItem.profile
     ]
@@ -64,11 +69,13 @@ struct LandingView: View {
                         }
                         case .profile:
                             ProfileView(profileVM: profileVM)
+                        case .schedule:
+                            SchedulesView(schedulesVM: schedulesViewModel)
                         }
                     }
                 .frame(maxHeight: .infinity)
                     .padding(.bottom, -1 * Dimens.TAB_BAR_CORNER_RADIUS)
-                HStack(spacing: 40) {
+                HStack(spacing: 20) {
                     Spacer()
                     ForEach(tabs, id: \.self) { tabItem in
                         Button(action: {

@@ -102,22 +102,34 @@ enum DateFormates {
     static let DATE: String = "MMM d, y"
     static let DATE_TIME: String = "\(TIME) \(DATE)"
     
-    
-    //"2023-03-28T13:39:34.124Z",
     static let API_DATE_TIME: String = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-    //"10-Aug-2024"
     static let SHORT_DATE_TIME: String = "dd-MMM-yyyy"
-    //21 Jan 2022 11:45 PM"
+    static let SHORT_DATE_TIME_2: String = "yyyy-MM-dd"
     static let LOCAL_DATE_TIME: String = "dd MMM yyyy HH:mm a"
-    //static let API_DATE_TIME: String = "yyyy-MM-dd'T'HH:mm:ssZ"
-    //static let API_DATE_TIME_RECENT_PAIRING: String = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-    
-    // TODO: Keep an eye on this format on API side, if this changes, the date will disappear on UI. Blame DBP people :D
-//    static let API_DATE_TIME: String = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"
-    
+    static let LOCAL_DAY: String = "EE"
+    static let LOCAL_MONTH: String = "MMM"
+    static let LOCAL_ONLY_DATE: String = "dd"
 }
 
 extension Date {
+    
+    var weekDay: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateFormates.LOCAL_DAY
+        return dateFormatter.string(from: self)
+    }
+    
+    var onlyDate: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateFormates.LOCAL_ONLY_DATE
+        return dateFormatter.string(from: self)
+    }
+    
+    var onlyMonth: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateFormates.LOCAL_MONTH
+        return dateFormatter.string(from: self)
+    }
     
     // Gives date in specific formate, such as "01:00:00 AM June 15, 2022"
     var dateAndTimeString: String {

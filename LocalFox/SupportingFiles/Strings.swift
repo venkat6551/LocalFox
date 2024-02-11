@@ -117,6 +117,7 @@ struct Strings {
     static let CREATE_NEW_QUOTE = "Create a new quote"
     static let QUOTE_DETAILS = "Quote Details"
     static let CREATE_QUOTE = "Create Quote"
+    static let BOOKINGS = "Bookings"
     
     
     
