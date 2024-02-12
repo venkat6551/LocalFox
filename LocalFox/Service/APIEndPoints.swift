@@ -64,4 +64,5 @@ enum APIEndpoints {
     //SCHEDULES
     static var GET_SCHEDULES = BASE_URL + "/v1/partner/schedule/getSchedules"
     static var DELETE_SCHEDULE = BASE_URL + "/v1/partner/schedule/deleteSchedule"
+    static var CREATE_SCHEDULE = BASE_URL + "/v1/partner/schedule/createSchedule"
 }

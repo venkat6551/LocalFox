@@ -47,6 +47,7 @@ protocol APIServiceProtocol {
     func addJobNotes(jobID: String, notes: String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func getSchedules(completion: @escaping (_ success: Bool, _ schedulesModel : SchedulesModel?, _ errorString: String?)-> Void)
     func deleteSchedule(scheduleID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func addSchedule(jobID:String, date: String,starttime: String, endTime:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
 }
 
 
@@ -704,6 +705,48 @@ final class MockAPIService: APIServiceProtocol {
             }
     }
     
+    func addSchedule(jobID:String, date: String,starttime: String, endTime:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let parameters: Parameters = [
+            "date":date,
+            "startTime":starttime,
+            "endTime": endTime,
+            "job":jobID
+        ]
+        let request = AF.request(
+            APIEndpoints.CREATE_SCHEDULE,
+            method: HTTPMethod.post,
+            parameters: parameters,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: AddJobScheduleDataResponseDecodable.self) { response in
+                switch response.result {
+                case .success(_):
+                    completion(true,nil)
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.addSchedule(jobID: jobID, date: date, starttime: starttime, endTime: endTime, completion: completion)
+//                            self.addJobNotes(jobID: jobID, notes: notes, completion: completion)
+                        }
+                    } else {
+                        do {
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch {
+                            completion(false,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
     func createJobQuote(_jobID: String, completion: @escaping (_ success: Bool, _ jobDetailsModel : NewQuoteModel?, _ errorString: String?)-> Void) {
         let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
         

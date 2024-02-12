@@ -28,7 +28,6 @@
 		CC241E562B4720C900A34957 /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E552B4720C900A34957 /* FloatingButton.swift */; };
 		CC241E582B48008600A34957 /* AddNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E572B48008600A34957 /* AddNotesView.swift */; };
 		CC241E5A2B48009600A34957 /* AddQuoteLineItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E592B48009600A34957 /* AddQuoteLineItemView.swift */; };
-		CC241E5C2B48009F00A34957 /* AddScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E5B2B48009F00A34957 /* AddScheduleView.swift */; };
 		CC241E5E2B4800AA00A34957 /* AddInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E5D2B4800AA00A34957 /* AddInvoiceView.swift */; };
 		CC241E602B4AF39000A34957 /* QuoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E5F2B4AF39000A34957 /* QuoteViewModel.swift */; };
 		CC241E652B4C39AC00A34957 /* DropDownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC241E642B4C39AC00A34957 /* DropDownPicker.swift */; };
@@ -145,7 +144,6 @@
 		CC241E552B4720C900A34957 /* FloatingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		CC241E572B48008600A34957 /* AddNotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNotesView.swift; sourceTree = "<group>"; };
 		CC241E592B48009600A34957 /* AddQuoteLineItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuoteLineItemView.swift; sourceTree = "<group>"; };
-		CC241E5B2B48009F00A34957 /* AddScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleView.swift; sourceTree = "<group>"; };
 		CC241E5D2B4800AA00A34957 /* AddInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInvoiceView.swift; sourceTree = "<group>"; };
 		CC241E5F2B4AF39000A34957 /* QuoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteViewModel.swift; sourceTree = "<group>"; };
 		CC241E642B4C39AC00A34957 /* DropDownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownPicker.swift; sourceTree = "<group>"; };
@@ -442,7 +440,6 @@
 				CC845CE02A503E6600E28402 /* Preview.swift */,
 				CC3AEAAF2B0760CC008D9AB6 /* ActivityRowView.swift */,
 				CC241E572B48008600A34957 /* AddNotesView.swift */,
-				CC241E5B2B48009F00A34957 /* AddScheduleView.swift */,
 				CC241E5D2B4800AA00A34957 /* AddInvoiceView.swift */,
 			);
 			path = view;
@@ -625,7 +622,6 @@
 				CCF81ABC298D6DAB00A6E2A5 /* APIService.swift in Sources */,
 				CD5066212971C2AD00FC4804 /* FiltersSheet.swift in Sources */,
 				CD0768972972B48500CB7075 /* SetPasswordView.swift in Sources */,
-				CC241E5C2B48009F00A34957 /* AddScheduleView.swift in Sources */,
 				CC241E5E2B4800AA00A34957 /* AddInvoiceView.swift in Sources */,
 				CC241E5A2B48009600A34957 /* AddQuoteLineItemView.swift in Sources */,
 				CC056F862B78CFA30073C911 /* ScheduleDetailView.swift in Sources */,

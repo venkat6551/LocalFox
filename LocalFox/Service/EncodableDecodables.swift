@@ -36,6 +36,11 @@ struct AddJobNotesDataResponseDecodable: Decodable {
     let data: NotesDataResponse
 }
 
+struct AddJobScheduleDataResponseDecodable: Decodable {
+    let success: Bool
+    //let data: ScheduleModel
+}
+
 struct NotesDataResponse: Decodable {
     var job: String
     var partner: String

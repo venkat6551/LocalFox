@@ -165,5 +165,8 @@ struct Strings {
     static let MARK_INVOICE_AS_PAID = "Mark as invoice paid"
     static let ADD_BOOKING = "Add booking"
     static let BOOKING_DETAILS = "Booking Details"
+    static let DATE = "Date"
+    static let START_TIME = "Start time"
+    static let END_TIME = "End time"
 }
 

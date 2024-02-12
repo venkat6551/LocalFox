@@ -13,6 +13,7 @@ class JobDetailsViewModel: ObservableObject {
     @Published var errorString: String?
     @Published var getJobDetailsSuccess: Bool = false
     @Published var addJobNotesSuccess: Bool = false
+    @Published var addScheduleSuccess: Bool = false
     @Published var createJobquoteSuccess: Bool = false
     
     private let apiService: APIServiceProtocol
@@ -70,6 +71,24 @@ class JobDetailsViewModel: ObservableObject {
                 self?.isLoading = false
             }
         }
+    }
+    
+    func addJobSchedule(date: String,starttime: String, endTime:String) {
+        guard let data = self.jobDetailsModel?.data else {
+            return
+        }
+        addScheduleSuccess = false
+        errorString = nil
+        isLoading = true
+        
+        apiService.addSchedule(jobID: data.job.id, date: date, starttime: starttime, endTime: endTime) { [weak self] success, errorString in
+            DispatchQueue.main.async {
+                self?.addScheduleSuccess = success
+                self?.errorString = errorString
+                self?.isLoading = false
+            }
+        }
+       
     }
 }
 

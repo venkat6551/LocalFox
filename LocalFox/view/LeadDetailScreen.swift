@@ -80,7 +80,7 @@ struct LeadDetailScreen: View {
                                     }
                                 case 3 :
                                     JobSchdulesView(schedules: jobDetailsVM.jobDetailsModel?.data?.schedules, onClickBtn: {
-                                        
+                                        showAddSchedule = true
                                     })
                                 default:
                                     DetailsView(job: job)
@@ -147,9 +147,11 @@ struct LeadDetailScreen: View {
                 CreateInvoiceView(invoiceViewModel: newInvoiceViewModel)
             }
         }
-        .sheet(isPresented: $showAddSchedule) {
-            AddScheduleView()
+        
+        .navigationDestination(isPresented: $showAddSchedule) {
+            CreateScheduleView(jobDetailsVM: jobDetailsVM)
         }
+
         .sheet(isPresented: $showAddNotes) {
             AddNotesView(jobDetailsVM: jobDetailsVM)
         }
