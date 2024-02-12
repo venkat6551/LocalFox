@@ -79,7 +79,9 @@ struct LeadDetailScreen: View {
                                         self.newInvoiceViewModel.createJobInvoice(jobID: self.job?.id)
                                     }
                                 case 3 :
-                                    DetailsView(job: job)
+                                    JobSchdulesView(schedules: jobDetailsVM.jobDetailsModel?.data?.schedules, onClickBtn: {
+                                        
+                                    })
                                 default:
                                     DetailsView(job: job)
                                 }
@@ -246,6 +248,35 @@ struct QuoteView: View {
     }
 }
 
+struct JobSchdulesView: View {
+    
+    var schedules:[Schedule]?
+    @StateObject var schedulesViewModel: SchedulesViewModel = SchedulesViewModel()
+    let onClickBtn:()->Void
+    var body: some View {
+        VStack {
+            if(schedules != nil && !(schedules?.isEmpty ?? true)) {
+                if let schedules = schedules {
+                    ForEach(0 ..< schedules.count, id: \.self) {index in
+                        let schedule = schedules[index]
+                        NavigationLink {
+                            JobScheduleDetailsView(selectedSchedule: schedule)
+                        } label: {
+                            ScheduleCardForJobView(schedule: schedule)
+                        }
+                    }
+                }
+            } else {
+                NoSchedulesView {
+                    onClickBtn()
+                }
+            }
+        }
+    }
+}
+
+
+
 struct InvoiceView: View {
     var invoices:[InvoiceModel]?
     let onClickBtn:()->Void
@@ -316,6 +347,23 @@ struct NoQuotesView: View {
         }.frame(height: 400)
     }
 }
+
+struct NoSchedulesView: View {
+    
+    let onClickBtn:()->Void
+    var body: some View {
+        VStack(spacing: 10) {
+            Spacer()
+            Text(Strings.NO_SCHEDULES_TITLE).applyFontBold(color:Color.DEFAULT_TEXT,size: 16)
+            Text(Strings.NO_SCHEDULES_MESSAGE).applyFontRegular(color:Color.DEFAULT_TEXT,size: 14).multilineTextAlignment(.center).padding(.horizontal, 70)
+            Spacer()
+            MyButton(text: Strings.CREATE_NEW_QUOTE) {
+                onClickBtn()
+            }
+        }.frame(height: 400)
+    }
+}
+
 
 struct NoInvoicesView: View {
     let onClickBtn:()->Void

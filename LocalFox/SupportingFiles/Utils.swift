@@ -53,8 +53,11 @@ extension String {
         dateFormatter.dateFormat = sorceFormate
         let yourDate =  dateFormatter.date(from: self)
         dateFormatter.dateFormat = destinationFormate
-        let myStringDate = dateFormatter.string(from: yourDate!)
-        return myStringDate
+        if let date = yourDate   {
+            let myStringDate = dateFormatter.string(from: date)
+            return myStringDate
+        }
+        return nil
     }
     
     var detailedDate: String? {

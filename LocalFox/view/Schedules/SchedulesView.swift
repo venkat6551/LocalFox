@@ -95,7 +95,7 @@ struct SchedulesView: View {
     private func getFilteredList() -> [ScheduleModel] {
         var schedulesList:[ScheduleModel]  = []
         if let schedules = schedulesVM.schedulesModel?.data {
-            var filterDateStr =  getDateFromFilter()
+            let filterDateStr =  getDateFromFilter()
             schedulesList = schedules.filter { model in
                 model.date == filterDateStr
             }

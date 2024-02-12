@@ -1,16 +1,16 @@
 //
-//  ScheduleDetailView.swift
+//  JobScheduleDetailsView.swift
 //  Local Fox
 //
-//  Created by venkatesh karra on 11/02/24.
+//  Created by venkatesh karra on 12/02/24.
 //
 
 import SwiftUI
 
-struct ScheduleDetailView: View {
+struct JobScheduleDetailsView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
-    @StateObject var schedulesVM: SchedulesViewModel
-    var selectedSchedule: ScheduleModel
+    @StateObject var schedulesForJobVM: SchedulesForJobViewModel =  SchedulesForJobViewModel()
+    var selectedSchedule: Schedule
     @State private var showDeletesuccessSneakBar = false
     @State private var showErrorSneakBar = false
     var body: some View {
@@ -34,37 +34,23 @@ struct ScheduleDetailView: View {
                     }
                 )
             }.padding(.top, 25)
-            ScheduleCardView(schedule: selectedSchedule) {
-                
-            }
-            
-            HStack {
-                Text("Job linked")
-                    .applyFontBold(size: 15)
-                    .padding(.top, 30)
-                    .padding(.bottom, 5)
-                Spacer()
-            }
-            
-            if let job = selectedSchedule.job {
-                ScheduleJobCardView(job: job, status: LeadStatus(rawValue: job.status ?? "NEW") ?? LeadStatus.new).cardify()
-            }
+            ScheduleCardForJobView(schedule: selectedSchedule).padding(.top,20)
             
             MyButton(text: Strings.DELETE,onClickButton: {
-                schedulesVM.deleteSchedule(scheduleID: selectedSchedule._id)
-            }, showLoading: schedulesVM.isLoading ,bgColor: Color.PRIMARY).padding(.top,20)
+                schedulesForJobVM.deleteSchedule(scheduleID: selectedSchedule._id)
+            }, showLoading: schedulesForJobVM.isLoading ,bgColor: Color.PRIMARY).padding(.top,30)
            
             Spacer()
         }.navigationBarHidden(true)
            
             .padding()
             .background(Color.SCREEN_BG.ignoresSafeArea())
-            .disabled(schedulesVM.isLoading)
+            .disabled(schedulesForJobVM.isLoading)
         
-            .onChange(of: schedulesVM.isLoading) { isloading in
-                if (schedulesVM.deleteSchedulesSuccess == true && schedulesVM.errorString == nil) {
+            .onChange(of: schedulesForJobVM.isLoading) { isloading in
+                if (schedulesForJobVM.deleteSchedulesSuccess == true && schedulesForJobVM.errorString == nil) {
                     self.showDeletesuccessSneakBar = true
-                } else if(schedulesVM.isLoading != true && schedulesVM.errorString != nil) {
+                } else if(schedulesForJobVM.isLoading != true && schedulesForJobVM.errorString != nil) {
                     self.showErrorSneakBar = true
                 }
             }
@@ -75,7 +61,7 @@ struct ScheduleDetailView: View {
                 message: "Schedule Deleted SuccessFully",
                 secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
                 onSnackbarDismissed: {self.presentationMode.wrappedValue.dismiss()
-                    NotificationCenter.default.post(name: NSNotification.RELOAD_SCHEDULES,
+                    NotificationCenter.default.post(name: NSNotification.RELOAD_JOB_DETAILS,
                                                     object: nil, userInfo: nil)},
                 isAlignToBottom: true
             )
@@ -83,7 +69,7 @@ struct ScheduleDetailView: View {
                 show: $showErrorSneakBar,
                 snackbarType: SnackBarType.error,
                 title: "Error",
-                message: schedulesVM.errorString,
+                message: schedulesForJobVM.errorString,
                 secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
                 onSnackbarDismissed: { },
                 isAlignToBottom: true
@@ -92,6 +78,4 @@ struct ScheduleDetailView: View {
     
 }
 
-//#Preview {
-//    ScheduleDetailView()
-//}
+

@@ -25,7 +25,7 @@ struct ScheduleModel: Decodable,Identifiable,Hashable  {
     }
     
     let _id : String
-    let partner : String
+   // let partner : String
     let date : String
     let startTime: String
     let endTime: String
@@ -42,7 +42,7 @@ struct SchedulesJob: Decodable {
     let _id: String?
     let contact: Customer?
     let customer: Customer?
-    let status: String
+    let status: String?
     let jobTitle: String
     let createdDate: String
     

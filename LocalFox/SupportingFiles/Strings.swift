@@ -118,7 +118,8 @@ struct Strings {
     static let QUOTE_DETAILS = "Quote Details"
     static let CREATE_QUOTE = "Create Quote"
     static let BOOKINGS = "Bookings"
-    
+    static let NO_SCHEDULES_TITLE = "No schedules created"
+    static let NO_SCHEDULES_MESSAGE = "There are no schedule created on this job yet. Click the button below to create a new invoice."
     
     
     
@@ -163,5 +164,6 @@ struct Strings {
     static let TITLE =  "Title"
     static let MARK_INVOICE_AS_PAID = "Mark as invoice paid"
     static let ADD_BOOKING = "Add booking"
+    static let BOOKING_DETAILS = "Booking Details"
 }
 
