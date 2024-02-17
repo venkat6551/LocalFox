@@ -27,7 +27,7 @@ enum ActivityType : String, Equatable {
         case .notes:
             return Images.NOTES_ACT_ICON
         case .sms:
-            return Images.CALL_ACT_ICON //
+            return Images.SMS_ACT_ICON
         case .paymentReceived:
             return Images.PAYMENT_ACT_ICON
         case .scheduled:
@@ -35,7 +35,7 @@ enum ActivityType : String, Equatable {
         case .complete:
             return Images.COMPLETE_ACT_ICON
         case .invoice:
-            return Images.CALL_ACT_ICON //
+            return Images.PAYMENT_ACT_ICON
         case .none:
             return Images.CALL_ACT_ICON
         }

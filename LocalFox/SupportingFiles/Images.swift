@@ -78,6 +78,7 @@ enum Images {
     static let CALL_ACT_ICON = Image("call_activity")
     static let COMPLETE_ACT_ICON = Image("complete_activity")
     static let PAYMENT_ACT_ICON = Image("payment_activity")
+    static let SMS_ACT_ICON = Image("sms_activity")
     static let NOTES_ACT_ICON = Image("notes_activity")
     static let QUOTE_ACT_ICON = Image("quote_activity")
     static let SCHEDULE_ACT_ICON = Image("schedule_activity")

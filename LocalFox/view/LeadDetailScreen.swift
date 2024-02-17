@@ -19,6 +19,7 @@ struct LeadDetailScreen: View {
     @State private var showAddSchedule = false
     @State private var showAddNotes = false
     @State private var showAddInvoice = false
+    @State private var isAddMenuOpened = false
     @StateObject var newQuoteViewModel:QuoteViewModel  =  QuoteViewModel()
     @StateObject var newInvoiceViewModel:InvoiceViewModel  =  InvoiceViewModel()
     var body: some View {
@@ -94,8 +95,20 @@ struct LeadDetailScreen: View {
                     ProgressView()
                 }
             }
+            if(isAddMenuOpened) {
+                VStack {
+                    HStack{
+                        Spacer()
+                    }
+                    Spacer()
+                }.background(Color.gray.opacity(0.7))
+                    .onTapGesture {
+                        isAddMenuOpened = false
+                    }
+            }
             
-            ScreenIconsAndText(onButtonClick: { index in
+            
+            ScreenIconsAndText(isOpen: $isAddMenuOpened, onButtonClick: { index in
                 switch index {
                 case 0:
                     self.newInvoiceViewModel.createJobInvoice(jobID: self.job?.id)
@@ -217,7 +230,7 @@ struct ActivityView: View {
                             }
                         }
                     }
-                }
+                }.padding(.horizontal,5).padding(.trailing,10)
             }
         }.background(Color.SCREEN_BG)
     }
@@ -383,8 +396,7 @@ struct NoInvoicesView: View {
 }
 
 struct ScreenIconsAndText: View {
-    
-    @State var isOpen = false
+    @Binding var isOpen:Bool
     var onButtonClick: (Int)->Void
     let iconAndTextImageNames = [
         Images.NOTES_ADD_ICON,
@@ -399,7 +411,7 @@ struct ScreenIconsAndText: View {
                              "Create Note" ]
     
     var body: some View {
-        let mainButton2 = MainButton()
+        let mainButton2 = MainButton(isOpen: $isOpen)
         let textButtons = iconAndTextTitles.enumerated().map { index, value in
             IconAndTextButton(imageName: iconAndTextImageNames[index], buttonText: value)
                 .onTapGesture {
@@ -427,6 +439,29 @@ struct ScreenIconsAndText: View {
     }
 }
 struct MainButton: View {
+    @Binding var isOpen:Bool
+    var width: CGFloat = 60
+    
+    var body: some View {
+        ZStack {
+            Color.PRIMARY
+                .frame(width: width, height: width)
+                .cornerRadius(width / 2)
+                .shadow(color: Color.black.opacity(0.3), radius: 15, x: 0, y: 15)
+            if(isOpen) {
+                Images.RED_CLOSE_ROUND
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(.white)
+            } else {
+                Images.PLUS_ICON
+                    .foregroundColor(.white)
+            }
+        }
+    }
+}
+
+struct MainButtonOpened: View {
     
     var width: CGFloat = 60
     
@@ -436,7 +471,7 @@ struct MainButton: View {
                 .frame(width: width, height: width)
                 .cornerRadius(width / 2)
                 .shadow(color: Color.black.opacity(0.3), radius: 15, x: 0, y: 15)
-            Images.PLUS_ICON
+            Images.RED_CLOSE_ROUND
                 .foregroundColor(.white)
         }
     }

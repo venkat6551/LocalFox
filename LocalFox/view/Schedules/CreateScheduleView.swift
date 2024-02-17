@@ -47,59 +47,78 @@ struct CreateScheduleView: View {
             VStack(alignment: .leading) {
                 Text(Strings.DATE).applyFontRegular(color: Color.TEXT_LEVEL_3, size: 16).padding(.top, 20)
                 
-                Button {
-                } label: {
-                    HStack {
-                        MyInputTextBox(text: $date,keyboardType: .decimalPad).disabled(true)
+                HStack {
+                    Button {
+                    } label: {
+                        HStack {
+                            MyInputTextBox(text: $date,keyboardType: .decimalPad).disabled(true)
+                        }
+                        .frame(height: Dimens.INPUT_FIELD_HEIGHT)
+                        .cardify()
+                        
                     }
-                    .frame(height: Dimens.INPUT_FIELD_HEIGHT)
-                    .cardify()
-                    
+                    Images.SCHEDULE_ADD_ICON
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                        .overlay{DatePicker(
+                            "",
+                            selection: $selectedDate,
+                            displayedComponents: [.date]
+                        )
+                        .blendMode(.destinationOver) //MARK: use this extension to keep the clickable functionality
+                        .onChange(of: selectedDate, perform: { value in
+                            date = getselectedDateStr()
+                        })
+                        }
                 }
                 
-                .overlay{DatePicker(
-                    "",
-                    selection: $selectedDate,
-                    displayedComponents: [.date]
-                )
-                .blendMode(.destinationOver) //MARK: use this extension to keep the clickable functionality
-                .onChange(of: selectedDate, perform: { value in
-                    date = getselectedDateStr()
-                })
-                }
+                
+                
                 
             }
             
             HStack{
                 VStack(alignment: .leading) {
                     Text(Strings.START_TIME).applyFontRegular(color: Color.TEXT_LEVEL_3, size: 16).padding(.top, 20)
-                    
-                    MyInputTextBox(text: $startTime,keyboardType: .decimalPad).disabled(true)
-                        .overlay{DatePicker(
-                            "",
-                            selection: $startDate,
-                            displayedComponents: [.hourAndMinute]
-                        )
-                        .blendMode(.destinationOver) //MARK: use this extension to keep the clickable functionality
-                        .onChange(of: startDate, perform: { value in
-                            startTime = getselectedTimeStr(date: startDate)
-                        })
-                        }
+                    HStack {
+                        MyInputTextBox(text: $startTime,keyboardType: .decimalPad).disabled(true)
+                        Images.TIME_ICON
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .overlay{DatePicker(
+                                "",
+                                selection: $startDate,
+                                displayedComponents: [.hourAndMinute]
+                            )
+                            .blendMode(.destinationOver) //MARK: use this extension to keep the clickable functionality
+                            .onChange(of: startDate, perform: { value in
+                                startTime = getselectedTimeStr(date: startDate)
+                            })
+                            }
+                    }
+                   
+                        
                 }
                 VStack(alignment: .leading) {
                     Text(Strings.END_TIME).applyFontRegular(color: Color.TEXT_LEVEL_3, size: 16).padding(.top, 20)
+                    HStack {
+                        MyInputTextBox(text: $endTime,keyboardType: .decimalPad).disabled(true)
+                        Images.TIME_ICON
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .overlay{DatePicker(
+                                "",
+                                selection: $endDate,
+                                displayedComponents: [.hourAndMinute]
+                            )
+                            .blendMode(.destinationOver) //MARK: use this extension to keep the clickable functionality
+                            .onChange(of: endDate, perform: { value in
+                                endTime = getselectedTimeStr(date: endDate)
+                            })
+                            }
+                    }
                     
-                    MyInputTextBox(text: $endTime,keyboardType: .decimalPad).disabled(true)
-                        .overlay{DatePicker(
-                            "",
-                            selection: $endDate,
-                            displayedComponents: [.hourAndMinute]
-                        )
-                        .blendMode(.destinationOver) //MARK: use this extension to keep the clickable functionality
-                        .onChange(of: endDate, perform: { value in
-                            endTime = getselectedTimeStr(date: endDate)
-                        })
-                        }
+                        
                 }
             }
             
