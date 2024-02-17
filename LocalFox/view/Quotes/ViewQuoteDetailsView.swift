@@ -92,7 +92,7 @@ struct ViewQuoteDetailsView: View {
                                     Text(Strings.TOTAL).applyFontBold(color: Color.DEFAULT_TEXT, size: 16).padding(.top, 20)
                                 }
                                 VStack(alignment: .trailing, spacing: 10){
-                                   // Text("$\(quote.subTotal ?? 0, specifier: "%.2f")").applyFontBold(color: Color.DEFAULT_TEXT , size: 16)
+                                    Text("$\(quote.subTotal ?? 0, specifier: "%.2f")").applyFontBold(color: Color.DEFAULT_TEXT , size: 16)
                                     Text("$\(quote.totalTax ?? 0, specifier: "%.2f")").applyFontMedium(color: Color.DEFAULT_TEXT, size: 16)
                                     Text("$\(quote.totalPrice ?? 0, specifier: "%.2f")").applyFontBold(color: Color.DEFAULT_TEXT, size: 18).padding(.top, 20)
                                 }
@@ -108,9 +108,13 @@ struct ViewQuoteDetailsView: View {
                                     quoteViewModel.deleteQuote()
                                 }, showLoading: quoteViewModel.isDeleteQuoteLoading ,bgColor: Color.PRIMARY)
                             }.padding(.top,15)
-                            MyButton(text: Strings.CONVERT_TO_INVOICE,onClickButton: {
-                                invoiceViewModel.convertToInvoice(quoteID: quote._id)
-                            }, showLoading: invoiceViewModel.isLoading ).padding(.top,5)
+                            
+                            if (quote.quoteStatus == "VOID" || quote.quoteStatus == "INVOICED"
+                                || quote.quoteStatus == "DRAFT" || quote.quoteStatus == "DELETED") {
+                                MyButton(text: Strings.CONVERT_TO_INVOICE,onClickButton: {
+                                    invoiceViewModel.convertToInvoice(quoteID: quote._id)
+                                }, showLoading: invoiceViewModel.isLoading ).padding(.top,5)
+                            }
                         }
                     }
                 }
