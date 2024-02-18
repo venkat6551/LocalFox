@@ -48,6 +48,7 @@ protocol APIServiceProtocol {
     func getSchedules(completion: @escaping (_ success: Bool, _ schedulesModel : SchedulesModel?, _ errorString: String?)-> Void)
     func deleteSchedule(scheduleID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
     func addSchedule(jobID:String, date: String,starttime: String, endTime:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
+    func markJobAsComplete(jobID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void)
 }
 
 
@@ -439,6 +440,41 @@ final class MockAPIService: APIServiceProtocol {
                     if (response.response?.statusCode == 401) {
                         self.refreshLogin {
                             self.updateNotificationSettings(pushNotifications: pushNotifications, smsNotifications: smsNotifications, emailNotifications: emailNotifications, announcements: announcements, events: events, completion: completion)
+                        }
+                    } else {
+                        do{
+                            let errorObj = try JSONDecoder().decode(ErrorResponseDecodable.self, from: data)
+                            completion(false,errorObj.error)
+                        } catch{
+                            completion(false,error.localizedDescription)
+                        }
+                    }
+                }
+            }
+    }
+    func markJobAsComplete(jobID:String, completion: @escaping (_ success: Bool, _ errorString : String?) -> Void) {
+        let headers: HTTPHeaders = [.authorization(bearerToken: MyUserDefaults.userToken!)]
+        let url = "\(APIEndpoints.MARK_JOB_AS_COMPLETE)\(jobID)"
+        let request = AF.request(
+            url,
+            method: HTTPMethod.put,
+            encoding:JSONEncoding.default,
+            headers: headers
+        )
+        request
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: SuccessResponseDecodable.self) { response in
+                switch response.result {
+                case .success(_):
+                    completion(true,nil)
+                case .failure(let err):
+                    guard let data = response.data else {
+                        completion(false,err.localizedDescription)
+                        return
+                    }
+                    if (response.response?.statusCode == 401) {
+                        self.refreshLogin {
+                            self.markJobAsComplete(jobID: jobID, completion: completion)
                         }
                     } else {
                         do{

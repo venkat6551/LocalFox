@@ -15,7 +15,8 @@ class JobDetailsViewModel: ObservableObject {
     @Published var addJobNotesSuccess: Bool = false
     @Published var addScheduleSuccess: Bool = false
     @Published var createJobquoteSuccess: Bool = false
-    
+    @Published var jobCompleteSuccess: Bool = false
+    @Published var isCompleteJobLoading: Bool = false
     private let apiService: APIServiceProtocol
     
     init(apiService: APIServiceProtocol = MockAPIService()) {
@@ -89,6 +90,24 @@ class JobDetailsViewModel: ObservableObject {
             }
         }
        
+    }
+    
+    func markAsComplete() {
+        guard let data = self.jobDetailsModel?.data else {
+            return
+        }
+        jobCompleteSuccess = false
+        errorString = nil
+        isCompleteJobLoading = true
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.apiService.markJobAsComplete(jobID: data.job.id) { [weak self] success, errorString in
+                DispatchQueue.main.async {
+                    self?.jobCompleteSuccess = success
+                    self?.errorString = errorString
+                    self?.isCompleteJobLoading = false
+                }
+            }
+        }
     }
 }
 

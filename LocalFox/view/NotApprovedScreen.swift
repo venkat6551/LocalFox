@@ -35,10 +35,8 @@ struct NotApprovedScreen: View {
                     
                     HStack{
                         VStack(alignment: .leading, spacing: 10) {
-                            HStack{
-                                Text("Welcome, ").applyFontHeader()
-                                Text(profileVM.profileModel?.data?.firstName ?? "").applyFontHeader()
-                            }
+                            Text("Welcome, ").applyFontHeader()
+                            Text(profileVM.profileModel?.data?.firstName ?? "").applyFontHeader()
                             Text("In Review").applyFontBold(color: Color.PRIMARY,size: 16)
                         }
                         Spacer()

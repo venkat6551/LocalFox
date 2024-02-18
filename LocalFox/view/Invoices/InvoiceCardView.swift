@@ -18,6 +18,7 @@ enum InvoiceStatus:String, Equatable  {
     case PaymentProcessing = "Payment Processing"
     case Paymentfailed = "Payment failed"
     case Cancelled = "Cancelled"
+    case Void = "VOID"
     
     var text: String {
         switch self {
@@ -39,6 +40,8 @@ enum InvoiceStatus:String, Equatable  {
             return "Payment failed"
         case .Cancelled:
             return "Cancelled"
+        case .Void:
+            return "Void"
         }
     }
     
@@ -62,6 +65,8 @@ enum InvoiceStatus:String, Equatable  {
         case .Paymentfailed:
             return Color.DARK_BLUE
         case .Cancelled:
+            return Color.DARK_BLUE
+        case .Void:
             return Color.DARK_BLUE
         }
     }

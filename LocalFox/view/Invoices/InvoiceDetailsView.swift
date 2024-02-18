@@ -58,7 +58,7 @@ struct InvoiceDetailsView: View {
                             Text(Strings.DETAILS).applyFontBold(color: Color.DEFAULT_TEXT, size: 13)
                             Text("\(Strings.REF) \(invoice.invoiceReference)").applyFontRegular(color: Color.DEFAULT_TEXT, size: 11)
                             if let date  = invoice.invoiceDueDate.convertDateFormate(sorceFormate: DateFormates.API_DATE_TIME, destinationFormate: DateFormates.SHORT_DATE_TIME) {
-                                Text("\(Strings.PAID_ON) \(date)").applyFontRegular(color: Color.DEFAULT_TEXT, size: 11)
+                                Text("\(Strings.DUE_ON) \(date)").applyFontRegular(color: Color.DEFAULT_TEXT, size: 11)
                             }
                         }
                     }.padding(.top, 10)

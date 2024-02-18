@@ -20,8 +20,20 @@ struct LeadDetailScreen: View {
     @State private var showAddNotes = false
     @State private var showAddInvoice = false
     @State private var isAddMenuOpened = false
+    @State private var showCompleteJobSuccessSneakBar = false
+    @State private var showErrorSneakBar = false
     @StateObject var newQuoteViewModel:QuoteViewModel  =  QuoteViewModel()
     @StateObject var newInvoiceViewModel:InvoiceViewModel  =  InvoiceViewModel()
+    let actionTitles = ["Create Invoice",
+                             "Create Quote",
+                             "Create Schedule",
+                             "Create Note" ]
+    let actionTitlesWithComplete = ["Create Invoice",
+                                    "Create Quote",
+                                    "Create Schedule",
+                                    "Create Note",
+                                    "Mark as Complete"]
+    
     var body: some View {
         ZStack (alignment: .bottomTrailing){
             ZStack {
@@ -95,10 +107,15 @@ struct LeadDetailScreen: View {
                     ProgressView()
                 }
             }
-            if(isAddMenuOpened) {
+            if(isAddMenuOpened || jobDetailsVM.isCompleteJobLoading) {
                 VStack {
+                    Spacer()
                     HStack{
                         Spacer()
+                        if (jobDetailsVM.isCompleteJobLoading) {
+                            ProgressView()
+                            Spacer()
+                        }
                     }
                     Spacer()
                 }.background(Color.gray.opacity(0.7))
@@ -107,7 +124,7 @@ struct LeadDetailScreen: View {
                     }
             }
             
-            
+            let jobStatus = LeadStatus(rawValue: job!.status) ?? LeadStatus.new
             ScreenIconsAndText(isOpen: $isAddMenuOpened, onButtonClick: { index in
                 switch index {
                 case 0:
@@ -118,11 +135,13 @@ struct LeadDetailScreen: View {
                     self.showAddSchedule = true
                 case 3:
                     self.showAddNotes = true
+                case 4:
+                    self.jobDetailsVM.markAsComplete()
                 default:print("")
                 }
                 
-            }).frame(width: 80, height: 50)
-        }
+            }, iconAndTextTitles: (jobStatus == .scheduled) ?  actionTitlesWithComplete : actionTitles).frame(width: 80, height: 50)
+        }.disabled(jobDetailsVM.isCompleteJobLoading)
         .onChange(of: newQuoteViewModel.isLoading) { isloading in
             if (isloading == false && newQuoteViewModel.quoteModel != nil) {
                 showAddQuote = true
@@ -131,6 +150,13 @@ struct LeadDetailScreen: View {
         .onChange(of: newInvoiceViewModel.isLoading) { isloading in
             if (isloading == false && newInvoiceViewModel.invoiceModel != nil) {
                 showAddInvoice = true
+            }
+        }
+        .onChange(of: jobDetailsVM.jobCompleteSuccess) { isloading in
+            if (jobDetailsVM.jobCompleteSuccess == true && jobDetailsVM.errorString == nil ) {
+                self.showCompleteJobSuccessSneakBar = true
+            } else if(jobDetailsVM.errorString != nil) {
+                self.showErrorSneakBar = true
             }
         }
         .onAppear {
@@ -160,6 +186,26 @@ struct LeadDetailScreen: View {
                 CreateInvoiceView(invoiceViewModel: newInvoiceViewModel)
             }
         }
+        .snackbar(
+            show: $showCompleteJobSuccessSneakBar,
+            snackbarType: SnackBarType.success,
+            title: "Success",
+            message: "Job status has been updated to complete successfully",
+            secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+            onSnackbarDismissed: {
+                NotificationCenter.default.post(name: NSNotification.RELOAD_JOB_DETAILS,
+                                                object: nil, userInfo: nil)},
+            isAlignToBottom: true
+        )
+        .snackbar(
+            show: $showErrorSneakBar,
+            snackbarType: SnackBarType.error,
+            title: "Error",
+            message: jobDetailsVM.errorString,
+            secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+            onSnackbarDismissed: { },
+            isAlignToBottom: true
+        )
         
         .navigationDestination(isPresented: $showAddSchedule) {
             CreateScheduleView(jobDetailsVM: jobDetailsVM)
@@ -402,13 +448,11 @@ struct ScreenIconsAndText: View {
         Images.NOTES_ADD_ICON,
         Images.SCHEDULE_ADD_ICON,
         Images.QUOTE_ADD_ICON,
-        Images.INVOICE_ADD_ICON
+        Images.INVOICE_ADD_ICON,
+        Images.SUCCESS_TICK
     ]
     
-    let iconAndTextTitles = ["Create Invoice",
-                             "Create Quote",
-                             "Create Schedule",
-                             "Create Note" ]
+    var iconAndTextTitles:[String]
     
     var body: some View {
         let mainButton2 = MainButton(isOpen: $isOpen)
