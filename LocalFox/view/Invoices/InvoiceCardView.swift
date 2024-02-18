@@ -10,38 +10,23 @@ enum InvoiceStatus:String, Equatable  {
     
     case Draft = "DRAFT"
     case Sent = "SENT"
-    case PendingPayment = "Pending Payment" //
-    case PartiallyPaid = "Partially Paid"
-    case Paid = "PAID" //
-    case Overdue = "Overdue"
-    case Refunded = "Refunded"
-    case PaymentProcessing = "Payment Processing"
-    case Paymentfailed = "Payment failed"
-    case Cancelled = "Cancelled"
+    case Paid = "PAID"
+    case Overdue = "OVERDUE"
+    case Due = "DUE"
+    case New = "NEW"
     case Void = "VOID"
+    case Deleted = "DELETED"
     
     var text: String {
         switch self {
         case .Draft: return "Draft"
         case .Sent: return "Sent"
-        case .PendingPayment:
-            return "Pending Payment"
-        case .PartiallyPaid:
-            return "Partially Paid"
-        case .Paid:
-            return "Paid"
-        case .Overdue:
-            return "Overdue"
-        case .Refunded:
-            return "Refunded"
-        case .PaymentProcessing:
-            return "Payment Processing"
-        case .Paymentfailed:
-            return "Payment failed"
-        case .Cancelled:
-            return "Cancelled"
-        case .Void:
-            return "Void"
+        case .Paid: return "Paid"
+        case .Overdue: return "Overdue"
+        case .Void:  return "Void"
+        case .Due: return "Due"
+        case .New: return "New"
+        case .Deleted: return "Deleted"
         }
     }
     
@@ -49,25 +34,12 @@ enum InvoiceStatus:String, Equatable  {
         switch self {
         case .Draft: return Color.BORDER_RED
         case .Sent: return Color.DARK_BLUE
-       
-        case .PendingPayment:
-            return Color.DARK_BLUE
-        case .PartiallyPaid:
-            return Color.TEXT_GREEN
-        case .Paid:
-            return Color.BORDER_RED
-        case .Overdue:
-            return Color.DARK_BLUE
-        case .Refunded:
-            return Color.EXPIRED_RED
-        case .PaymentProcessing:
-            return Color.DARK_BLUE
-        case .Paymentfailed:
-            return Color.DARK_BLUE
-        case .Cancelled:
-            return Color.DARK_BLUE
-        case .Void:
-            return Color.DARK_BLUE
+        case .New: return Color.DARK_BLUE
+        case .Paid: return Color.BORDER_RED
+        case .Overdue: return Color.DARK_BLUE
+        case .Due: return Color.DARK_BLUE
+        case .Deleted: return Color.EXPIRED_RED
+        case .Void: return Color.DARK_BLUE
         }
     }
 }

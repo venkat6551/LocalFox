@@ -50,8 +50,12 @@ struct InvoiceDetailsView: View {
                     HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 3) {
                             Text(Strings.CUSTOMER).applyFontBold(color: Color.DEFAULT_TEXT, size: 13)
-                            Text("\(invoice.partner.firstName) \(invoice.partner.lastName)").applyFontRegular(color: Color.DEFAULT_TEXT, size: 11)
-                            Text("\(invoice.partner.location.getShortFormattedLocation())").applyFontRegular(color: Color.DEFAULT_TEXT, size: 11)
+                            if let customer = invoice.customer {
+                                Text(customer.fullName ?? "").applyFontRegular(color: Color.DEFAULT_TEXT, size: 11)
+                                if let location = customer.location {
+                                    Text(location.getShortFormattedLocation()).applyFontRegular(color: Color.DEFAULT_TEXT, size: 11)
+                                }
+                            }
                         }
                         Spacer()
                         VStack(alignment: .trailing, spacing: 3) {

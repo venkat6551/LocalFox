@@ -9,8 +9,8 @@ import Foundation
 
 struct LoginCredentialsModel: Codable {
     
-    var email: String = "partner@localfox.com.au"
-    var password: String = "Ricky@123"
+    var email: String = ""
+    var password: String = ""
     
     var isValid: Bool {
         !email.isEmpty && !password.trimmingCharacters(in: .whitespaces).isEmpty && email.trimmingCharacters(in: .whitespaces).isValidEmail

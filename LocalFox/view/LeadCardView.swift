@@ -18,6 +18,7 @@ enum LeadStatus:String, Equatable  {
     case new = "NEW"
     case Invoiced = "INVOICED"
     case Assigned = "ASSIGNED"
+    case Closed = "CLOSED"
     
     var text: String {
         switch self {
@@ -27,6 +28,7 @@ enum LeadStatus:String, Equatable  {
         case .new: return "New"
         case .Invoiced: return "Invoiced"
         case .Assigned: return "Assigned"
+        case .Closed: return "Closed"
         }
     }
     
@@ -38,6 +40,7 @@ enum LeadStatus:String, Equatable  {
         case .new: return Color.NEW_STATUS_NEW
         case .Invoiced: return Color.NEW_STATUS_INVOICED
         case .Assigned: return Color.NEW_STATUS_ASSIGNED
+        case .Closed: return Color.BLUE
         }
     }
     
@@ -49,6 +52,7 @@ enum LeadStatus:String, Equatable  {
         case .new: return Color.NEW_STATUS_NEW_BG
         case .Invoiced: return Color.LIGHT_RED
         case .Assigned: return Color.NEW_STATUS_ASSIGNED_BG
+        case .Closed: return Color.LIGHT_BLUE
         }
     }
 }

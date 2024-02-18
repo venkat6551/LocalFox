@@ -113,6 +113,7 @@ struct Job: Decodable,Identifiable,Hashable {
 }
 
 struct Customer: Decodable {
+    let location: Location?
     let fullName : String?
     let mobileNumber : String?
     let emailAddress : String?
