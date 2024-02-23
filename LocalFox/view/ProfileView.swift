@@ -55,6 +55,7 @@ struct ProfileView: View {
                             }
                             authenticationStatus.setAuthenticated(authenticated: false)
                             self.presentationMode.wrappedValue.dismiss() // Go back
+                            profileVM.profileModel = nil
                         },
                         label: {
                             Text(Strings.LOGOUT).applyFontRegular(size: 12)
@@ -65,6 +66,9 @@ struct ProfileView: View {
                 }
             }
             Spacer()
+        }
+        .onAppear() {
+            profileVM.getProfile()
         }
         .navigationBarHidden(true)
         .padding(.horizontal,25)

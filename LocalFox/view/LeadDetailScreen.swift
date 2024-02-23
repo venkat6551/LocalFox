@@ -22,6 +22,9 @@ struct LeadDetailScreen: View {
     @State private var isAddMenuOpened = false
     @State private var showCompleteJobSuccessSneakBar = false
     @State private var showErrorSneakBar = false
+    @State private var showNewQuoteErrorSneakBar = false
+    @State private var showNewInvoiceErrorSneakBar = false
+    
     @StateObject var newQuoteViewModel:QuoteViewModel  =  QuoteViewModel()
     @StateObject var newInvoiceViewModel:InvoiceViewModel  =  InvoiceViewModel()
     let actionTitles = ["Create Invoice",
@@ -145,11 +148,15 @@ struct LeadDetailScreen: View {
         .onChange(of: newQuoteViewModel.isLoading) { isloading in
             if (isloading == false && newQuoteViewModel.quoteModel != nil) {
                 showAddQuote = true
+            } else  if (isloading == false && newQuoteViewModel.errorString != nil){
+                self.showNewQuoteErrorSneakBar = true
             }
         }
         .onChange(of: newInvoiceViewModel.isLoading) { isloading in
             if (isloading == false && newInvoiceViewModel.invoiceModel != nil) {
                 showAddInvoice = true
+            } else  if (isloading == false && newInvoiceViewModel.errorString != nil){
+                self.showNewInvoiceErrorSneakBar = true
             }
         }
         .onChange(of: jobDetailsVM.jobCompleteSuccess) { isloading in
@@ -202,6 +209,25 @@ struct LeadDetailScreen: View {
             snackbarType: SnackBarType.error,
             title: "Error",
             message: jobDetailsVM.errorString,
+            secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+            onSnackbarDismissed: { },
+            isAlignToBottom: true
+        )
+        .snackbar(
+            show: $showNewQuoteErrorSneakBar,
+            snackbarType: SnackBarType.error,
+            title: "Error",
+            message: newQuoteViewModel.errorString,
+            secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
+            onSnackbarDismissed: { },
+            isAlignToBottom: true
+        )
+        
+        .snackbar(
+            show: $showNewInvoiceErrorSneakBar,
+            snackbarType: SnackBarType.error,
+            title: "Error",
+            message: newInvoiceViewModel.errorString,
             secondsAfterAutoDismiss: SnackBarDismissDuration.normal,
             onSnackbarDismissed: { },
             isAlignToBottom: true
