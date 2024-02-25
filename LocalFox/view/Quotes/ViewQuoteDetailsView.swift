@@ -113,8 +113,8 @@ struct ViewQuoteDetailsView: View {
                                 }, showLoading: quoteViewModel.isDeleteQuoteLoading ,bgColor: Color.PRIMARY)
                             }.padding(.top,15)
                             
-                            if (quote.quoteStatus == "VOID" || quote.quoteStatus == "INVOICED"
-                                || quote.quoteStatus == "DRAFT" || quote.quoteStatus == "DELETED") {
+                            if (quote.quoteStatus != "VOID" && quote.quoteStatus != "INVOICED"
+                                && quote.quoteStatus != "DRAFT" && quote.quoteStatus != "DELETED") {
                                 MyButton(text: Strings.CONVERT_TO_INVOICE,onClickButton: {
                                     invoiceViewModel.convertToInvoice(quoteID: quote._id)
                                 }, showLoading: invoiceViewModel.isLoading ).padding(.top,5)
